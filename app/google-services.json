@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "548306716266",
+    "firebase_url": "https://co-lendar-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "co-lendar",
+    "storage_bucket": "co-lendar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548306716266:android:581b19e08f61a691d8ac13",
+        "android_client_info": {
+          "package_name": "fr.ups.co_lendar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "548306716266-60ctfslgllegif427dn5sgqft66m1g51.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5N8IWEQVjf33Pd8DygS6QVX5fj4LCjBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "548306716266-60ctfslgllegif427dn5sgqft66m1g51.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

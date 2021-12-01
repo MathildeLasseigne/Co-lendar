@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Co-lendar</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="firstName">First name</string>
+    <string name="lastName">Last name</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="registerToLogin">Already have an account ?\n Login here.</string>
+    <string name="loginToRegister">Don\'t have an account ?\n Register here.</string>
+    <string name="createAccountPrompt">Create an account</string>
+    <string name="resetPassword">Reset password</string>
+    <string name="confirmPassword">Confirm password</string>
+    <string name="loginPrompt">Connect to your account:</string>
+</resources>
