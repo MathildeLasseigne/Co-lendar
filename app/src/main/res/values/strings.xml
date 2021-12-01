@@ -13,4 +13,18 @@
     <string name="resetPassword">Reset password</string>
     <string name="confirmPassword">Confirm password</string>
     <string name="loginPrompt">Connect to your account:</string>
+    <string name="homeGreeting">Welcome, </string>
+    <string name="passwordRequired">Password is required.</string>
+    <string name="passwordTooShort">Password should be at least 6 characters long.</string>
+    <string name="passwordsDontMatch">Passwords don\'t match.</string>
+    <string name="emailInvalid">Email is not valid.</string>
+    <string name="firstNameRequired">First name is required.</string>
+    <string name="lastNameRequired">Last name is required.</string>
+    <string name="emailRequired">Email is required.</string>
+    <string name="confirmPasswordRequired">Confirm password.</string>
+    <string name="registrationSuccessful">User registered successfully.</string>
+    <string name="registrationFailed">Registration failed. Try again!</string>
+    <string name="loginFailed">Failed to log in. Try again!</string>
+    <string name="tableNameUsers">users</string>
+    <string name="emailRegex">(?:[a-z0-9!#$%&amp;\'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&amp;\'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])</string>
 </resources>

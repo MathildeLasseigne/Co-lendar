@@ -1,16 +1,23 @@
 package fr.ups.co_lendar.helpers;
 
+import android.content.Intent;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.lang.ref.Reference;
+
+import fr.ups.co_lendar.HomeActivity;
+
 public class User {
 
     String firstName;
     String lastName;
-    String username;
     String password;
     String email;
     //image
 
-    public User(String firstName, String lastName, String email, String username, String password) {
-        this.username = username;
+    public User(String firstName, String lastName, String email, String password) {
         this.password = password;
         this.email = email;
         this.firstName = firstName;
@@ -21,12 +28,12 @@ public class User {
         super();
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public User (String UID) {
+        DatabaseReference user = FirebaseDatabase.getInstance().getReference().child("users").child(UID);
+        this.firstName = user.child("firstName").toString();
+        this.lastName = user.child("lastName").toString();
+        this.email = user.child("email").toString();
+        this.password = user.child("password").toString();
     }
 
     public String getPassword() {
@@ -61,8 +68,17 @@ public class User {
         this.lastName = lastName;
     }
 
-    public User getUser(String username, String password) {
-        return null;
-        //get user for login and password
+    public User getUser(String UID) {
+        DatabaseReference user = FirebaseDatabase.getInstance().getReference().child("users").child(UID);
+        String firstName = user.child("firstName").toString();
+        String lastName = user.child("lastName").toString();
+        String email = user.child("email").toString();
+        String password = user.child("password").toString();
+        return new User(firstName, lastName, email, password);
+    }
+
+    public String getFirstNameFromUID(String UID) {
+        DatabaseReference user = FirebaseDatabase.getInstance().getReference().child("users").child(UID);
+        return user.child("firstName").toString();
     }
 }
