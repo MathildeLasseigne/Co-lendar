@@ -1,25 +1,26 @@
 package fr.ups.co_lendar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -29,16 +30,20 @@ import fr.ups.co_lendar.helpers.User;
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth mAuth;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     EditText firstNameInput;
     EditText lastNameInput;
     EditText emailInput;
     EditText passwordInput;
     EditText passwordConfirmInput;
-    ImageButton profilePictureButton;
+    ImageView profilePictureImageView;
     Button registerButton;
     TextView backToLoginButton;
     ProgressBar progressBar;
+
+    private Uri imageUri;
 
     private static final String TAG = "RegisterActivity";
 
@@ -49,6 +54,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         initializeUI();
         mAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
     }
 
     private void initializeUI() {
@@ -58,8 +65,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         passwordInput = findViewById(R.id.editText_password);
         passwordConfirmInput = findViewById(R.id.editText_passwordConfirm);
 
-        profilePictureButton = findViewById(R.id.imageButton_profilePicture);
-        profilePictureButton.setOnClickListener(this);
+        profilePictureImageView = findViewById(R.id.imageButton_profilePicture);
+        profilePictureImageView.setOnClickListener(this);
         registerButton = findViewById(R.id.button_register);
         registerButton.setOnClickListener(this);
         backToLoginButton = findViewById(R.id.textView_backToLogin);
@@ -77,6 +84,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.textView_backToLogin:
                 startActivity(new Intent(this, MainLoginActivity.class));
+                break;
+            case R.id.imageButton_profilePicture:
+                choosePicture();
                 break;
         }
     }
@@ -101,12 +111,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         if (task1.isSuccessful()) {
                                             Toast.makeText(this, getResources().getString(R.string.registrationSuccessful), Toast.LENGTH_LONG)
                                                     .show();
-                                            progressBar.setVisibility(View.GONE);
                                         } else {
                                             Toast.makeText(this, getResources().getString(R.string.registrationFailed), Toast.LENGTH_LONG)
                                                     .show();
                                         }
                                     });
+                            if (imageUri != null) {
+                                uploadPicture(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                            }
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(this,  getResources().getString(R.string.registrationFailed), Toast.LENGTH_LONG)
@@ -154,5 +166,42 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return false;
         }
         return true;
+    }
+
+    private void choosePicture() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+            profilePictureImageView.setImageURI(imageUri);
+        }
+    }
+
+    private void uploadPicture(String UUID) {
+
+        StorageReference profilePicsRef = storageReference.child("profilePictures/" + UUID);
+
+        profilePicsRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    Toast.makeText(this, getResources().getString(R.string.imageUploadSuccess), Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, getResources().getString(R.string.imageUploadFailure), Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                })
+                .addOnProgressListener(snapshot -> {
+                    double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                    progressBar.setProgress((int) Math.round(progressPercent));
+                });
+
     }
 }

@@ -110,21 +110,13 @@
                 android:textSize="30sp"
                 app:cornerRadius="30dp" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/imageButton_profilePicture"
                 android:layout_width="83dp"
                 android:layout_height="84dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="185dp"
-                android:layout_marginTop="82dp"
-                app:srcCompat="@android:drawable/ic_menu_edit" />
+                app:srcCompat="@android:drawable/ic_menu_gallery" />
 
 
         </RelativeLayout>
