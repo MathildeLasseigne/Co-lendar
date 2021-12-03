@@ -2,18 +2,28 @@ package fr.ups.co_lendar;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import java.net.URL;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import fr.ups.co_lendar.helpers.User;
@@ -74,9 +84,7 @@ public class MainLoginActivity extends AppCompatActivity implements View.OnClick
             progressBar.setVisibility(View.VISIBLE);
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    Intent i = new Intent(this, HomeActivity.class);
-                    i.putExtra("firstName", (new User(mAuth.getUid())).getFirstName());
-                    startActivity(i);
+                    loginWithUser(new Intent(this, HomeActivity.class));
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.loginFailed), Toast.LENGTH_LONG);
                 }
@@ -104,5 +112,33 @@ public class MainLoginActivity extends AppCompatActivity implements View.OnClick
             return false;
         }
         return true;
+    }
+
+    //TODO: figure out a way that awaits the result from the User class and place this method in the user class
+    private void loginWithUser(Intent i) {
+
+        User user = new User();
+
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
+        Query userQuery = userRef.child(Objects.requireNonNull(mAuth.getUid()));
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    user.setFirstName(snapshot.child("firstName").getValue(String.class));
+                    user.setLastName(snapshot.child("lastName").getValue(String.class));
+                    user.setEmail(snapshot.child("email").getValue(String.class));
+                    user.setPassword(snapshot.child("password").getValue(String.class));
+                    i.putExtra("user", user);
+                    startActivity(i);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println(error.getMessage());
+            }
+        });
+
     }
 }

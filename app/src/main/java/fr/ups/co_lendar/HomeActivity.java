@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import fr.ups.co_lendar.helpers.User;
+
 public class HomeActivity extends AppCompatActivity {
 
     TextView greeting;
@@ -26,8 +28,8 @@ public class HomeActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String name = extras.getString("firstName");
-            String newGreeting = greeting.getText() + name;
+            User user = (User) extras.getSerializable("user");
+            String newGreeting = greeting.getText() + user.getFirstName();
             greeting.setText(newGreeting);
         }
     }
