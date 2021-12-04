@@ -85,6 +85,7 @@ public class MainLoginActivity extends AppCompatActivity implements View.OnClick
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     loginWithUser(new Intent(this, HomeActivity.class));
+                    startActivity(new Intent(this, MainActivity.class));
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.loginFailed), Toast.LENGTH_LONG);
                 }

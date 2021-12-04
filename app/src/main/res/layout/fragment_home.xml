@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:id="@+id/homeFragment"
+    android:background="@color/colorBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="right">
+
+        <ImageButton
+            android:id="@+id/personIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginRight="15dp"
+            tools:layout_marginTop="15dp"
+            tools:srcCompat="@tools:sample/avatars" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".WeekViewActivity">
+
+        <TextView
+            android:id="@+id/ThisWeek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="05dp"
+            android:paddingBottom="20dp"
+            android:text="@string/thisWeek"
+            android:textSize="30sp"
+            android:textColor="@color/fadeBlue"
+            android:background="@color/colorDarkBackground"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="20dp"
+            android:background="@color/colorDarkBackground">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_back"
+                android:background="@null"/>
+
+            <TextView
+                android:id="@+id/monthYearTV"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text="@string/month"
+                android:textSize="25sp"
+                android:textAlignment="center"
+                android:textColor="@color/colorGrey"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableRight="@drawable/ic_forward"
+                android:background="@null"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/colorDarkBackground">
+
+            <TextView
+                android:id="@+id/sun"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorGrey"
+                android:text="@string/sun"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/mon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/mon"
+                android:textColor="@color/colorGrey"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/tue"
+                android:textColor="@color/colorGrey"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/wed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/wed"
+                android:textColor="@color/colorGrey"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/thu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/thu"
+                android:textColor="@color/colorGrey"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/fri"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/fri"
+                android:textColor="@color/colorGrey"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/sat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/sat"
+                android:textColor="@color/colorGrey"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/colorDarkBackground">
+
+            <TextView
+                android:id="@+id/day1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/day1"
+                android:background="@color/colorGrey"
+                android:textColor="#000000"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/day2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/day2"
+                android:textColor="@color/colorGrey"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/day3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/day3"
+                android:textColor="@color/colorGrey"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/day4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/day4"
+                android:textColor="@color/colorGrey"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/day5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/day5"
+                android:textColor="@color/colorGrey"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/day6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/day6"
+                android:textColor="@color/colorGrey"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/day7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/day7"
+                android:textColor="@color/colorGrey"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/eventsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            app:cardBackgroundColor="@color/colorGrey">
+
+            <ListView
+                android:id="@+id/eventListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="5">
+
+
+            </ListView>
+        </androidx.cardview.widget.CardView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/colorDarkBackground">
+
+                <TextView
+                    android:id="@+id/Requests"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="05dp"
+                    android:text="@string/requests"
+                    android:textSize="30sp"
+                    android:textColor="@color/fadeBlue" />
+
+                <ListView
+                    android:id="@+id/requestsListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_weight="5"/>
+            </LinearLayout>
+
+
+        </ScrollView>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
