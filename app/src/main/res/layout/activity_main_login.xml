@@ -6,14 +6,14 @@
     android:background="#24454C">
 
     <TextView
-        android:text="@string/app_name"
-        android:layout_marginTop="100dp"
-        android:layout_centerHorizontal="true"
-        android:textSize="40sp"
-        android:textColor="#FFFFFF"
+        android:id="@+id/colendarText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/colendarText"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:text="@string/app_name"
+        android:textColor="#FFFFFF"
+        android:textSize="40sp" />
 
 
     <androidx.cardview.widget.CardView
@@ -40,18 +40,18 @@
                 android:id="@+id/editText_email"/>
 
             <EditText
-                android:inputType="textPassword"
+                android:id="@+id/editText_password"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_marginTop="200dp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="200dp"
                 android:background="#24454C"
-                android:textColorHint="#bababa"
-                android:hint="@string/password"
-                android:paddingStart="10dp"
-                android:textSize="20sp"
                 android:ems="10"
-                android:id="@+id/editText_password"/>
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:paddingStart="10dp"
+                android:textColorHint="#bababa"
+                android:textSize="20sp" />
 
             <Button
                 android:text="@string/login"
@@ -89,14 +89,14 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:text="@string/loginToRegister"
-        android:gravity="center"
-        android:textColor="#FFFFFF"
+        android:id="@+id/textView_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="660dp"
         android:layout_centerHorizontal="true"
-        android:id="@+id/textView_register"/>
+        android:layout_marginTop="660dp"
+        android:gravity="center"
+        android:text="@string/loginToRegister"
+        android:textColor="#FFFFFF" />
 
     <ProgressBar
         android:id="@+id/progressBar"

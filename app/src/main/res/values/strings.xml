@@ -46,4 +46,23 @@
     <string name="day6">6</string>
     <string name="day7">7</string>
     <string name="requests">Requests</string>
+    <string name="EventName">Event name</string>
+    <string name="Date">11 nov, 1PM to 15PM</string>
+    <string name="Location">This is an adress</string>
+    <string name="MessageWrite">Write your message here</string>
+    <string name="Message">This is a message</string>
+    <string name="GroupName">Group name</string>
+    <string name="Add2">+2</string>
+    <string name="SenderName">Name of the sender</string>
+    <string name="FollowRequest"> is asking to follow you !</string>
+    <string name="ReceiverName">Receiver name</string>
+    <string name="Invite">Invite</string>
+    <string name="To">to</string>
+    <string name="In">in</string>
+    <string name="Ask">Ask</string>
+    <string name="ToFollowThem">to follow them</string>
+    <string name="RequestFeedbackText"> accepted or refused your request !</string>
+    <string name="RequestTopic">Request topic</string>
+    <string name="OK">OK</string>
+
 </resources>

@@ -104,4 +104,8 @@ public class User implements Serializable {
         DatabaseReference user = FirebaseDatabase.getInstance().getReference().child("users").child(UID);
         return user.child("firstName").toString();
     }
+
+    public boolean equals(User other){
+        return false;
+    }
 }

@@ -6,6 +6,8 @@
     <color name="colorGrey">#c9c9c9</color>
     <color name="colorBackground">#24454C</color>
     <color name="colorDarkBackground">#172c30</color>
+    <color name="colorTealBackground">#589BA4</color>
     <color name="black">#000000</color>
     <color name="fadeBlue">#85a3a8</color>
+    <color name="ButtonColor_LightBlue">#DEF2F3</color>
 </resources>
