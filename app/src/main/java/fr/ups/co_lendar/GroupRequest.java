@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import fr.ups.co_lendar.helpers.Group;
-import fr.ups.co_lendar.helpers.NotificationFragment;
+import fr.ups.co_lendar.fragments.NotificationFragment;
 import fr.ups.co_lendar.helpers.Request;
 
 public class GroupRequest extends NotificationFragment {

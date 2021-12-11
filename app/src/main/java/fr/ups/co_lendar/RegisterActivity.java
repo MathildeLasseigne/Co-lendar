@@ -17,11 +17,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -30,6 +37,7 @@ import fr.ups.co_lendar.helpers.User;
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore mFirestore;
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
@@ -54,6 +62,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         initializeUI();
         mAuth = FirebaseAuth.getInstance();
+        mFirestore = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
     }
@@ -104,21 +113,29 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            User user = new User(firstName, lastName, email, password);
-                            FirebaseDatabase.getInstance().getReference(getResources().getString(R.string.tableNameUsers))
-                                    .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                                    .setValue(user).addOnCompleteListener(task1 -> {
-                                        if (task1.isSuccessful()) {
-                                            Toast.makeText(this, getResources().getString(R.string.registrationSuccessful), Toast.LENGTH_LONG)
-                                                    .show();
-                                        } else {
-                                            Toast.makeText(this, getResources().getString(R.string.registrationFailed), Toast.LENGTH_LONG)
-                                                    .show();
-                                        }
-                                    });
-                            if (imageUri != null) {
-                                uploadPicture(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-                            }
+                            // if sucessfully added to Auth - add to Firestore
+                            DocumentReference documentReference = mFirestore.collection("users")
+                                    .document(Objects.requireNonNull(mAuth.getCurrentUser().getUid()));
+                            Map<String, Object> user = new HashMap<>();
+                            user.put("UID", mAuth.getCurrentUser().getUid());
+                            user.put("firstName", firstName);
+                            user.put("lastName", lastName);
+                            user.put("email", email);
+                            user.put("password", password);
+                            documentReference.set(user).addOnSuccessListener(unused -> {
+                                if (imageUri != null) {
+                                    //if there is an image - add image
+                                    uploadPicture(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                                } else {
+                                    //if not - registration successful
+                                    Toast.makeText(this, getResources().getString(R.string.registrationSuccessful), Toast.LENGTH_SHORT).show();
+                                    progressBar.setVisibility(View.GONE);
+                                    startActivity(new Intent(this, MainLoginActivity.class));
+                                }
+                            }).addOnFailureListener(e -> {
+                                Toast.makeText(this,  getResources().getString(R.string.registrationFailed), Toast.LENGTH_LONG)
+                                        .show();
+                            });
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(this,  getResources().getString(R.string.registrationFailed), Toast.LENGTH_LONG)
@@ -193,6 +210,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 .addOnSuccessListener(taskSnapshot -> {
                     Toast.makeText(this, getResources().getString(R.string.imageUploadSuccess), Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
+                    startActivity(new Intent(this, MainLoginActivity.class));
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, getResources().getString(R.string.imageUploadFailure), Toast.LENGTH_SHORT).show();

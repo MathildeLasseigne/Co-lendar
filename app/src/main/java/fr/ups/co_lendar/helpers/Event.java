@@ -32,7 +32,7 @@ public class Event implements Serializable {
         this.comments = comments;
     }
 
-    private Event() {
+    public Event() {
         super();
     }
 

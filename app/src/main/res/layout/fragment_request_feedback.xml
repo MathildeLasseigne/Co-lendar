@@ -69,7 +69,7 @@
             android:layout_height="24dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@color/ButtonColor_LightBlue"
+            android:background="@color/lightBlue"
             android:text="@string/OK"
             android:textAlignment="center" />
 

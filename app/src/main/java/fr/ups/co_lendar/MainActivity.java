@@ -1,21 +1,39 @@
 package fr.ups.co_lendar;
-import java.io.*;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.ViewGroup;
+import android.view.Window;
+
+import fr.ups.co_lendar.fragments.CalendarFragment;
+import fr.ups.co_lendar.fragments.GroupsFragment;
+import fr.ups.co_lendar.fragments.HomeFragment;
+import fr.ups.co_lendar.fragments.NotificationsFragment;
+import fr.ups.co_lendar.helpers.User;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     BottomNavigationView bottomNavigationView;
+    User loggedInUser;
+
+    HomeFragment homeFragment = new HomeFragment();
+    CalendarFragment calendarFragment = new CalendarFragment();
+    GroupsFragment groupsFragment = new GroupsFragment();
+    NotificationsFragment notificationsFragment = new NotificationsFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_main);
+
+        getLoggedInUser();
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
@@ -23,16 +41,26 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setSelectedItemId(R.id.home);
 
     }
-    HomeFragment homeFragment = new HomeFragment();
-    CalendarFragment calendarFragment = new CalendarFragment();
-    GroupsFragment groupsFragment = new GroupsFragment();
-    NotificationsFragment notificationsFragment = new NotificationsFragment();
 
+    private void getLoggedInUser() {
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            loggedInUser = (User) extras.getSerializable("user");
+        }
+    }
+
+    //
+
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
             case R.id.home:
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user", loggedInUser);
+                homeFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, homeFragment).commit();
                 return true;
 
