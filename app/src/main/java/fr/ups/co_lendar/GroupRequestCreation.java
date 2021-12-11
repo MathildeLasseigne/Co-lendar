@@ -79,6 +79,5 @@ public class GroupRequestCreation extends Fragment {
                 //TODO switch to group view
             }
         });
-        //STUPID GIT
     }
 }
