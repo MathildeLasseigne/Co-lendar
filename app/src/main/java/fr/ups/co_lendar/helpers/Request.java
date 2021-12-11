@@ -1,6 +1,7 @@
 package fr.ups.co_lendar.helpers;
 
 import fr.ups.co_lendar.EventRequest;
+import fr.ups.co_lendar.fragments.NotificationFragment;
 
 public class Request {
 

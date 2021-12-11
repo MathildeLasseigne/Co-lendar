@@ -3,6 +3,7 @@ package fr.ups.co_lendar;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,8 +24,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -38,6 +46,8 @@ public class MainLoginActivity extends AppCompatActivity implements View.OnClick
     private ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore mFirestore;
+    private String TAG = "MainLoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +56,7 @@ public class MainLoginActivity extends AppCompatActivity implements View.OnClick
 
         initializeUI();
         mAuth = FirebaseAuth.getInstance();
+        mFirestore = FirebaseFirestore.getInstance();
     }
 
     private void initializeUI() {
@@ -84,8 +95,7 @@ public class MainLoginActivity extends AppCompatActivity implements View.OnClick
             progressBar.setVisibility(View.VISIBLE);
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    loginWithUser(new Intent(this, HomeActivity.class));
-                    startActivity(new Intent(this, MainActivity.class));
+                    loginWithUser(new Intent(this, MainActivity.class));
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.loginFailed), Toast.LENGTH_LONG);
                 }
@@ -119,6 +129,27 @@ public class MainLoginActivity extends AppCompatActivity implements View.OnClick
     private void loginWithUser(Intent i) {
 
         User user = new User();
+        mFirestore.collection("users").document(Objects.requireNonNull(mAuth.getCurrentUser())
+                .getUid()).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        user.setFirstName(document.getString("firstName"));
+                        user.setLastName(document.getString("lastName"));
+                        user.setEmail(document.getString("email"));
+                        user.setPassword(document.getString("password"));
+                        user.setUID(mAuth.getUid());
+                        user.setUsersEvents((List<String>) document.get("usersEvents"));
+                        i.putExtra("user", user);
+                        startActivity(i);
+                    } else {
+                        Log.d(TAG, "No such user");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            });
+
 
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
         Query userQuery = userRef.child(Objects.requireNonNull(mAuth.getUid()));
@@ -130,6 +161,7 @@ public class MainLoginActivity extends AppCompatActivity implements View.OnClick
                     user.setLastName(snapshot.child("lastName").getValue(String.class));
                     user.setEmail(snapshot.child("email").getValue(String.class));
                     user.setPassword(snapshot.child("password").getValue(String.class));
+                    user.setUID(mAuth.getUid());
                     i.putExtra("user", user);
                     startActivity(i);
                 }

@@ -2,8 +2,6 @@ package fr.ups.co_lendar;
 
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import fr.ups.co_lendar.helpers.Group;
-import fr.ups.co_lendar.helpers.NotificationFragment;
+import fr.ups.co_lendar.fragments.NotificationFragment;
 import fr.ups.co_lendar.helpers.Request;
 
 

@@ -9,7 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import fr.ups.co_lendar.helpers.Event;
-import fr.ups.co_lendar.helpers.NotificationFragment;
+import fr.ups.co_lendar.fragments.NotificationFragment;
 import fr.ups.co_lendar.helpers.Request;
 /*
 /**

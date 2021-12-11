@@ -29,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             User user = (User) extras.getSerializable("user");
-            String newGreeting = greeting.getText() + user.getFirstName();
+            String newGreeting = greeting.getText() + " " + user.getFirstName();
             greeting.setText(newGreeting);
         }
     }

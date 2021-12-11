@@ -14,6 +14,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.lang.ref.Reference;
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.ups.co_lendar.HomeActivity;
 import fr.ups.co_lendar.MainLoginActivity;
@@ -24,7 +26,16 @@ public class User implements Serializable {
     String lastName;
     String password;
     String email;
-    //image
+    String UID;
+    List<String> usersEvents;
+
+    public User(String firstName, String lastName, String email, String password, String UID) {
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.UID = UID;
+    }
 
     public User(String firstName, String lastName, String email, String password) {
         this.password = password;
@@ -91,18 +102,29 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
+
+    public List<String> getUsersEvents() {
+        return usersEvents;
+    }
+
+    public void setUsersEvents(List<String> usersEvents) {
+        this.usersEvents = usersEvents;
+    }
+
     public User getUser(String UID) {
         DatabaseReference user = FirebaseDatabase.getInstance().getReference().child("users").child(UID);
         String firstName = user.child("firstName").toString();
         String lastName = user.child("lastName").toString();
         String email = user.child("email").toString();
         String password = user.child("password").toString();
-        return new User(firstName, lastName, email, password);
-    }
-
-    public String getFirstNameFromUID(String UID) {
-        DatabaseReference user = FirebaseDatabase.getInstance().getReference().child("users").child(UID);
-        return user.child("firstName").toString();
+        return new User(firstName, lastName, email, password, UID);
     }
 
     public boolean equals(User other){
