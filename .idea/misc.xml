@@ -3,32 +3,28 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/FloPi/AndroidStudioProjects/Co-lendar/app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="..\:/Users/FloPi/AndroidStudioProjects/Co-lendar/app/src/main/res/layout/activity_main.xml" value="0.1796875" />
+        <entry key="..\:/Users/FloPi/AndroidStudioProjects/Co-lendar/app/src/main/res/layout/activity_main_login.xml" value="0.1" />
+        <entry key="..\:/Users/FloPi/AndroidStudioProjects/Co-lendar/app/src/main/res/layout/fragment_calendar.xml" value="0.1" />
+        <entry key="..\:/Users/FloPi/AndroidStudioProjects/Co-lendar/app/src/main/res/layout/fragment_event_request.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/FloPi/AndroidStudioProjects/Co-lendar/app/src/main/res/layout/fragment_event_request_creation.xml" value="0.22" />
+        <entry key="..\:/Users/FloPi/AndroidStudioProjects/Co-lendar/app/src/main/res/layout/fragment_follow_request.xml" value="0.1796875" />
+        <entry key="..\:/Users/FloPi/AndroidStudioProjects/Co-lendar/app/src/main/res/layout/fragment_follow_request_creation.xml" value="0.1796875" />
+        <entry key="..\:/Users/FloPi/AndroidStudioProjects/Co-lendar/app/src/main/res/layout/fragment_group_display.xml" value="0.1796875" />
+        <entry key="..\:/Users/FloPi/AndroidStudioProjects/Co-lendar/app/src/main/res/layout/fragment_group_request.xml" value="0.1796875" />
+        <entry key="..\:/Users/FloPi/AndroidStudioProjects/Co-lendar/app/src/main/res/layout/fragment_group_request_creation.xml" value="0.1796875" />
+        <entry key="..\:/Users/FloPi/AndroidStudioProjects/Co-lendar/app/src/main/res/layout/fragment_group_view.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/FloPi/AndroidStudioProjects/Co-lendar/app/src/main/res/layout/fragment_groups.xml" value="0.1" />
+        <entry key="..\:/Users/FloPi/AndroidStudioProjects/Co-lendar/app/src/main/res/layout/fragment_home.xml" value="0.22" />
+        <entry key="..\:/Users/FloPi/AndroidStudioProjects/Co-lendar/app/src/main/res/layout/fragment_notifications.xml" value="0.1" />
         <entry key="..\:/Users/jbies/StudioProjects/Colendar/app/src/main/res/layout/activity_home.xml" value="0.165625" />
         <entry key="..\:/Users/jbies/StudioProjects/Colendar/app/src/main/res/layout/activity_main_login.xml" value="0.1" />
         <entry key="..\:/Users/jbies/StudioProjects/Colendar/app/src/main/res/layout/activity_register.xml" value="0.22" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/drawable-anydpi/ic_back.xml" value="0.175" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/drawable-anydpi/ic_forward.xml" value="0.175" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/drawable-anydpi/ic_group.xml" value="0.2" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/drawable-anydpi/ic_notif.xml" value="0.175" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/layout/activity_home.xml" value="0.1" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/layout/activity_main.xml" value="0.16077898550724637" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/layout/activity_main_login.xml" value="0.1" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/layout/activity_register.xml" value="0.1" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/layout/fragment_calendar.xml" value="0.1480978260869565" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/layout/fragment_event_request.xml" value="0.22" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/layout/fragment_event_request_creation.xml" value="0.22" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/layout/fragment_follow_request.xml" value="0.22" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/layout/fragment_follow_request_creation.xml" value="0.16666666666666666" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/layout/fragment_group_request.xml" value="0.3333333333333333" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/layout/fragment_group_request_creation.xml" value="0.16666666666666666" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/layout/fragment_groups.xml" value="0.13134057971014493" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/layout/fragment_home.xml" value="0.14666666666666667" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/layout/fragment_notifications.xml" value="0.1" />
-        <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/layout/fragment_request_feedback.xml" value="0.16979166666666667" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

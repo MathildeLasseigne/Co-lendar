@@ -75,7 +75,7 @@ public class GroupRequest extends NotificationFragment {
             this.message.setText(request.getMessage());
             this.participantsLeftoverNumber.setText("");
             int i = 0;
-            if(group.getMembers().size() > i){
+            /*if(group.getMembers().size() > i){
                 //this.participant1 = group.getMembers().get(i); setImage
                 i++;
             }
@@ -101,7 +101,7 @@ public class GroupRequest extends NotificationFragment {
             }
             if(group.getMembers().size() > i){
                 this.participantsLeftoverNumber.setText("+"+ (group.getMembers().size() - i));
-            }
+            }*/
 
 
             //this.requestSender. //set profile picture of request.getSender()

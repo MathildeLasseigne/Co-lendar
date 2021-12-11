@@ -1,6 +1,13 @@
 package fr.ups.co_lendar.helpers;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Group {
 
@@ -18,9 +25,9 @@ public class Group {
 
     }
 
-    public ArrayList<User> getMembers(){
+    /*public ArrayList<User> getMembers(){
         return members;
-    }
+    }*/
 
     public String getName(){
         return this.name;
