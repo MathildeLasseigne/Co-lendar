@@ -26,6 +26,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.ups.co_lendar.fragments.groupDisplayFragment;
 import fr.ups.co_lendar.helpers.Group;
 import fr.ups.co_lendar.helpers.User;
 
