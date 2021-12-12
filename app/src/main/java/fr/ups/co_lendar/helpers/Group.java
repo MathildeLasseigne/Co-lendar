@@ -4,11 +4,14 @@ import android.util.Log;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import fr.ups.co_lendar.FirebaseCallback;
 
 public class Group {
 
-    private String GID;
+    private String groupID;
     private String name;
     private ArrayList<String> members = new ArrayList<>();
     private String adminUID;
@@ -19,8 +22,8 @@ public class Group {
         super();
     }
 
-    public Group(String GID, String name, ArrayList<String> members, String adminUID) {
-        this.GID = GID;
+    public Group(String groupID, String name, ArrayList<String> members, String adminUID) {
+        this.groupID = groupID;
         this.name = name;
         this.members = members;
         this.adminUID = adminUID;
@@ -32,12 +35,12 @@ public class Group {
         return members;
     }*/
 
-    public String getGID() {
-        return GID;
+    public String getGroupID() {
+        return groupID;
     }
 
-    public void setGID(String GID) {
-        this.GID = GID;
+    public void setGroupID(String groupID) {
+        this.groupID = groupID;
     }
 
     public String getName(){
@@ -74,7 +77,7 @@ public class Group {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Event event = document.toObject(Event.class);
-                            if (event.getGroupID().equals(this.GID)) {
+                            if (event.getGroupID().equals(this.groupID)) {
                                 events.add(event);
                             }
                         }
@@ -83,5 +86,25 @@ public class Group {
                         Log.d(TAG, "Error getting groups: ", task.getException());
                     }
                 });
+    }
+
+    public void insertIntoDatabase(FirebaseCallback callback) {
+
+        if (groupID != null && name != null && members != null && members.size() > 0
+                && adminUID != null) {
+            Map<String, Object> group = new HashMap<>();
+            group.put("groupID", groupID);
+            group.put("name", name);
+            group.put("members", members);
+            group.put("adminUID", adminUID);
+
+            FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+            mFirestore.collection("groups")
+                    .add(group).addOnSuccessListener(unused -> {
+                callback.onSuccess(null);
+            }).addOnFailureListener(e -> {
+                callback.onFailed(null);
+            });
+        }
     }
 }

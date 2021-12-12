@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -90,15 +91,17 @@ public class NotificationsFragment extends Fragment {
 
     public void updateView(){
         ArrayList<Request> r = loadRequests();
-        for(Request req : r){
-            boolean found = false;
-            for(Request req2 : requests){
-                if(req.equals(req2)){
-                    break;
+        if (r != null) {
+            for(Request req : r){
+                boolean found = false;
+                for(Request req2 : requests){
+                    if(req.equals(req2)){
+                        break;
+                    }
                 }
-            }
-            if(! found){
-                addRequest(req);
+                if(! found){
+                    addRequest(req);
+                }
             }
         }
     }

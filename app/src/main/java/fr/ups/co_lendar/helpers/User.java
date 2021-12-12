@@ -2,15 +2,19 @@ package fr.ups.co_lendar.helpers;
 
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -18,12 +22,15 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.io.Serializable;
 import java.lang.ref.Reference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import fr.ups.co_lendar.FirebaseCallback;
 import fr.ups.co_lendar.HomeActivity;
 import fr.ups.co_lendar.MainLoginActivity;
+import fr.ups.co_lendar.R;
 
 public class User implements Serializable {
 
@@ -166,5 +173,25 @@ public class User implements Serializable {
                         Log.d(TAG, "Error getting requests: ", task.getException());
                     }
                 });
+    }
+
+    public void registerUser(FirebaseCallback callback) {
+        if (UID != null && firstName != null && lastName != null && email != null & password != null) {
+            Map<String, Object> user = new HashMap<>();
+            user.put("UID", UID);
+            user.put("firstName", firstName);
+            user.put("lastName", lastName);
+            user.put("email", email);
+            user.put("password", password);
+
+            FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+            DocumentReference documentReference = mFirestore.collection("users")
+                    .document(UID);
+            documentReference.set(user).addOnSuccessListener(unused -> {
+                callback.onSuccess(null);
+            }).addOnFailureListener(e -> {
+                callback.onFailed(null);
+            });
+        }
     }
 }

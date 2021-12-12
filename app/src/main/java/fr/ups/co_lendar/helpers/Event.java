@@ -2,6 +2,7 @@ package fr.ups.co_lendar.helpers;
 
 import android.util.Log;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -10,7 +11,9 @@ import java.net.URL;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import fr.ups.co_lendar.FirebaseCallback;
@@ -142,5 +145,37 @@ public class Event implements Serializable {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public void insertIntoDatabase(FirebaseCallback callback) {
+
+        if (eventID != null && name != null && ownerID != null && location != null && date != null) {
+            Map<String, Object> event = new HashMap<>();
+            event.put("eventID", eventID);
+            event.put("name", name);
+            event.put("ownerID", ownerID);
+            event.put("location", location);
+            event.put("date", date);
+            if (participants != null && participants.size() > 0) {
+                event.put("participants", participants);
+            }
+            if (groupID != null) {
+                event.put("groupID", groupID);
+            }
+            if (url != null) {
+                event.put("url", url);
+            }
+            if (comments != null) {
+                event.put("comments", comments);
+            }
+
+            FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+            mFirestore.collection("events")
+                    .add(event).addOnSuccessListener(unused -> {
+                callback.onSuccess(null);
+            }).addOnFailureListener(e -> {
+                callback.onFailed(null);
+            });
+        }
     }
 }
