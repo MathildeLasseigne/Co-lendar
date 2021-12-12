@@ -281,7 +281,35 @@ public class Request {
     }
 
     public void acceptRequest(){
-        //Modify database
+        if(getObject() == Object.Event){
+            this.getEvent().getParticipants().add(getReceiverID());
+            this.getEvent().insertIntoDatabase(new FirebaseCallback() {
+                @Override
+                public void onStart() { }
+
+                @Override
+                public void onSuccess(java.lang.Object data) { }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+                    Log.v(TAG, "Error while inserting event with new participant in database");
+                }
+            });
+        } else if(getObject() == Object.Group){
+            this.getGroup().getMembers().add(this.getReceiverID());
+            this.getGroup().insertIntoDatabase(new FirebaseCallback() {
+                @Override
+                public void onStart() { }
+
+                @Override
+                public void onSuccess(java.lang.Object data) { }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+                    Log.v(TAG, "Error while inserting group with new member in database");
+                }
+            });
+        }
         removeFromDatabase();
         sendFeedback(true);
     }
