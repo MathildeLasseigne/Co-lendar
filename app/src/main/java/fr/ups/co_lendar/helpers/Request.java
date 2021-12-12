@@ -282,8 +282,7 @@ public class Request {
 
     public void acceptRequest(){
         if(getObject() == Object.Event){
-            this.getEvent().getParticipants().add(getReceiverID());
-            this.getEvent().insertIntoDatabase(new FirebaseCallback() {
+            this.getEvent().addUser(getReceiverID(), new FirebaseCallback() {
                 @Override
                 public void onStart() { }
 
@@ -296,8 +295,7 @@ public class Request {
                 }
             });
         } else if(getObject() == Object.Group){
-            this.getGroup().getMembers().add(this.getReceiverID());
-            this.getGroup().insertIntoDatabase(new FirebaseCallback() {
+            this.getGroup().addUser(getReceiverID(), new FirebaseCallback() {
                 @Override
                 public void onStart() { }
 
