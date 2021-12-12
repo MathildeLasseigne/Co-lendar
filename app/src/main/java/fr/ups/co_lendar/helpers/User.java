@@ -1,6 +1,8 @@
 package fr.ups.co_lendar.helpers;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -18,7 +20,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.ref.Reference;
 import java.util.ArrayList;
@@ -192,6 +198,24 @@ public class User implements Serializable {
             }).addOnFailureListener(e -> {
                 callback.onFailed(null);
             });
+        }
+    }
+
+    public void getUserImage(FirebaseCallback callback) {
+        StorageReference storageReference;
+        storageReference = FirebaseStorage.getInstance().getReference().child("profilePictures/" + this.UID);
+        try {
+            final File localFile = File.createTempFile("profilePicture", "jpeg");
+            storageReference.getFile(localFile)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                        callback.onSuccess(bitmap);
+                    })
+                    .addOnFailureListener(e -> {
+                        callback.onFailed(null);
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

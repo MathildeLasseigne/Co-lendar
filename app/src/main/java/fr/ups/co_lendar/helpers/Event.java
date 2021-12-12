@@ -1,5 +1,7 @@
 package fr.ups.co_lendar.helpers;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -9,7 +11,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.sql.Time;
@@ -210,5 +216,23 @@ public class Event implements Serializable {
                         Log.d(TAG, "Error getting event: ", task.getException());
                     }
                 });
+    }
+
+    public void getEventImage(FirebaseCallback callback) {
+        StorageReference storageReference;
+        storageReference = FirebaseStorage.getInstance().getReference().child("eventPictures/" + eventID);
+        try {
+            final File localFile = File.createTempFile("eventPicture", "jpeg");
+            storageReference.getFile(localFile)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                        callback.onSuccess(bitmap);
+                    })
+                    .addOnFailureListener(e -> {
+                        callback.onFailed(null);
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

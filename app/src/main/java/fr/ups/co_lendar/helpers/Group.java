@@ -1,5 +1,7 @@
 package fr.ups.co_lendar.helpers;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -10,6 +12,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -143,5 +150,23 @@ public class Group {
                         Log.d(TAG, "Error getting group: ", task.getException());
                     }
                 });
+    }
+
+    public void getGroupImage(FirebaseCallback callback) {
+        StorageReference storageReference;
+        storageReference = FirebaseStorage.getInstance().getReference().child("groupPictures/" + groupID);
+        try {
+            final File localFile = File.createTempFile("groupPicture", "jpeg");
+            storageReference.getFile(localFile)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                        callback.onSuccess(bitmap);
+                    })
+                    .addOnFailureListener(e -> {
+                        callback.onFailed(null);
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
