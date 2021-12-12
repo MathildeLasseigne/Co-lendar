@@ -54,7 +54,8 @@ public class FollowRequestCreation extends Fragment {
         this.refuse = (Button) view.findViewById(R.id.refuseButton);
     }
 
-    private void registerRequestIntoView(){
+    //TODO: refactor
+    /*private void registerRequestIntoView(){
 
         //this.receiverPicture set to receiver.getPicture()
 
@@ -73,5 +74,5 @@ public class FollowRequestCreation extends Fragment {
             }
         });
 
-    }
+    }*/
 }

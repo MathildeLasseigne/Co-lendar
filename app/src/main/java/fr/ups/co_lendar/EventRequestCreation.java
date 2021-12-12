@@ -57,7 +57,8 @@ public class EventRequestCreation extends Fragment {
         this.refuse = (Button) view.findViewById(R.id.refuseButton);
     }
 
-    private void registerRequestIntoView(){
+    //TODO: Refactor
+    /*private void registerRequestIntoView(){
 
         //this.eventPicture set to event.getPicture()
 
@@ -77,6 +78,6 @@ public class EventRequestCreation extends Fragment {
                 }
             });
 
-    }
+    }*/
 
 }

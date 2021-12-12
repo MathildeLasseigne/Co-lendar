@@ -97,7 +97,8 @@ https://www.androiddesignpatterns.com/2012/05/using-newinstance-to-instantiate.h
         this.info = (Button) view.findViewById(R.id.infoButton);
     }
 
-    private void registerRequestIntoView(){
+    //TODO: refactor
+    /*private void registerRequestIntoView(){
         Event event = this.request.getEvent();
         if(event != null){
             this.eventName.setText(event.getName());
@@ -136,5 +137,5 @@ https://www.androiddesignpatterns.com/2012/05/using-newinstance-to-instantiate.h
                 }
             });
         }
-    }
+    } */
 }

@@ -5,13 +5,14 @@ import java.net.URL;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Event implements Serializable {
 
     private int id;
     private String name;
     private String ownerID;
-    private ArrayList<String> participants;
+    private List<String> participants;
     private String location;
     private Date date;
     private Time time;
@@ -19,7 +20,7 @@ public class Event implements Serializable {
     private URL link;
     private String comments;
 
-    public Event(int id, String name, String ownerID, ArrayList<String> participants, String location, Date date, Time time, String groupID, URL link, String comments) {
+    public Event(int id, String name, String ownerID, List<String> participants, String location, Date date, Time time, String groupID, URL link, String comments) {
         this.id = id;
         this.name = name;
         this.ownerID = ownerID;
@@ -60,11 +61,11 @@ public class Event implements Serializable {
         this.ownerID = ownerID;
     }
 
-    public ArrayList<String> getParticipants() {
+    public List<String> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(ArrayList<String> participants) {
+    public void setParticipants(List<String> participants) {
         this.participants = participants;
     }
 

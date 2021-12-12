@@ -11,12 +11,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.io.Serializable;
 import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import fr.ups.co_lendar.FirebaseCallback;
 import fr.ups.co_lendar.HomeActivity;
 import fr.ups.co_lendar.MainLoginActivity;
 
@@ -28,6 +33,7 @@ public class User implements Serializable {
     String email;
     String UID;
     List<String> usersEvents;
+    String TAG = "USER";
 
     public User(String firstName, String lastName, String email, String password, String UID) {
         this.password = password;
@@ -44,30 +50,32 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public User() {
-        super();
-    }
-    
-    public User (String UID, MainLoginActivity mla) {
-        DatabaseReference user = FirebaseDatabase.getInstance().getReference("users");
+    public User(FirebaseCallback callback, String UUID) {
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
 
-        Query userQuery = user.child(UID);
-        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    setFirstName(snapshot.child("firstName").getValue(String.class));
-                    setLastName(snapshot.child("lastName").getValue(String.class));
-                    setEmail(snapshot.child("email").getValue(String.class));
-                    setPassword(snapshot.child("password").getValue(String.class));
+        mFirestore.collection("users").document(Objects.requireNonNull(UUID))
+                .get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    this.setFirstName(document.getString("firstName"));
+                    this.setLastName(document.getString("lastName"));
+                    this.setEmail(document.getString("email"));
+                    this.setPassword(document.getString("password"));
+                    this.setUID(UUID);
+                    this.setUsersEvents((List<String>) document.get("usersEvents"));
+                    callback.onSuccess(null);
+                } else {
+                    Log.d(TAG, "No such user");
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println(error.getMessage());
+            } else {
+                Log.d(TAG, "get failed with ", task.getException());
             }
         });
+    }
+
+    public User() {
+        super();
     }
 
     public String getPassword() {
@@ -118,16 +126,45 @@ public class User implements Serializable {
         this.usersEvents = usersEvents;
     }
 
-    public User getUser(String UID) {
-        DatabaseReference user = FirebaseDatabase.getInstance().getReference().child("users").child(UID);
-        String firstName = user.child("firstName").toString();
-        String lastName = user.child("lastName").toString();
-        String email = user.child("email").toString();
-        String password = user.child("password").toString();
-        return new User(firstName, lastName, email, password, UID);
+    public void getUserGroups(FirebaseCallback callback) {
+
+        ArrayList<Group> groups = new ArrayList<>();
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+        mFirestore.collection("groups")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Group group = document.toObject(Group.class);
+                            if (group.getMembers().contains(this.UID)) {
+                                groups.add(group);
+                            }
+                        }
+                        callback.onSuccess(groups);
+                    } else {
+                        Log.d(TAG, "Error getting groups: ", task.getException());
+                    }
+                });
     }
 
-    public boolean equals(User other){
-        return false;
+    public void getUserRequests(FirebaseCallback callback) {
+
+        ArrayList<Request> requests = new ArrayList<>();
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+        mFirestore.collection("requests")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Request request = document.toObject(Request.class);
+                            if (request.getReceiverID().equals(this.UID)) {
+                                requests.add(request);
+                            }
+                        }
+                        callback.onSuccess(requests);
+                    } else {
+                        Log.d(TAG, "Error getting requests: ", task.getException());
+                    }
+                });
     }
 }

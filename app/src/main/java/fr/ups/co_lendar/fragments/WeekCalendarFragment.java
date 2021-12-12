@@ -3,21 +3,19 @@ package fr.ups.co_lendar.fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import fr.ups.co_lendar.EventAdapter;
+import fr.ups.co_lendar.GroupDisplayAdapter;
 import fr.ups.co_lendar.R;
 import fr.ups.co_lendar.helpers.Event;
 
@@ -330,6 +330,7 @@ public class WeekCalendarFragment extends Fragment implements View.OnClickListen
                                 events.add(event);
                             }
                         }
+                        showEvents();
                     } else {
                         Log.d(TAG, "Error getting events: ", task.getException());
                     }
@@ -337,11 +338,21 @@ public class WeekCalendarFragment extends Fragment implements View.OnClickListen
     }
 
     private void showEvents() {
-        ArrayList<Event> daysEvents = new ArrayList<>();
+        ArrayList<EventFragment> eventFragments = new ArrayList<>();
+        ArrayList<Event> dayEvents = new ArrayList<>();
         for (Event event : events) {
             if (event.getDate().getDate() == Integer.parseInt(selectedDayNumber.getText().toString())) {
-                daysEvents.add(event);
+                eventFragments.add(new EventFragment(event));
+                dayEvents.add(event);
             }
         }
+        EventAdapter adapter = new EventAdapter(getContext(), eventFragments);
+
+        // DataBind ListView with items from ArrayAdapter
+        ListView eventList = (ListView) mView.findViewById(R.id.eventListView);
+        eventList.setAdapter(adapter);
+        eventList.setOnItemClickListener((AdapterView.OnItemClickListener) (parent, view, position, id) -> {
+            Log.d("event", "position is " + position);
+        });
     }
 }

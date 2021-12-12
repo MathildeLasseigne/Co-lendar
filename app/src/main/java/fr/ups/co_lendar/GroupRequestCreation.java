@@ -60,7 +60,8 @@ public class GroupRequestCreation extends Fragment {
         this.refuse = (Button) view.findViewById(R.id.refuseButton);
     }
 
-    private void registerRequestIntoView(){
+    //TODO: refactor
+    /*private void registerRequestIntoView(){
 
         //this.eventPicture set to event.getPicture()
 
@@ -79,5 +80,5 @@ public class GroupRequestCreation extends Fragment {
                 //TODO switch to group view
             }
         });
-    }
+    }*/
 }

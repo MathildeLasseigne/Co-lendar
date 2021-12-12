@@ -32,5 +32,4 @@ public class HomeActivity extends AppCompatActivity {
             String newGreeting = greeting.getText() + " " + user.getFirstName();
             greeting.setText(newGreeting);
         }
-    }
-}
+    }}

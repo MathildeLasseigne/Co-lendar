@@ -14,6 +14,7 @@
         <entry key="..\:/Users/jbies/StudioProjects/Colendar/app/src/main/res/layout/activity_register.xml" value="0.22" />
         <entry key="..\:/Users/jbies/StudioProjects/Colendar/app/src/main/res/layout/fragment_calendar.xml" value="0.1" />
         <entry key="..\:/Users/jbies/StudioProjects/Colendar/app/src/main/res/layout/fragment_calendar_week.xml" value="0.22" />
+        <entry key="..\:/Users/jbies/StudioProjects/Colendar/app/src/main/res/layout/fragment_event.xml" value="0.22" />
         <entry key="..\:/Users/jbies/StudioProjects/Colendar/app/src/main/res/layout/fragment_event_list.xml" value="0.1796875" />
         <entry key="..\:/Users/jbies/StudioProjects/Colendar/app/src/main/res/layout/fragment_event_request.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/jbies/StudioProjects/Colendar/app/src/main/res/layout/fragment_event_request_creation.xml" value="0.1" />
@@ -27,6 +28,7 @@
         <entry key="..\:/Users/jbies/StudioProjects/Colendar/app/src/main/res/layout/fragment_home.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/jbies/StudioProjects/Colendar/app/src/main/res/layout/fragment_notifications.xml" value="0.1" />
         <entry key="..\:/Users/jbies/StudioProjects/Colendar/app/src/main/res/layout/fragment_request_feedback.xml" value="0.1" />
+        <entry key="..\:/Users/jbies/StudioProjects/Colendar/app/src/main/res/layout/fragment_request_list.xml" value="0.1796875" />
         <entry key="..\:/Users/jbies/StudioProjects/Colendar/app/src/main/res/layout/fragment_week_calendar.xml" value="0.33122629582806573" />
         <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/drawable-anydpi/ic_back.xml" value="0.175" />
         <entry key="..\:/Users/mathilde/Documents/Cours/M1HCI/Groupware and Collaborative Interaction/Project/Co-lendar/app/src/main/res/drawable-anydpi/ic_forward.xml" value="0.175" />

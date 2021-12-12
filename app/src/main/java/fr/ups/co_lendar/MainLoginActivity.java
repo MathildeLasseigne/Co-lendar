@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -45,6 +46,7 @@ public class MainLoginActivity extends AppCompatActivity implements View.OnClick
     private Button loginButton;
     private ProgressBar progressBar;
 
+    private User loggedinUser;
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
     private String TAG = "MainLoginActivity";
@@ -95,7 +97,22 @@ public class MainLoginActivity extends AppCompatActivity implements View.OnClick
             progressBar.setVisibility(View.VISIBLE);
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    loginWithUser(new Intent(this, MainActivity.class));
+                    getUserByUID(new FirebaseCallback() {
+                        @Override
+                        public void onStart() { }
+
+                        @Override
+                        public void onSuccess(Object data) {
+                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                            i.putExtra("user", loggedinUser);
+                            startActivity(i);
+                        }
+
+                        @Override
+                        public void onFailed(DatabaseError databaseError) {
+                            Log.v(TAG, "Error while loading the user");
+                        }
+                    });
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.loginFailed), Toast.LENGTH_LONG);
                 }
@@ -125,53 +142,7 @@ public class MainLoginActivity extends AppCompatActivity implements View.OnClick
         return true;
     }
 
-    //TODO: figure out a way that awaits the result from the User class and place this method in the user class
-    private void loginWithUser(Intent i) {
-
-        User user = new User();
-        mFirestore.collection("users").document(Objects.requireNonNull(mAuth.getCurrentUser())
-                .getUid()).get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        user.setFirstName(document.getString("firstName"));
-                        user.setLastName(document.getString("lastName"));
-                        user.setEmail(document.getString("email"));
-                        user.setPassword(document.getString("password"));
-                        user.setUID(mAuth.getUid());
-                        user.setUsersEvents((List<String>) document.get("usersEvents"));
-                        i.putExtra("user", user);
-                        startActivity(i);
-                    } else {
-                        Log.d(TAG, "No such user");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            });
-
-
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
-        Query userQuery = userRef.child(Objects.requireNonNull(mAuth.getUid()));
-        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    user.setFirstName(snapshot.child("firstName").getValue(String.class));
-                    user.setLastName(snapshot.child("lastName").getValue(String.class));
-                    user.setEmail(snapshot.child("email").getValue(String.class));
-                    user.setPassword(snapshot.child("password").getValue(String.class));
-                    user.setUID(mAuth.getUid());
-                    i.putExtra("user", user);
-                    startActivity(i);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println(error.getMessage());
-            }
-        });
-
+    private void getUserByUID(FirebaseCallback callback) {
+        loggedinUser = new User(callback, mAuth.getUid());
     }
 }

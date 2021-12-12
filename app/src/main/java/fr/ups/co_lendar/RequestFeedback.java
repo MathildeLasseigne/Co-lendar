@@ -49,6 +49,8 @@ public class RequestFeedback extends NotificationFragment {
         this.okButton = (Button) view.findViewById(R.id.okButton);
     }
 
+    //TODO: Refactor
+    /*
     private void registerRequestIntoView(){
 
         //this.topicPicture set
@@ -70,5 +72,5 @@ public class RequestFeedback extends NotificationFragment {
         });
 
 
-    }
+    } */
 }

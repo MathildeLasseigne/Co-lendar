@@ -68,7 +68,7 @@ public class GroupRequest extends NotificationFragment {
         this.info = (Button) view.findViewById(R.id.infoButton);
     }
 
-    private void registerRequestIntoView(){
+    /*private void registerRequestIntoView(){
        Group group = this.request.getGroup();
         if(group != null){
             this.groupName.setText(group.getName());
@@ -101,7 +101,7 @@ public class GroupRequest extends NotificationFragment {
             }
             if(group.getMembers().size() > i){
                 this.participantsLeftoverNumber.setText("+"+ (group.getMembers().size() - i));
-            }*/
+            }
 
 
             //this.requestSender. //set profile picture of request.getSender()
@@ -135,5 +135,5 @@ public class GroupRequest extends NotificationFragment {
                 }
             });
         }
-    }
+    }*/
 }
