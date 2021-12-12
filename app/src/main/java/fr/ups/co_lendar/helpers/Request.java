@@ -56,6 +56,7 @@ public class Request {
 
     /**
      * Only called at creation
+     * Register the request in the database automatically
      * @param objectID
      * @param senderID
      * @param receiverID
@@ -67,6 +68,7 @@ public class Request {
 
     /**
      * Only called at creation
+     * Register the request in the database automatically
      * @param objectID
      * @param senderID
      * @param receiverID
@@ -260,6 +262,15 @@ public class Request {
         this.requestID = requestID;
     }
 
+    public String getObjectId(){
+        if(getObject() == Object.Event){
+            return getEventID();
+        } else if(getObject() == Object.Group){
+            return getGroupID();
+        }
+        return "";
+    }
+
     public String getTopicName(){
         if(getObject() == Object.Event){
             return getEvent().getName();
@@ -270,12 +281,13 @@ public class Request {
     }
 
     public void acceptRequest(){
-        //Modify database & delete request from database
+        //Modify database
+        removeFromDatabase();
         sendFeedback(true);
     }
 
     public void refuseRequest(){
-        //Delete quest from database
+        removeFromDatabase();
         sendFeedback(false);
     }
 
@@ -346,6 +358,6 @@ public class Request {
      * @param accepted has the request been accepted
      */
     private void sendFeedback(boolean accepted){
-
+        Request feedback = new Request(getObject(), getObjectId(), getReceiverID(), getSenderID(), "", true, accepted);
     }
 }
