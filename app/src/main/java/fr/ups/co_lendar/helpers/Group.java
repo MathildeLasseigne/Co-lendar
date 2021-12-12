@@ -26,6 +26,8 @@ public class Group {
         this.adminUID = adminUID;
     }
 
+    public Group(FirebaseCallback callback, String groupID) {}
+
     /*public ArrayList<User> getMembers(){
         return members;
     }*/

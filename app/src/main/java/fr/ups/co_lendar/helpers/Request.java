@@ -1,16 +1,34 @@
 package fr.ups.co_lendar.helpers;
 
 import fr.ups.co_lendar.EventRequest;
+import fr.ups.co_lendar.FirebaseCallback;
+import fr.ups.co_lendar.FollowRequest;
+import fr.ups.co_lendar.GroupRequest;
+import fr.ups.co_lendar.MainActivity;
+import fr.ups.co_lendar.RequestFeedback;
 import fr.ups.co_lendar.fragments.NotificationFragment;
+
+import android.content.Intent;
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Request {
 
     public enum Object{Event, Group, Follow}
 
+    private Object object;
+
     private User sender;
     private User receiver;
 
-    private String message;
+    private String message = "";
 
     private Event event;
     private Group group;
@@ -20,52 +38,154 @@ public class Request {
     private boolean isAccepted;
 
 
+    private String senderID = "";
+    private String receiverID = "";
+
+    private String eventID = "";
+    private String groupID = "";
+    private String requestID = "";
+
+    private String TAG = "Request";
+
+    /**Have the objects been mapped to their id ?*/
+    private boolean objectsMapped = false;
+
     public Request(/*DataBase*/){
         //Choose the type;
     }
 
     /**
      * Only called at creation
-     * @param group
-     * @param sender
-     * @param receiver
+     * @param objectID
+     * @param senderID
+     * @param receiverID
      * @param message
      */
-    public Request(Group group, User sender, User receiver, String message){
-        this.group = group;
-        this.sender = sender;
-        this.receiver = receiver;
-        this.message = message;
-        registerInDataBase();
+    public Request(Object object, String objectID, String senderID, String receiverID, String message){
+        this(object, objectID, senderID, receiverID, message, false, false);
     }
 
     /**
      * Only called at creation
-     * @param event
-     * @param sender
-     * @param receiver
+     * @param objectID
+     * @param senderID
+     * @param receiverID
+     * @param message
+     * @param isFeedback if is a feedback
+     * @param accepted if is a feedback and is accepted
      */
-    public Request(Event event, User sender, User receiver){
-        this.event = event;
-        this.sender = sender;
-        this.receiver = receiver;
-        registerInDataBase();
+    public Request(Object object, String objectID, String senderID, String receiverID, String message, boolean isFeedback, boolean accepted){
+        if(object == Object.Group){
+            this.groupID = objectID;
+            this.senderID = senderID;
+            this.receiverID = receiverID;
+            this.message = message;
+        } else if(object == Object.Event){
+            this.eventID = objectID;
+            this.senderID = senderID;
+            this.receiverID = receiverID;
+        } else if(object == Object.Follow){
+            this.senderID = senderID;
+            this.receiverID = receiverID;
+            this.message = message;
+        }
+        this.isFeedback = isFeedback;
+        this.isAccepted = accepted;
+
+        registerInDatabase();
     }
 
-    public Request(User sender, User receiver, String message){ //Follow request ?
-        this.sender = sender;
-        this.receiver = receiver;
-        this.message = message;
-        registerInDataBase();
+
+    public void mapIdToObject(){
+        if(! this.senderID.isEmpty()){
+            FirebaseCallback fb = new FirebaseCallback() {
+                @Override
+                public void onStart() { }
+
+                @Override
+                public void onSuccess(java.lang.Object data) {
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+                    Log.v(TAG, "Error while loading the sender user");
+                }
+            };
+            this.sender = new User(fb, this.senderID);
+        }
+        if (! this.receiverID.isEmpty()){
+            FirebaseCallback fb = new FirebaseCallback() {
+                @Override
+                public void onStart() { }
+
+                @Override
+                public void onSuccess(java.lang.Object data) {
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+                    Log.v(TAG, "Error while loading the receiver user");
+                }
+            };
+            this.receiver = new User(fb, this.receiverID);
+        }
+        if (! this.eventID.isEmpty()){
+            FirebaseCallback fb = new FirebaseCallback() {
+                @Override
+                public void onStart() { }
+
+                @Override
+                public void onSuccess(java.lang.Object data) {
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+                    Log.v(TAG, "Error while loading the event");
+                }
+            };
+            this.event = new Event(fb, this.eventID);
+            this.object = Object.Event;
+        } else if (! this.groupID.isEmpty()){
+            FirebaseCallback fb = new FirebaseCallback() {
+                @Override
+                public void onStart() { }
+
+                @Override
+                public void onSuccess(java.lang.Object data) {
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+                    Log.v(TAG, "Error while loading the group");
+                }
+            };
+            this.group = new Group(fb, this.groupID);
+            this.object = Object.Group;
+        } else {
+            this.object = Object.Follow;
+        }
+
+        this.objectsMapped = true;
     }
 
-    //Follow ?
+    public Object getObject() {
+        if(! objectsMapped){
+            mapIdToObject();
+        }
+        return this.object;
+    }
 
     public User getSender(){
+        if(! objectsMapped){
+            mapIdToObject();
+        }
         return this.sender;
     }
 
     public User getReceiver() {
+        if(! objectsMapped){
+            mapIdToObject();
+        }
         return receiver;
     }
 
@@ -74,10 +194,16 @@ public class Request {
     }
 
     public Event getEvent() {
+        if(! objectsMapped){
+            mapIdToObject();
+        }
         return event;
     }
 
     public Group getGroup() {
+        if(! objectsMapped){
+            mapIdToObject();
+        }
         return group;
     }
 
@@ -89,13 +215,58 @@ public class Request {
         return isAccepted;
     }
 
+
+    public String getSenderID(){
+        return this.senderID;
+    }
+
+    public String getReceiverID() {
+        return receiverID;
+    }
+
+    public String getEventID() {
+        return eventID;
+    }
+
+    public String getGroupID() {
+        return groupID;
+    }
+
+    public void setSenderID(String senderID) {
+        this.senderID = senderID;
+    }
+
+    public void setReceiverID(String receiverID) {
+        this.receiverID = receiverID;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setEventID(String eventID) {
+        this.eventID = eventID;
+    }
+
+    public void setGroupID(String groupID) {
+        this.groupID = groupID;
+    }
+
+    public String getRequestID() {
+        return requestID;
+    }
+
+    public void setRequestID(String requestID) {
+        this.requestID = requestID;
+    }
+
     public String getTopicName(){
-        if(getEvent() != null){
+        if(getObject() == Object.Event){
             return getEvent().getName();
-        } else if(getGroup() != null){
+        } else if(getObject() == Object.Group){
             return getGroup().getName();
         }
-        return ""; //Follow ?
+        return "to follow them";
     }
 
     public void acceptRequest(){
@@ -114,23 +285,60 @@ public class Request {
      * @return
      */
     public NotificationFragment createFragment(){
-        if(this.event != null){
-            return new EventRequest();
-        } else if(this.group != null){
-            //Display group request
-            return null;
+        NotificationFragment fg;
+        if(isFeedback()){
+            fg = new RequestFeedback();
         } else {
-            //Display feedback
-            return null;
+            if(getObject() == Object.Event){
+                fg = new EventRequest();
+
+                return new EventRequest();
+            } else if(getObject() == Object.Group){
+                fg = new GroupRequest();
+            } else {
+                fg = new FollowRequest();
+            }
         }
+        fg.setParameters(this);
+        return fg;
     }
 
-    private void registerInDataBase(){
+    private void registerInDatabase(){
 
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+
+        Map<String, java.lang.Object> request = new HashMap<>();
+        if (this.message != null) {
+            request.put("message", this.message);
+        }
+        if (this.groupID != null) {
+            request.put("groupID", this.groupID);
+        }
+        if (this.eventID != null) {
+            request.put("eventID", this.eventID);
+        }
+        request.put("senderID", this.senderID);
+        request.put("receiverID", this.receiverID);
+
+        request.put("isFeedback", this.isFeedback);
+        request.put("isAccepted", this.isAccepted);
+
+        mFirestore.collection("requests")
+                .add(request)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                })
+                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
     }
 
     public void removeFromDatabase(){
-
+        if (requestID != null) {
+            FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+            mFirestore.collection("requests").document(this.requestID)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"))
+                    .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
+        }
     }
 
     /**
