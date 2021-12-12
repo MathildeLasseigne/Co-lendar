@@ -98,15 +98,6 @@
             android:text="X"
             android:textAlignment="center" />
 
-        <Button
-            android:id="@+id/infoButton"
-            android:layout_width="7dp"
-            android:layout_height="24dp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="@color/lightBlue"
-            android:text="..."
-            android:textAlignment="center" />
     </LinearLayout>
 
 </LinearLayout>

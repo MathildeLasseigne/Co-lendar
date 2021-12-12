@@ -96,12 +96,12 @@ https://www.androiddesignpatterns.com/2012/05/using-newinstance-to-instantiate.h
         this.info = (Button) view.findViewById(R.id.infoButton);
     }
 
-    //TODO: refactor
+
     public void registerRequestIntoView(){
-        /*Event event = this.request.getEvent();
+        Event event = this.request.getEvent();
         if(event != null){
             this.eventName.setText(event.getName());
-            String date = event.getDate() + " at "+event.getTime();
+            String date = event.getDate().toString();
             this.schedule.setText(date);
             this.location.setText(event.getLocation());
 
@@ -135,7 +135,7 @@ https://www.androiddesignpatterns.com/2012/05/using-newinstance-to-instantiate.h
                     //TODO switch to event view
                 }
             });
-        }*/
+        }
     }
 
     @Override

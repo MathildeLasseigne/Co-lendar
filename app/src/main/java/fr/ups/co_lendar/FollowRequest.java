@@ -17,22 +17,13 @@ import fr.ups.co_lendar.helpers.Request;
 
 public class FollowRequest extends NotificationFragment {
 
-    private TextView groupName;
+    private TextView senderName;
     private TextView message;
-    private TextView participantsLeftoverNumber;
 
-
-    private ImageView participant1;
-    private ImageView participant2;
-    private ImageView participant3;
-    private ImageView participant4;
-    private ImageView participant5;
-    private ImageView participant6;
 
     private ImageButton requestSender;
     private Button accept; //Change to ImageButton
     private Button refuse; //Change to ImageButton
-    private Button info;
 
     public FollowRequest() {}
 
@@ -46,91 +37,45 @@ public class FollowRequest extends NotificationFragment {
     }
 
     public void initialiseVar(View view){
-        this.groupName = (TextView)view.findViewById(R.id.groupName);
-        this.message = (TextView)view.findViewById(R.id.message);
-        this.participantsLeftoverNumber = (TextView)view.findViewById(R.id.participantsLeftoverNumber);
+        this.senderName = (TextView)view.findViewById(R.id.senderName);
+        this.message = (TextView)view.findViewById(R.id.messageFollow);
 
         this.requestSender = (ImageButton) view.findViewById(R.id.profileButton);
 
-        this.participant1 = (ImageView) view.findViewById(R.id.participant1);
-        this.participant2 = (ImageView) view.findViewById(R.id.participant2);
-        this.participant3 = (ImageView) view.findViewById(R.id.participant3);
-        this.participant4 = (ImageView) view.findViewById(R.id.participant4);
-        this.participant5 = (ImageView) view.findViewById(R.id.participant5);
-        this.participant6 = (ImageView) view.findViewById(R.id.participant6);
-
         this.accept = (Button) view.findViewById(R.id.acceptButton);
         this.refuse = (Button) view.findViewById(R.id.refuseButton);
-        this.info = (Button) view.findViewById(R.id.infoButton);
     }
 
     public void registerRequestIntoView(){
-    /*    Group group = this.request.getGroupID();
-        if(group != null){
-            this.groupName.setText(group.getName());
-            this.message.setText(request.getMessage());
-            this.participantsLeftoverNumber.setText("");
-            int i = 0;
-            /*if(group.getMembers().size() > i){
-                //this.participant1 = group.getMembers().get(i); setImage
-                i++;
-            }
-            if(group.getMembers().size() > i){
-                //this.participant2 = group.getMembers().get(i); setImage
-                i++;
-            }
-            if(group.getMembers().size() > i){
-                //this.participant3 = group.getMembers().get(i); setImage
-                i++;
-            }
-            if(group.getMembers().size() > i){
-                //this.participant4 = group.getMembers().get(i); setImage
-                i++;
-            }
-            if(group.getMembers().size() > i){
-                //this.participant5 = group.getMembers().get(i); setImage
-                i++;
-            }
-            if(group.getMembers().size() > i){
-                //this.participant6 = group.getMembers().get(i); setImage
-                i++;
-            }
-            if(group.getMembers().size() > i){
-                this.participantsLeftoverNumber.setText("+"+ (group.getMembers().size() - i));
-            }
 
 
-            //this.requestSender. //set profile picture of request.getSender()
-            this.requestSender.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO switch to user (the sender) view
-                }
-            });
+        this.senderName.setText(request.getSender().getFirstName());
+        this.message.setText(request.getMessage());
 
-            accept.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    request.acceptRequest();
-                    removeFromView();
-                }
-            });
+        //this.requestSender. //set profile picture of request.getSender()
+        this.requestSender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO switch to user (the sender) view
+            }
+        });
 
-            refuse.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    request.refuseRequest();
-                    removeFromView();
-                }
-            });
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                request.acceptRequest();
+                removeFromView();
+            }
+        });
 
-            info.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO switch to event view
-                }
-            });
-        }*/
+        refuse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                request.refuseRequest();
+                removeFromView();
+            }
+        });
+
     }
 
     @Override

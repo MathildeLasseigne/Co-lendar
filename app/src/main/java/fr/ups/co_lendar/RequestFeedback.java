@@ -54,12 +54,10 @@ public class RequestFeedback extends NotificationFragment {
     }
 
     public void registerRequestIntoView(){
-
- /*//TODO: Refactor
              //this.topicPicture set
 
         this.senderName.setText(request.getSender().getFirstName());
-        if(true){ //Accepted
+        if(request.isAccepted()){
             String str = "accepted your request !";
             this.acceptanceMessage.setText(str);
         } else {
@@ -74,6 +72,6 @@ public class RequestFeedback extends NotificationFragment {
             removeFromView();
         });
 
-*/
+
     }
 }
