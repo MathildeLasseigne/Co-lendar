@@ -2,6 +2,10 @@ package fr.ups.co_lendar.helpers;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -177,5 +181,34 @@ public class Event implements Serializable {
                 callback.onFailed(null);
             });
         }
+    }
+
+    public void addUser(String userID, FirebaseCallback callback) {
+
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+        mFirestore.collection("events").document(this.eventID)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        Event event = document.toObject(Event.class);
+                        List<String> participants = event.getParticipants();
+                        participants.add(userID);
+                        mFirestore.collection("events")
+                                .document(this.eventID)
+                                .update("participants", participants)
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        Log.d(TAG, "Participant added correctly");
+                                        callback.onSuccess(null);
+                                    } else {
+                                        Log.d(TAG, "Participant could not be added");
+                                        callback.onFailed(null);
+                                    }
+                                });
+                    } else {
+                        Log.d(TAG, "Error getting event: ", task.getException());
+                    }
+                });
     }
 }

@@ -1,10 +1,18 @@
 package fr.ups.co_lendar.helpers;
 
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fr.ups.co_lendar.FirebaseCallback;
@@ -106,5 +114,34 @@ public class Group {
                 callback.onFailed(null);
             });
         }
+    }
+
+    public void addUser(String userID, FirebaseCallback callback) {
+
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+        mFirestore.collection("groups").document(this.groupID)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        Group group = document.toObject(Group.class);
+                        List<String> members = group.getMembers();
+                        members.add(userID);
+                        mFirestore.collection("groups")
+                                .document(this.groupID)
+                                .update("members", members)
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        Log.d(TAG, "Member added correctly");
+                                        callback.onSuccess(null);
+                                    } else {
+                                        Log.d(TAG, "Member could not be added");
+                                        callback.onFailed(null);
+                                    }
+                                });
+                    } else {
+                        Log.d(TAG, "Error getting group: ", task.getException());
+                    }
+                });
     }
 }
