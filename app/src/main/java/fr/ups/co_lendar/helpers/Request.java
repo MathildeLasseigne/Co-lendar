@@ -1,137 +1,102 @@
 package fr.ups.co_lendar.helpers;
 
-import android.util.Log;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import fr.ups.co_lendar.EventRequest;
 import fr.ups.co_lendar.fragments.NotificationFragment;
 
 public class Request {
 
-    public enum Type{Feedback, Acceptation}
-
     public enum Object{Event, Group, Follow}
 
-    private String senderID;
-    private String receiverID;
-    private String message;
-    private String eventID;
-    private String groupID;
-    private String requestID;
-    private Type type;
-    private String TAG = "Request";
+    private User sender;
+    private User receiver;
 
+    private String message;
+
+    private Event event;
+    private Group group;
+
+    private boolean isFeedback;
+
+    private boolean isAccepted;
+
+
+    public Request(/*DataBase*/){
+        //Choose the type;
+    }
 
     /**
      * Only called at creation
-     * @param groupID
-     * @param senderID
-     * @param receiverID
+     * @param group
+     * @param sender
+     * @param receiver
      * @param message
      */
-    public Request(String groupID, String senderID, String receiverID, String message){
-        this.groupID = groupID;
-        this.senderID = senderID;
-        this.receiverID = receiverID;
+    public Request(Group group, User sender, User receiver, String message){
+        this.group = group;
+        this.sender = sender;
+        this.receiver = receiver;
         this.message = message;
-        registerInDatabase();
+        registerInDataBase();
     }
 
-    /*
+    /**
      * Only called at creation
-     * @param eventID
-     * @param senderID
-     * @param receiverID
+     * @param event
+     * @param sender
+     * @param receiver
      */
-    //TODO: Refactor those 2 constructors to be different
-    /*
-    public Request(String eventID, String senderID, String receiverID){
-        this.eventID = eventID;
-        this.senderID = senderID;
-        this.receiverID = receiverID;
-        registerInDatabase();
+    public Request(Event event, User sender, User receiver){
+        this.event = event;
+        this.sender = sender;
+        this.receiver = receiver;
+        registerInDataBase();
     }
 
-    public Request(String senderID, String receiverID, String message){ //Follow request ?
-        this.senderID = senderID;
-        this.receiverID = receiverID;
+    public Request(User sender, User receiver, String message){ //Follow request ?
+        this.sender = sender;
+        this.receiver = receiver;
         this.message = message;
-        registerInDatabase();
-    } */
-
-    public String getSenderID(){
-        return this.senderID;
+        registerInDataBase();
     }
 
-    public String getReceiverID() {
-        return receiverID;
+    //Follow ?
+
+    public User getSender(){
+        return this.sender;
+    }
+
+    public User getReceiver() {
+        return receiver;
     }
 
     public String getMessage(){
         return this.getMessage();
     }
 
-    public String getEventID() {
-        return eventID;
+    public Event getEvent() {
+        return event;
     }
 
-    public String getGroupID() {
-        return groupID;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setSenderID(String senderID) {
-        this.senderID = senderID;
+    public boolean isFeedback() {
+        return isFeedback;
     }
 
-    public void setReceiverID(String receiverID) {
-        this.receiverID = receiverID;
+    public boolean isAccepted() {
+        return isAccepted;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setEventID(String eventID) {
-        this.eventID = eventID;
-    }
-
-    public void setGroupID(String groupID) {
-        this.groupID = groupID;
-    }
-
-    public String getRequestID() {
-        return requestID;
-    }
-
-    public void setRequestID(String requestID) {
-        this.requestID = requestID;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
-//TODO: refactor
-    /*
     public String getTopicName(){
-        if(getEventID() != null){
-            return getEventID().getName();
-        } else if(getGroupID() != null){
-            /*issue here: the requests store the groupID, not the group itself so if you want to get the
-            you have to get the group first
-            //return getGroupID().getName();
+        if(getEvent() != null){
+            return getEvent().getName();
+        } else if(getGroup() != null){
+            return getGroup().getName();
         }
         return ""; //Follow ?
-    } */
+    }
 
     public void acceptRequest(){
         //Modify database & delete request from database
@@ -149,9 +114,9 @@ public class Request {
      * @return
      */
     public NotificationFragment createFragment(){
-        if(this.eventID != null){
-            return new EventRequest(this);
-        } else if(this.groupID != null){
+        if(this.event != null){
+            return new EventRequest();
+        } else if(this.group != null){
             //Display group request
             return null;
         } else {
@@ -160,39 +125,12 @@ public class Request {
         }
     }
 
-    private void registerInDatabase(){
+    private void registerInDataBase(){
 
-        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
-
-        Map<String, java.lang.Object> request = new HashMap<>();
-        if (this.message != null) {
-            request.put("message", this.message);
-        }
-        if (this.groupID != null) {
-            request.put("groupID", this.groupID);
-        }
-        if (this.eventID != null) {
-            request.put("eventID", this.eventID);
-        }
-        request.put("senderID", this.senderID);
-        request.put("receiverID", this.receiverID);
-
-        mFirestore.collection("requests")
-                .add(request)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                })
-                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
     }
 
     public void removeFromDatabase(){
-        if (requestID != null) {
-            FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
-            mFirestore.collection("requests").document(this.requestID)
-                    .delete()
-                    .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully deleted!"))
-                    .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
-        }
+
     }
 
     /**

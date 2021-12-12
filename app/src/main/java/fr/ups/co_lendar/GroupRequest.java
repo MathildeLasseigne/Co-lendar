@@ -36,20 +36,18 @@ public class GroupRequest extends NotificationFragment {
     private Button info;
 
 
-    public GroupRequest(Request request) {
-        super(request);
-    }
+    public GroupRequest() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_group_request, container, false);
+        View view = inflater.inflate(getLayoutId(), container, false);
         initialiseVar(view);
         return view;
     }
 
-    private void initialiseVar(View view){
+    public void initialiseVar(View view){
         this.groupName = (TextView)view.findViewById(R.id.groupName);
         this.message = (TextView)view.findViewById(R.id.message);
         this.participantsLeftoverNumber = (TextView)view.findViewById(R.id.participantsLeftoverNumber);
@@ -68,7 +66,7 @@ public class GroupRequest extends NotificationFragment {
         this.info = (Button) view.findViewById(R.id.infoButton);
     }
 
-    /*private void registerRequestIntoView(){
+    public void registerRequestIntoView(){
        Group group = this.request.getGroup();
         if(group != null){
             this.groupName.setText(group.getName());
@@ -101,7 +99,7 @@ public class GroupRequest extends NotificationFragment {
             }
             if(group.getMembers().size() > i){
                 this.participantsLeftoverNumber.setText("+"+ (group.getMembers().size() - i));
-            }
+            }*/
 
 
             //this.requestSender. //set profile picture of request.getSender()
@@ -135,5 +133,10 @@ public class GroupRequest extends NotificationFragment {
                 }
             });
         }
-    }*/
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_group_request;
+    }
 }

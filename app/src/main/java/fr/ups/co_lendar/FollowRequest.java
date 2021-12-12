@@ -34,20 +34,18 @@ public class FollowRequest extends NotificationFragment {
     private Button refuse; //Change to ImageButton
     private Button info;
 
-    public FollowRequest(Request request) {
-        super(request);
-    }
+    public FollowRequest() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_follow_request, container, false);
+        View view = inflater.inflate(getLayoutId(), container, false);
         initialiseVar(view);
         return view;
     }
 
-    private void initialiseVar(View view){
+    public void initialiseVar(View view){
         this.groupName = (TextView)view.findViewById(R.id.groupName);
         this.message = (TextView)view.findViewById(R.id.message);
         this.participantsLeftoverNumber = (TextView)view.findViewById(R.id.participantsLeftoverNumber);
@@ -66,8 +64,8 @@ public class FollowRequest extends NotificationFragment {
         this.info = (Button) view.findViewById(R.id.infoButton);
     }
 
-    /*private void registerRequestIntoView(){
-        Group group = this.request.getGroupID();
+    public void registerRequestIntoView(){
+    /*    Group group = this.request.getGroupID();
         if(group != null){
             this.groupName.setText(group.getName());
             this.message.setText(request.getMessage());
@@ -132,6 +130,12 @@ public class FollowRequest extends NotificationFragment {
                     //TODO switch to event view
                 }
             });
-        }
-    }*/
+        }*/
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_follow_request;
+    }
+
 }
