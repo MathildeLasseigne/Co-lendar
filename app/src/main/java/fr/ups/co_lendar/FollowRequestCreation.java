@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
@@ -114,7 +116,7 @@ public class FollowRequestCreation extends Fragment {
     }
 
     public void setReceiverName(FirebaseCallback callback, String userID){
-        mFirestore.collection("users").document(Objects.requireNonNull(UUID))
+        mFirestore.collection("users").document(Objects.requireNonNull(userID))
                 .get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
