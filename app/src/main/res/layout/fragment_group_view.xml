@@ -4,17 +4,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GroupViewFragment"
-    android:background="@color/colorDarkBackground">
+    tools:context="fr.ups.co_lendar.fragments.GroupViewFragment"
+    android:background="@color/colorDarkBackground"
+    android:id="@+id/GroupView">
+
 
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
         android:scaleType="fitXY"
-        android:background="@drawable/ic_group"/>
+        android:background="@drawable/ic_group"
+        />
 
     <TextView
+        android:id="@+id/ViewGroupName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Les besta Sistas"
@@ -24,31 +28,48 @@
         android:layout_gravity="center_horizontal"
         />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="230dp">
+        android:layout_marginTop="230dp"
+        android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/memberGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/colorDarkBackground"
+            app:cardBackgroundColor="@color/lightBlue"
             >
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Members"
-                android:textColor="@color/colorGrey"
-                android:textSize="30dp"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/groupsMembers">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Members"
+                    android:textSize="30dp"/>
 
-            </ListView>
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/groupsMembers">
+
+                </ListView>
+
+                <ImageButton
+                    android:id="@+id/AddMember"
+                    android:layout_width="80dp"
+                    android:layout_height="70dp"
+                    android:scaleType="fitXY"
+                    android:backgroundTint="@color/colorTeal"
+                    app:srcCompat="@drawable/ic_add"
+                    android:layout_gravity="center"
+                    />
+
+            </LinearLayout>
 
 
         </androidx.cardview.widget.CardView>
@@ -57,28 +78,42 @@
             android:id="@+id/eventsGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/colorDarkBackground"
-            android:layout_marginTop="200dp"
+            app:cardBackgroundColor="@color/lightBlue"
+            android:layout_marginTop="20dp"
             >
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Events"
-                android:textColor="@color/colorGrey"
-                android:textSize="30dp"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/groupsEvents">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Events"
+                    android:textSize="30dp"/>
 
-            </ListView>
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/groupsEvents">
 
+                </ListView>
+
+                <ImageButton
+                    android:id="@+id/AddEvent"
+                    android:layout_width="80dp"
+                    android:layout_height="70dp"
+                    android:scaleType="fitXY"
+                    android:backgroundTint="@color/colorTeal"
+                    app:srcCompat="@drawable/ic_add"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
 

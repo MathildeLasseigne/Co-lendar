@@ -1,34 +1,39 @@
 package fr.ups.co_lendar.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import fr.ups.co_lendar.R;
 
-public class groupDisplayFragment extends Fragment implements View.OnClickListener{
+public class groupDisplayFragment extends Fragment {
     ArrayList<String> listItems=new ArrayList<String>();
     String groupName = "GroupName";
-    Integer id = 0;
+    String gid = "";
+
     private View mView;
 
     public groupDisplayFragment() {
         // Required empty public constructor
     }
 
-    public void setGroupId(Integer newId) {
-        id = newId;
+    public void setGid(String gid) {
+        this.gid = gid;
     }
 
-    public Integer getGroupId() {
-        return id;
+    public String getGid() {
+        return gid;
     }
 
     public void setParameters(String groupName) {
@@ -49,13 +54,8 @@ public class groupDisplayFragment extends Fragment implements View.OnClickListen
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_group_display, container, false);
-        mView.setOnClickListener(this);
+
         return mView;
     }
 
-    @Override
-    public void onClick(View v) {
-        Intent i = new Intent(getActivity(), GroupViewFragment.class);
-        startActivity(i);
-    }
 }
