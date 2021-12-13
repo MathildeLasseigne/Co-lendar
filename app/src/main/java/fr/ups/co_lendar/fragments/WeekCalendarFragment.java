@@ -324,11 +324,14 @@ public class WeekCalendarFragment extends Fragment implements View.OnClickListen
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Event event = document.toObject(Event.class);
                             int day = event.getDate().getDate();
-                            if (event.getParticipants().contains(mAuth.getCurrentUser().getUid())
-                            && event.getDate().getDate() >= firstDay
-                            && event.getDate().getDate() <= firstDay + 6) {
-                                events.add(event);
+                            if (event.getParticipants() != null
+                                    && event.getParticipants().size() > 0
+                                    && event.getParticipants().contains(mAuth.getCurrentUser().getUid())
+                                    && day >= firstDay
+                                    && day <= firstDay + 6) {
+                                    events.add(event);
                             }
+
                         }
                         showEvents();
                     } else {
