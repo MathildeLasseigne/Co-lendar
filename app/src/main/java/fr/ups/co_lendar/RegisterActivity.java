@@ -1,6 +1,5 @@
 package fr.ups.co_lendar;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,12 +15,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -107,34 +102,35 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String email = emailInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
         String passwordConfirm = passwordConfirmInput.getText().toString().trim();
+        User user = new User(firstName, lastName, email, password, mAuth.getCurrentUser().getUid());
 
         if(validRegistration(firstName, lastName, email, password, passwordConfirm)) {
             progressBar.setVisibility(View.VISIBLE);
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            // if sucessfully added to Auth - add to Firestore
-                            DocumentReference documentReference = mFirestore.collection("users")
-                                    .document(Objects.requireNonNull(mAuth.getCurrentUser().getUid()));
-                            Map<String, Object> user = new HashMap<>();
-                            user.put("UID", mAuth.getCurrentUser().getUid());
-                            user.put("firstName", firstName);
-                            user.put("lastName", lastName);
-                            user.put("email", email);
-                            user.put("password", password);
-                            documentReference.set(user).addOnSuccessListener(unused -> {
-                                if (imageUri != null) {
-                                    //if there is an image - add image
-                                    uploadPicture(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-                                } else {
-                                    //if not - registration successful
-                                    Toast.makeText(this, getResources().getString(R.string.registrationSuccessful), Toast.LENGTH_SHORT).show();
-                                    progressBar.setVisibility(View.GONE);
-                                    startActivity(new Intent(this, MainLoginActivity.class));
+                            user.registerUser(new FirebaseCallback() {
+                                @Override
+                                public void onStart() {}
+
+                                @Override
+                                public void onSuccess(Object data) {
+                                    if (imageUri != null) {
+                                        //if there is an image - add image
+                                        uploadPicture(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                                    } else {
+                                        //if not - registration successful
+                                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.registrationSuccessful), Toast.LENGTH_SHORT).show();
+                                        progressBar.setVisibility(View.GONE);
+                                        startActivity(new Intent(getApplicationContext(), MainLoginActivity.class));
+                                    }
                                 }
-                            }).addOnFailureListener(e -> {
-                                Toast.makeText(this,  getResources().getString(R.string.registrationFailed), Toast.LENGTH_LONG)
-                                        .show();
+
+                                @Override
+                                public void onFailed(DatabaseError databaseError) {
+                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.registrationFailed), Toast.LENGTH_LONG)
+                                            .show();
+                                }
                             });
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());

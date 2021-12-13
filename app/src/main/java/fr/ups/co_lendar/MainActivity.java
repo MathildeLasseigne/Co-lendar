@@ -56,9 +56,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+        Bundle bundle = new Bundle();
         switch (item.getItemId()) {
             case R.id.home:
-                Bundle bundle = new Bundle();
                 bundle.putSerializable("user", loggedInUser);
                 homeFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, homeFragment).commit();
@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return true;
 
             case R.id.notifications:
+                bundle.putSerializable("user", loggedInUser);
+                notificationsFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, notificationsFragment).commit();
                 return true;
         }

@@ -72,20 +72,19 @@ https://www.androiddesignpatterns.com/2012/05/using-newinstance-to-instantiate.h
     }
     */
 
-    public EventRequest(Request request) {
-        super(request);
+    public EventRequest() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_event_request, container, false);
+        View view = inflater.inflate(getLayoutId(), container, false);
         initialiseVar(view);
         return view;
     }
 
-    private void initialiseVar(View view){
+    public void initialiseVar(View view){
         this.eventName = (TextView)view.findViewById(R.id.eventName);
         this.schedule = (TextView)view.findViewById(R.id.schedule);
         this.location = (TextView)view.findViewById(R.id.location);
@@ -97,11 +96,12 @@ https://www.androiddesignpatterns.com/2012/05/using-newinstance-to-instantiate.h
         this.info = (Button) view.findViewById(R.id.infoButton);
     }
 
-    private void registerRequestIntoView(){
+
+    public void registerRequestIntoView(){
         Event event = this.request.getEvent();
         if(event != null){
             this.eventName.setText(event.getName());
-            String date = event.getDate() + " at "+event.getTime();
+            String date = event.getDate().toString();
             this.schedule.setText(date);
             this.location.setText(event.getLocation());
 
@@ -136,5 +136,10 @@ https://www.androiddesignpatterns.com/2012/05/using-newinstance-to-instantiate.h
                 }
             });
         }
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_event_request;
     }
 }

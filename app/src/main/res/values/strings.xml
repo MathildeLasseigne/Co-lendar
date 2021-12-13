@@ -68,5 +68,8 @@
     <string name="NameOfGroup">Name of Group</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="addressPlaceholder">here goes address. It might be long</string>
+    <string name="timePlaceholder">12PM to 1:30PM</string>
+    <string name="extraGuestsNumber">+2</string>
 
 </resources>

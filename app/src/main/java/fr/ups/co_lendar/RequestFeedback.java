@@ -24,20 +24,18 @@ public class RequestFeedback extends NotificationFragment {
 
     private Button okButton;
 
-    public RequestFeedback(Request request) {
-        super(request);
-    }
+    public RequestFeedback() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_request_feedback, container, false);
+        View view = inflater.inflate(getLayoutId(), container, false);
         initialiseVar(view);
         return view;
     }
 
-    private void initialiseVar(View view){
+    public void initialiseVar(View view){
 
         this.topicPicture = (ImageView) view.findViewById(R.id.topicPictureInFeedback);
 
@@ -49,12 +47,17 @@ public class RequestFeedback extends NotificationFragment {
         this.okButton = (Button) view.findViewById(R.id.okButton);
     }
 
-    private void registerRequestIntoView(){
 
-        //this.topicPicture set
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_request_feedback;
+    }
+
+    public void registerRequestIntoView(){
+             //this.topicPicture set
 
         this.senderName.setText(request.getSender().getFirstName());
-        if(true){ //Accepted
+        if(request.isAccepted()){
             String str = "accepted your request !";
             this.acceptanceMessage.setText(str);
         } else {

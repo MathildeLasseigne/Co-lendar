@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import fr.ups.co_lendar.FirebaseCallback;
 import fr.ups.co_lendar.R;
 import fr.ups.co_lendar.helpers.Event;
 import fr.ups.co_lendar.helpers.User;
@@ -68,7 +69,18 @@ public class HomeFragment extends Fragment {
         greeting = mView.findViewById(R.id.textView_greeting);
         profilePicture = mView.findViewById(R.id.imageView_profilePic);
         setName();
-        setProfilePic();
+        loggedInUser.getUserImage(new FirebaseCallback() {
+            @Override
+            public void onStart() { }
+
+            @Override
+            public void onSuccess(Object data) {
+                profilePicture.setImageBitmap((Bitmap)data);
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) { Log.d(TAG, "Error getting profile picture"); }
+        });
     }
 
     private void setName() {
@@ -78,23 +90,6 @@ public class HomeFragment extends Fragment {
             loggedInUser = (User) bundle.getSerializable("user");
             String newGreeting = greeting.getText() + " " + loggedInUser.getFirstName();
             greeting.setText(newGreeting);
-        }
-    }
-
-    private void setProfilePic() {
-        storageReference = FirebaseStorage.getInstance().getReference().child("profilePictures/" + loggedInUser.getUID());
-        try {
-            final File localFile = File.createTempFile("profilePicture", "jpeg");
-            storageReference.getFile(localFile)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                        profilePicture.setImageBitmap(bitmap);
-                    })
-                    .addOnFailureListener(e -> {
-                        e.printStackTrace();
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
