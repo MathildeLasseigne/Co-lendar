@@ -77,7 +77,7 @@ public class User implements Serializable {
                     this.setPassword(document.getString("password"));
                     this.setUID(UUID);
                     this.setUsersEvents((List<String>) document.get("usersEvents"));
-                    callback.onSuccess(null);
+                    callback.onSuccess(this);
                 } else {
                     Log.d(TAG, "No such user");
                 }

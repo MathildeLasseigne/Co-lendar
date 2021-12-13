@@ -71,7 +71,7 @@ public class Event implements Serializable {
                     this.groupID = document.getString("groupID");
                     this.url = document.getString("link");
                     this.comments = document.getString("comments");
-                    callback.onSuccess(null);
+                    callback.onSuccess(this);
                 } else {
                     Log.d(TAG, "No such event");
                 }

@@ -57,7 +57,7 @@ public class Group {
                     this.name = document.getString("name");
                     this.adminUID = document.getString("adminUID");
                     this.members = (List<String>) document.get("members");
-                    callback.onSuccess(null);
+                    callback.onSuccess(this);
                 } else {
                     Log.d(TAG, "No such group");
                 }
