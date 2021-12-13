@@ -66,7 +66,7 @@ public class Event implements Serializable {
                     this.name = document.getString("name");
                     this.ownerID = document.getString("ownerID");
                     this.participants = (List<String>) document.get("participants");
-                    this.location = document.getString(location);
+                    this.location = document.getString("location");
                     this.date = document.getDate("date");
                     this.groupID = document.getString("groupID");
                     this.url = document.getString("link");

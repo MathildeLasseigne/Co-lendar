@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import fr.ups.co_lendar.FirebaseCallback;
 
@@ -28,7 +29,7 @@ public class Group {
 
     private String groupID;
     private String name;
-    private ArrayList<String> members = new ArrayList<>();
+    private List<String> members = new ArrayList<>();
     private String adminUID;
 
     private String TAG = "Group";
@@ -44,11 +45,28 @@ public class Group {
         this.adminUID = adminUID;
     }
 
-    public Group(FirebaseCallback callback, String groupID) {}
+    public Group(FirebaseCallback callback, String groupID) {
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
 
-    /*public ArrayList<User> getMembers(){
-        return members;
-    }*/
+        mFirestore.collection("groups").document(Objects.requireNonNull(groupID))
+                .get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    this.groupID = document.getString("groupID");
+                    this.name = document.getString("name");
+                    this.adminUID = document.getString("adminUID");
+                    this.members = (List<String>) document.get("members");
+                    callback.onSuccess(null);
+                } else {
+                    Log.d(TAG, "No such group");
+                }
+            } else {
+                Log.d(TAG, "get failed with ", task.getException());
+            }
+        });
+    }
+
 
     public String getGroupID() {
         return groupID;
@@ -66,7 +84,7 @@ public class Group {
         this.name = name;
     }
 
-    public ArrayList<String> getMembers() {
+    public List<String> getMembers() {
         return members;
     }
 

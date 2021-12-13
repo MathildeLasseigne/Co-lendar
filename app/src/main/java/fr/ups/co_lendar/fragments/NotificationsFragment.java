@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+import fr.ups.co_lendar.EventRequestCreation;
 import fr.ups.co_lendar.FirebaseCallback;
 import fr.ups.co_lendar.MainActivity;
 import fr.ups.co_lendar.NotificationFragmentAdapter;
@@ -31,9 +34,7 @@ public class NotificationsFragment extends Fragment {
 
     private FirebaseFirestore mFirestore;
 
-    private ArrayList<Request> requests;
-
-    private ArrayList<Request> tempRequests;
+    private ArrayList<Request> requests = new ArrayList<>();
 
     private ListView eventList;
     private ArrayList<NotificationFragment> eventNotifications = new ArrayList<>();
@@ -61,36 +62,59 @@ public class NotificationsFragment extends Fragment {
      * Load the request from the database
      * @return
      */
-    public ArrayList<Request> loadRequests(){
-        mFirestore.collection("requests")
+    /*public ArrayList<Request> loadRequests(){
+        /*mFirestore.collection("requests")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        FirebaseCallback fc = new FirebaseCallback() {
-                            @Override
-                            public void onStart() { }
 
-                            @Override
-                            public void onSuccess(Object data) {
-                                tempRequests = (ArrayList<Request>) data;
-                            }
-
-                            @Override
-                            public void onFailed(DatabaseError databaseError) {
-                                Log.v(TAG, "Error while loading the requests");
-                            }
-                        };
-                        this.loggedInUser.getUserRequests(fc);
                     } else {
                         Log.d(TAG, "Error getting requests: ", task.getException());
                     }
-                });
+                });*/
+        /*FirebaseCallback fc = new FirebaseCallback() {
+            @Override
+            public void onStart() { }
 
+            @Override
+            public void onSuccess(Object data) {
+                tempRequests = (ArrayList<Request>) data;
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+                Log.v(TAG, "Error while loading the requests");
+            }
+        };
+        this.loggedInUser.getUserRequests(fc);
+        Log.d(TAG, "\n\n\n"+tempRequests.size() + "requests found\n\n\n");
         return tempRequests;
-    }
+    }*/
 
     public void updateView(){
-        ArrayList<Request> r = loadRequests();
+        eventAdapter.clear();
+        groupAdapter.clear();
+        followAdapter.clear();
+        feedbackAdapter.clear();
+        FirebaseCallback fc = new FirebaseCallback() {
+            @Override
+            public void onStart() { }
+
+            @Override
+            public void onSuccess(Object data) {
+                requests = (ArrayList<Request>) data;
+                for(Request r : requests){
+                    addRequest(r);
+                }
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+                Log.v(TAG, "Error while loading the requests");
+            }
+        };
+        this.loggedInUser.getUserRequests(fc);
+        /*ArrayList<Request> r = loadRequests();
         if (r != null) {
             for(Request req : r){
                 boolean found = false;
@@ -103,7 +127,7 @@ public class NotificationsFragment extends Fragment {
                     addRequest(req);
                 }
             }
-        }
+        }*/
     }
 
     private void setUser() {
@@ -148,12 +172,33 @@ public class NotificationsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mFirestore = FirebaseFirestore.getInstance();
-        mView = inflater.inflate(R.layout.fragment_notifications, container, false);
+        if(!test){
+            mView = inflater.inflate(R.layout.fragment_notifications, container, false);
+        } else {
+            mView = inflater.inflate(R.layout.test_fragment_notification, container, false);
+        }
         return mView;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         initializeUI();
+        if(test){ testUISetUp();}
+    }
+
+    private boolean test = false;
+    //LinearLayout placeholder;
+
+    private void testUISetUp(){
+        //placeholder = mView.findViewById(R.id.placeholder);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        EventRequestCreation rc = new EventRequestCreation();
+        rc.setParameters("2", "tbJ9XxC7x7YihT4J8aHCCqVH4nq1", new Fragment());
+        transaction.replace(R.id.placeholder, rc);
+        transaction.addToBackStack(null);
+        transaction.commit();
+        /*FragmentTransaction F_T =getSupportFragmentManager().beginTransaction();
+        F_T.replace(R.id.df_placeholder, new DataFlairFragment());
+        F_T.commit();*/
     }
 }

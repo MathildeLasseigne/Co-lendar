@@ -1,7 +1,9 @@
 package fr.ups.co_lendar;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.firebase.database.DatabaseError;
 
 import fr.ups.co_lendar.helpers.Group;
 import fr.ups.co_lendar.fragments.NotificationFragment;
@@ -24,6 +28,8 @@ public class FollowRequest extends NotificationFragment {
     private ImageButton requestSender;
     private Button accept; //Change to ImageButton
     private Button refuse; //Change to ImageButton
+
+    private String TAG = "FollowRequest";
 
     public FollowRequest() {}
 
@@ -52,7 +58,19 @@ public class FollowRequest extends NotificationFragment {
         this.senderName.setText(request.getSender().getFirstName());
         this.message.setText(request.getMessage());
 
-        //this.requestSender. //set profile picture of request.getSender()
+        request.getSender().getUserImage(new FirebaseCallback() {
+            @Override
+            public void onStart() { }
+
+            @Override
+            public void onSuccess(Object data) {
+                requestSender.setImageBitmap((Bitmap)data);
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) { Log.d(TAG, "Error getting profile picture"); }
+        });
+
         this.requestSender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

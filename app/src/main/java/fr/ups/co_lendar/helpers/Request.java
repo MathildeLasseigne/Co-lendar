@@ -33,9 +33,9 @@ public class Request {
     private Event event;
     private Group group;
 
-    private boolean isFeedback;
+    private boolean isFeedback = false;
 
-    private boolean isAccepted;
+    private boolean isAccepted = false;
 
 
     private String senderID = "";
@@ -254,6 +254,14 @@ public class Request {
         this.groupID = groupID;
     }
 
+    public void setIsAccepted(boolean isAccepted) {
+        this.isAccepted = isAccepted;
+    }
+
+    public void setIsFeedback(boolean isFeedback) {
+        this.isFeedback = isFeedback;
+    }
+
     public String getRequestID() {
         return requestID;
     }
@@ -329,8 +337,6 @@ public class Request {
         } else {
             if(getObject() == Object.Event){
                 fg = new EventRequest();
-
-                return new EventRequest();
             } else if(getObject() == Object.Group){
                 fg = new GroupRequest();
             } else {
