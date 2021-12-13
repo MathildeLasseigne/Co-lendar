@@ -1,5 +1,6 @@
 package fr.ups.co_lendar;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -83,21 +84,7 @@ public class FollowRequestCreation extends Fragment {
     private void registerRequestIntoView(){
 
         //this.receiverPicture set to receiver.getPicture()
-
-        setReceiverName(new FirebaseCallback() {
-            @Override
-            public void onStart() { }
-
-            @Override
-            public void onSuccess(Object data) {
-
-            }
-
-            @Override
-            public void onFailed(DatabaseError databaseError) {
-                Log.v(TAG, "Error while loading the receiver");
-            }
-        }, this.receiverID);
+        setReceiverNameAndPicture(this.receiverID, this.receiverName, this.receiverPicture);
 
 
 
@@ -115,22 +102,37 @@ public class FollowRequestCreation extends Fragment {
 
     }
 
-    public void setReceiverName(FirebaseCallback callback, String userID){
-        mFirestore.collection("users").document(Objects.requireNonNull(userID))
-                .get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    String name = document.getString("firstName") + " " + document.getString("lastName");
-                    this.receiverName.setText(name);
-                    callback.onSuccess(null);
-                } else {
-                    Log.d(TAG, "No such user");
-                }
-            } else {
-                Log.d(TAG, "get failed with ", task.getException());
+
+    private User tempUser = null;
+    private void setReceiverNameAndPicture(String uid, TextView name, ImageView image){
+
+        tempUser = new User(new FirebaseCallback() {
+            @Override
+            public void onStart() { }
+
+            @Override
+            public void onSuccess(Object data) {
+                String str = tempUser.getFirstName() + tempUser.getLastName();
+                name.setText(str);
+                tempUser.getUserImage(new FirebaseCallback() {
+                    @Override
+                    public void onStart() { }
+
+                    @Override
+                    public void onSuccess(Object data) {
+                        image.setImageBitmap((Bitmap)data);
+                    }
+
+                    @Override
+                    public void onFailed(DatabaseError databaseError) { Log.d(TAG, "Error getting profile picture"); }
+                });
             }
-        });
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+                Log.v(TAG, "Error while loading the receiver");
+            }
+        }, uid);
     }
 
     public void replaceFragment(Fragment someFragment) {

@@ -1,13 +1,17 @@
 package fr.ups.co_lendar;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.firebase.database.DatabaseError;
 
 import fr.ups.co_lendar.fragments.NotificationFragment;
 import fr.ups.co_lendar.helpers.Request;
@@ -23,6 +27,8 @@ public class RequestFeedback extends NotificationFragment {
     private ImageView topicPicture;
 
     private Button okButton;
+
+    private String TAG = "FeedbackRequest";
 
     public RequestFeedback() {}
 
@@ -55,6 +61,47 @@ public class RequestFeedback extends NotificationFragment {
 
     public void registerRequestIntoView(){
              //this.topicPicture set
+        if(request.getObject() == Request.Object.Event){
+            request.getEvent().getEventImage(new FirebaseCallback() {
+                @Override
+                public void onStart() { }
+
+                @Override
+                public void onSuccess(Object data) {
+                    topicPicture.setImageBitmap((Bitmap)data);
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) { Log.d(TAG, "Error getting event profile picture"); }
+            });
+        } else if (request.getObject() == Request.Object.Group){
+            request.getGroup().getGroupImage(new FirebaseCallback() {
+                @Override
+                public void onStart() { }
+
+                @Override
+                public void onSuccess(Object data) {
+                    topicPicture.setImageBitmap((Bitmap)data);
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) { Log.d(TAG, "Error getting group profile picture"); }
+            });
+        } else {
+            request.getSender().getUserImage(new FirebaseCallback() {
+                @Override
+                public void onStart() { }
+
+                @Override
+                public void onSuccess(Object data) {
+                    topicPicture.setImageBitmap((Bitmap)data);
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) { Log.d(TAG, "Error getting user profile picture"); }
+            });
+        }
+
 
         this.senderName.setText(request.getSender().getFirstName());
         if(request.isAccepted()){

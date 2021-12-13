@@ -1,8 +1,11 @@
 package fr.ups.co_lendar;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +14,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseError;
+
 import fr.ups.co_lendar.helpers.Group;
 import fr.ups.co_lendar.fragments.NotificationFragment;
 import fr.ups.co_lendar.helpers.Request;
+import fr.ups.co_lendar.helpers.User;
 
 public class GroupRequest extends NotificationFragment {
 
@@ -34,6 +40,8 @@ public class GroupRequest extends NotificationFragment {
     private Button accept; //Change to ImageButton
     private Button refuse; //Change to ImageButton
     private Button info;
+
+    private String TAG = "EventRequest";
 
 
     public GroupRequest() {}
@@ -74,35 +82,46 @@ public class GroupRequest extends NotificationFragment {
             this.participantsLeftoverNumber.setText("");
             int i = 0;
             if(group.getMembers().size() > i){
-                //this.participant1 = group.getMembers().get(i); setImage
+                getUserPictureInImageView(group.getMembers().get(i), participant1);
                 i++;
             }
             if(group.getMembers().size() > i){
-                //this.participant2 = group.getMembers().get(i); setImage
+                getUserPictureInImageView(group.getMembers().get(i), participant2);
                 i++;
             }
             if(group.getMembers().size() > i){
-                //this.participant3 = group.getMembers().get(i); setImage
+                getUserPictureInImageView(group.getMembers().get(i), participant3);
                 i++;
             }
             if(group.getMembers().size() > i){
-                //this.participant4 = group.getMembers().get(i); setImage
+                getUserPictureInImageView(group.getMembers().get(i), participant4);
                 i++;
             }
             if(group.getMembers().size() > i){
-                //this.participant5 = group.getMembers().get(i); setImage
+                getUserPictureInImageView(group.getMembers().get(i), participant5);
                 i++;
             }
             if(group.getMembers().size() > i){
-                //this.participant6 = group.getMembers().get(i); setImage
+                getUserPictureInImageView(group.getMembers().get(i), participant6);
                 i++;
             }
             if(group.getMembers().size() > i){
-                this.participantsLeftoverNumber.setText("+"+ (group.getMembers().size() - i));
+                String str = "+"+ (group.getMembers().size() - i);
+                this.participantsLeftoverNumber.setText(str);
             }
 
+            this.request.getSender().getUserImage(new FirebaseCallback() {
+                @Override
+                public void onStart() { }
 
-            //this.requestSender. //set profile picture of request.getSender()
+                @Override
+                public void onSuccess(Object data) {
+                    requestSender.setImageBitmap((Bitmap)data);
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) { Log.d(TAG, "Error getting profile picture"); }
+            });
             this.requestSender.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -138,5 +157,35 @@ public class GroupRequest extends NotificationFragment {
     @Override
     public int getLayoutId() {
         return R.layout.fragment_group_request;
+    }
+
+    private User getUserPictureInImageView(String uid, ImageView img) {
+
+        return new User(new FirebaseCallback() {
+            @Override
+            public void onStart() { }
+
+            @Override
+            public void onSuccess(Object data) {
+                User user = (User) data;
+                user.getUserImage(new FirebaseCallback() {
+                    @Override
+                    public void onStart() { }
+
+                    @Override
+                    public void onSuccess(Object data) {
+                        img.setImageBitmap((Bitmap)data);
+                    }
+
+                    @Override
+                    public void onFailed(DatabaseError databaseError) { Log.d(TAG, "Error getting profile picture"); }
+                });
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+                Log.v(TAG, "Error while loading the user");
+            }
+        }, uid);
     }
 }

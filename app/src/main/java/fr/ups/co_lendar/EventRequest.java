@@ -1,12 +1,16 @@
 package fr.ups.co_lendar;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.google.firebase.database.DatabaseError;
 
 import fr.ups.co_lendar.helpers.Event;
 import fr.ups.co_lendar.fragments.NotificationFragment;
@@ -29,6 +33,7 @@ public class EventRequest extends NotificationFragment {
     private Button refuse; //Change to ImageButton
     private Button info;
 
+    private String TAG = "EventRequest";
 
 /* Why the factory thing, but don't know if it works for custom class
 https://www.androiddesignpatterns.com/2012/05/using-newinstance-to-instantiate.html
@@ -105,7 +110,18 @@ https://www.androiddesignpatterns.com/2012/05/using-newinstance-to-instantiate.h
             this.schedule.setText(date);
             this.location.setText(event.getLocation());
 
-            //this.requestSender. //set profile picture of request.getSender()
+            request.getSender().getUserImage(new FirebaseCallback() {
+                @Override
+                public void onStart() { }
+
+                @Override
+                public void onSuccess(Object data) {
+                    requestSender.setImageBitmap((Bitmap)data);
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) { Log.d(TAG, "Error getting profile picture"); }
+            });
             this.requestSender.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -1,5 +1,6 @@
 package fr.ups.co_lendar;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -89,20 +90,7 @@ public class EventRequestCreation extends Fragment {
 
         //this.eventPicture set to event.getPicture()
 
-        setEventName(new FirebaseCallback() {
-            @Override
-            public void onStart() { }
-
-            @Override
-            public void onSuccess(Object data) {
-
-            }
-
-            @Override
-            public void onFailed(DatabaseError databaseError) {
-                Log.v(TAG, "Error while loading the event");
-            }
-        }, this.eventID);
+        setEventNameAndPicture(this.eventID, eventName, eventPicture);
 
         setReceiverName(new FirebaseCallback() {
             @Override
@@ -134,24 +122,6 @@ public class EventRequestCreation extends Fragment {
 
     }
 
-    public void setEventName(FirebaseCallback callback, String eventID){
-        mFirestore.collection("events").document(Objects.requireNonNull(eventID))
-                .get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    this.eventName.setText(document.getString("name"));
-
-                    callback.onSuccess(null);
-                } else {
-                    Log.d(TAG, "No such event");
-                }
-            } else {
-                Log.d(TAG, "get failed with ", task.getException());
-            }
-        });
-    }
-
     public void setReceiverName(FirebaseCallback callback, String userID){
         mFirestore.collection("users").document(Objects.requireNonNull(userID))
                 .get().addOnCompleteListener(task -> {
@@ -168,6 +138,36 @@ public class EventRequestCreation extends Fragment {
                 Log.d(TAG, "get failed with ", task.getException());
             }
         });
+    }
+
+    private Event tmpEvent = null;
+    private void setEventNameAndPicture(String eventID, TextView name, ImageView image){
+        tmpEvent = new Event(new FirebaseCallback() {
+            @Override
+            public void onStart() { }
+
+            @Override
+            public void onSuccess(Object data) {
+                name.setText(tmpEvent.getName());
+                tmpEvent.getEventImage(new FirebaseCallback() {
+                    @Override
+                    public void onStart() { }
+
+                    @Override
+                    public void onSuccess(Object data) {
+                        image.setImageBitmap((Bitmap)data);
+                    }
+
+                    @Override
+                    public void onFailed(DatabaseError databaseError) { Log.d(TAG, "Error getting profile picture"); }
+                });
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+                Log.v(TAG, "Error while loading the event");
+            }
+        }, eventID);
     }
 
     public void replaceFragment(Fragment someFragment) {

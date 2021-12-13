@@ -1,5 +1,6 @@
 package fr.ups.co_lendar;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -21,9 +22,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
+import fr.ups.co_lendar.helpers.Event;
 import fr.ups.co_lendar.helpers.Group;
 import fr.ups.co_lendar.helpers.Request;
-import fr.ups.co_lendar.helpers.User;
 
 public class GroupRequestCreation extends Fragment {
 
@@ -88,9 +89,9 @@ public class GroupRequestCreation extends Fragment {
 
     private void registerRequestIntoView(){
 
-        //this.eventPicture set to event.getPicture()
+        setGroupNameAndPicture(this.groupID, this.groupName, this.groupPicture);
 
-        setGroupName(new FirebaseCallback() {
+        /*setGroupName(new FirebaseCallback() {
             @Override
             public void onStart() { }
 
@@ -104,6 +105,7 @@ public class GroupRequestCreation extends Fragment {
                 Log.v(TAG, "Error while loading the event");
             }
         }, this.groupID);
+         */
 
         setReceiverName(new FirebaseCallback() {
             @Override
@@ -169,6 +171,36 @@ public class GroupRequestCreation extends Fragment {
                 Log.d(TAG, "get failed with ", task.getException());
             }
         });
+    }
+
+    private Group tmpGroup = null;
+    private void setGroupNameAndPicture(String groupID, TextView name, ImageView image){
+        tmpGroup = new Group(new FirebaseCallback() {
+            @Override
+            public void onStart() { }
+
+            @Override
+            public void onSuccess(Object data) {
+                name.setText(tmpGroup.getName());
+                tmpGroup.getGroupImage(new FirebaseCallback() {
+                    @Override
+                    public void onStart() { }
+
+                    @Override
+                    public void onSuccess(Object data) {
+                        image.setImageBitmap((Bitmap)data);
+                    }
+
+                    @Override
+                    public void onFailed(DatabaseError databaseError) { Log.d(TAG, "Error getting profile picture"); }
+                });
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+                Log.v(TAG, "Error while loading the group");
+            }
+        }, groupID);
     }
 
     public void replaceFragment(Fragment someFragment) {
