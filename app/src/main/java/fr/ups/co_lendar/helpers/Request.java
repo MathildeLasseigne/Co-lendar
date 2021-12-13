@@ -99,23 +99,25 @@ public class Request {
 
 
     public void mapIdToObject(){
-        if(! this.senderID.isEmpty()){
-            FirebaseCallback fb = new FirebaseCallback() {
+        if(!this.senderID.isEmpty()){
+            User user = new User(new FirebaseCallback() {
                 @Override
-                public void onStart() { }
+                public void onStart() {
+
+                }
 
                 @Override
                 public void onSuccess(java.lang.Object data) {
+                    sender = (User) data;
                 }
 
                 @Override
                 public void onFailed(DatabaseError databaseError) {
                     Log.v(TAG, "Error while loading the sender user");
                 }
-            };
-            this.sender = new User(fb, this.senderID);
+            }, senderID);
         }
-        if (! this.receiverID.isEmpty()){
+        if (!this.receiverID.isEmpty()){
             FirebaseCallback fb = new FirebaseCallback() {
                 @Override
                 public void onStart() { }
@@ -131,7 +133,7 @@ public class Request {
             };
             this.receiver = new User(fb, this.receiverID);
         }
-        if (! this.eventID.isEmpty()){
+        if (!this.eventID.isEmpty()){
             FirebaseCallback fb = new FirebaseCallback() {
                 @Override
                 public void onStart() { }
@@ -196,14 +198,14 @@ public class Request {
     }
 
     public Event getEvent() {
-        if(! objectsMapped){
+        if(!objectsMapped){
             mapIdToObject();
         }
         return event;
     }
 
     public Group getGroup() {
-        if(! objectsMapped){
+        if(!objectsMapped){
             mapIdToObject();
         }
         return group;
