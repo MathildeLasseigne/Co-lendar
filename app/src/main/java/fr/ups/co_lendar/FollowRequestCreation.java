@@ -64,6 +64,7 @@ public class FollowRequestCreation extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_follow_request_creation, container, false);
         initialiseVar(view);
+        registerRequestIntoView();
         return view;
     }
 

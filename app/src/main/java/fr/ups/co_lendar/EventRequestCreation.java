@@ -70,6 +70,7 @@ public class EventRequestCreation extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event_request_creation, container, false);
         initialiseVar(view);
+        registerRequestIntoView();
         return view;
     }
 
@@ -78,6 +79,7 @@ public class EventRequestCreation extends Fragment {
         this.eventPicture = (ImageView) view.findViewById(R.id.eventPictureInRequest);
 
         this.eventName = (TextView)view.findViewById(R.id.eventNameCreation);
+        //Log.d(TAG, "Text of event name is : "+ this.eventName.getText().toString());
         this.receiverName = (TextView)view.findViewById(R.id.receiverNameEventCreation);
 
 
