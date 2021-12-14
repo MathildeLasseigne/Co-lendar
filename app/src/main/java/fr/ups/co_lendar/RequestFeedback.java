@@ -60,7 +60,8 @@ public class RequestFeedback extends NotificationFragment {
     }
 
     public void registerRequestIntoView(){
-             //this.topicPicture set
+        //TODO: URGENT FIX - BREAKS THE CODE
+        /*
         if(request.getObject() == Request.Object.Event){
             request.getEvent().getEventImage(new FirebaseCallback() {
                 @Override
@@ -118,7 +119,7 @@ public class RequestFeedback extends NotificationFragment {
             request.removeFromDatabase();
             removeFromView();
         });
-
+        */
 
     }
 }
