@@ -115,6 +115,32 @@ public class Group {
                 });
     }
 
+    public void getGroupUsers(FirebaseCallback callback) {
+
+        ArrayList<User> users = new ArrayList<>();
+        List<String> membersOfGroup = getMembers();
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+        mFirestore.collection("users")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            User user= document.toObject(User.class);
+                            for(String uidMember : membersOfGroup) {
+                                if (user.getUID().equals(uidMember)) {
+                                    users.add(user);
+                                }
+                            }
+                        }
+                        callback.onSuccess(users);
+                    } else {
+                        Log.d(TAG, "Error getting groups: ", task.getException());
+                    }
+                });
+    }
+
+
+
     public void insertIntoDatabase(FirebaseCallback callback) {
 
         if (groupID != null && name != null && members != null && members.size() > 0

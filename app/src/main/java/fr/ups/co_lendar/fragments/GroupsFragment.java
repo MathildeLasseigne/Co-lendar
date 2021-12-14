@@ -37,7 +37,6 @@ public class GroupsFragment extends Fragment {
     ArrayList<groupDisplayFragment> groups = new ArrayList<groupDisplayFragment>();
     private View rootView;
     private GroupDisplayAdapter adapter;
-    private int count = 0;
 
     public GroupsFragment(){
         // require a empty public constructor
@@ -45,16 +44,13 @@ public class GroupsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if(count>0) {
-            adapter.clear();
-        }
+        adapter = new GroupDisplayAdapter (getContext(), groups);
+        adapter.clear();
         setUser();
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
         rootView = inflater.inflate(R.layout.fragment_groups, container, false);
         setGroups();
-
-        count++;
 
         return rootView;
     }
