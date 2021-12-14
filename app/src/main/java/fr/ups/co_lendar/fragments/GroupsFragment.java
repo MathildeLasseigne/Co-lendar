@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,14 +25,13 @@ import fr.ups.co_lendar.FirebaseCallback;
 import fr.ups.co_lendar.GroupDisplayAdapter;
 import fr.ups.co_lendar.R;
 import fr.ups.co_lendar.helpers.Group;
-import fr.ups.co_lendar.helpers.Request;
 import fr.ups.co_lendar.helpers.User;
 
 public class GroupsFragment extends Fragment {
 
     User loggedInUser;
     private FirebaseFirestore mFirestore;
-    private ArrayList<Group> groupsOfUser = new ArrayList<>();
+    private FirebaseAuth mAuth;
 
     public GroupsFragment(){
         // require a empty public constructor
@@ -39,7 +39,9 @@ public class GroupsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
+        setUser();
         View rootView = inflater.inflate(R.layout.fragment_groups, container, false);
         addGroupDisplay(rootView, R.layout.fragment_group_display);
         return rootView;
@@ -65,31 +67,33 @@ public class GroupsFragment extends Fragment {
         g2.setGid("g2");
         groups.add(g2);*/
 
+        //List<Group> groupOfTheUser = new ArrayList<>();
 
-        FirebaseCallback fc = new FirebaseCallback() {
+        loggedInUser.getUserGroups(new FirebaseCallback() {
             @Override
-            public void onStart() { }
+            public void onStart() {
+
+            }
 
             @Override
             public void onSuccess(Object data) {
-                groupsOfUser = (ArrayList<Group>) data;
-                for(Group g : groupsOfUser){
+                ArrayList<Group> a = (ArrayList<Group>) data;
+                for(Group g : a) {
                     String name = g.getName();
-                    groupDisplayFragment gd = new groupDisplayFragment();
-                    gd.setParameters(name);
-                    groups.add(gd);
+                    groupDisplayFragment g3 = new groupDisplayFragment();
+                    g3.setParameters(name);
+                    groups.add(g3);
                 }
             }
 
             @Override
             public void onFailed(DatabaseError databaseError) {
-                Log.v("ERROR", "Error while loading groups");
+
             }
-        };
-        this.loggedInUser.getUserGroups(fc);
+        });
 
 
-        /*for(Group g : groupsOfUser) {
+        /*for(Group g : groupOfTheUser) {
             String name = g.getName();
             groupDisplayFragment g3 = new groupDisplayFragment();
             g1.setParameters(name);
