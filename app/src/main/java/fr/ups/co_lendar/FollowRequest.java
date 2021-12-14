@@ -38,7 +38,7 @@ public class FollowRequest extends NotificationFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(getLayoutId(), container, false);
-        initialiseVar(view);
+        setUpNotification(view);
         return view;
     }
 
@@ -71,27 +71,18 @@ public class FollowRequest extends NotificationFragment {
             public void onFailed(DatabaseError databaseError) { Log.d(TAG, "Error getting profile picture"); }
         });
 
-        this.requestSender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO switch to user (the sender) view
-            }
+        this.requestSender.setOnClickListener(view -> {
+            //TODO switch to user (the sender) view
         });
 
-        accept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                request.acceptRequest();
-                removeFromView();
-            }
+        accept.setOnClickListener(view -> {
+            request.acceptRequest();
+            removeFromView();
         });
 
-        refuse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                request.refuseRequest();
-                removeFromView();
-            }
+        refuse.setOnClickListener(view -> {
+            request.refuseRequest();
+            removeFromView();
         });
 
     }

@@ -316,7 +316,6 @@ public class WeekCalendarFragment extends Fragment implements View.OnClickListen
     private void setEvents() {
 
         events = new ArrayList<>();
-
         mFirestore.collection("events")
                 .get()
                 .addOnCompleteListener(task -> {

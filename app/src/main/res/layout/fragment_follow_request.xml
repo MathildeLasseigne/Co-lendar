@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
-    android:background="@color/colorTealBackground"
+    android:background="@drawable/single_event_bg"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:dividerPadding="20dp"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal" />
 
     <Space
         android:layout_width="match_parent"

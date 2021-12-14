@@ -35,47 +35,6 @@ public class EventRequest extends NotificationFragment {
 
     private String TAG = "EventRequest";
 
-/* Why the factory thing, but don't know if it works for custom class
-https://www.androiddesignpatterns.com/2012/05/using-newinstance-to-instantiate.html
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-  /*  /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EventRequest.
-     */
-    // TODO: Rename and change types and number of parameters
- /*   public static EventRequest newInstance(String param1, String param2) {
-        EventRequest fragment = new EventRequest();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-
-/*
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-    */
 
     public EventRequest() {
     }
@@ -85,7 +44,7 @@ https://www.androiddesignpatterns.com/2012/05/using-newinstance-to-instantiate.h
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(getLayoutId(), container, false);
-        initialiseVar(view);
+        setUpNotification(view);
         return view;
     }
 
@@ -93,9 +52,7 @@ https://www.androiddesignpatterns.com/2012/05/using-newinstance-to-instantiate.h
         this.eventName = (TextView)view.findViewById(R.id.eventName);
         this.schedule = (TextView)view.findViewById(R.id.schedule);
         this.location = (TextView)view.findViewById(R.id.location);
-
         this.requestSender = (ImageButton) view.findViewById(R.id.profileButton);
-
         this.accept = (Button) view.findViewById(R.id.acceptButton);
         this.refuse = (Button) view.findViewById(R.id.refuseButton);
         this.info = (Button) view.findViewById(R.id.infoButton);
@@ -122,34 +79,22 @@ https://www.androiddesignpatterns.com/2012/05/using-newinstance-to-instantiate.h
                 @Override
                 public void onFailed(DatabaseError databaseError) { Log.d(TAG, "Error getting profile picture"); }
             });
-            this.requestSender.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO switch to user (the sender) view
-                }
+            this.requestSender.setOnClickListener(view -> {
+                //TODO switch to user (the sender) view
             });
 
-            accept.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    request.acceptRequest();
-                    removeFromView();
-                }
+            accept.setOnClickListener(view -> {
+                request.acceptRequest();
+                removeFromView();
             });
 
-            refuse.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    request.refuseRequest();
-                    removeFromView();
-                }
+            refuse.setOnClickListener(view -> {
+                request.refuseRequest();
+                removeFromView();
             });
 
-            info.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO switch to event view
-                }
+            info.setOnClickListener(view -> {
+                //TODO switch to event view
             });
         }
     }

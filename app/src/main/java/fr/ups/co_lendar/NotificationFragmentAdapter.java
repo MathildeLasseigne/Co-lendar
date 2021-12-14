@@ -29,14 +29,13 @@ public class NotificationFragmentAdapter extends ArrayAdapter<NotificationFragme
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(nf.getLayoutId(), parent, false);
         }
-        nf.initialiseVar(convertView);
-        nf.registerRequestIntoView();
+        nf.setUpNotification(convertView);
 
         return convertView;
     }
 
     public void removeFromList(NotificationFragment nf){
         remove(nf);
-        //notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 }

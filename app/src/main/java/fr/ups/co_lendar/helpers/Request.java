@@ -4,15 +4,11 @@ import fr.ups.co_lendar.EventRequest;
 import fr.ups.co_lendar.FirebaseCallback;
 import fr.ups.co_lendar.FollowRequest;
 import fr.ups.co_lendar.GroupRequest;
-import fr.ups.co_lendar.MainActivity;
 import fr.ups.co_lendar.RequestFeedback;
 import fr.ups.co_lendar.fragments.NotificationFragment;
 
-import android.content.Intent;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -24,23 +20,15 @@ public class Request {
     public enum Object{Event, Group, Follow}
 
     private Object object;
-
     private User sender;
     private User receiver;
-
     private String message = "";
-
     private Event event;
     private Group group;
-
-    private boolean isFeedback = false;
-
-    private boolean isAccepted = false;
-
-
+    private boolean feedback = false;
+    private boolean accepted = false;
     private String senderID = "";
     private String receiverID = "";
-
     private String eventID = "";
     private String groupID = "";
     private String requestID = "";
@@ -73,10 +61,10 @@ public class Request {
      * @param senderID
      * @param receiverID
      * @param message
-     * @param isFeedback if is a feedback
+     * @param feedback if is a feedback
      * @param accepted if is a feedback and is accepted
      */
-    public Request(Object object, String objectID, String senderID, String receiverID, String message, boolean isFeedback, boolean accepted){
+    public Request(Object object, String objectID, String senderID, String receiverID, String message, boolean feedback, boolean accepted){
         if(object == Object.Group){
             this.groupID = objectID;
             this.senderID = senderID;
@@ -91,48 +79,15 @@ public class Request {
             this.receiverID = receiverID;
             this.message = message;
         }
-        this.isFeedback = isFeedback;
-        this.isAccepted = accepted;
+        this.feedback = feedback;
+        this.accepted = accepted;
 
         registerInDatabase();
     }
 
 
-    public void mapIdToObject(){
-        if(!this.senderID.isEmpty()){
-            User user = new User(new FirebaseCallback() {
-                @Override
-                public void onStart() {
-
-                }
-
-                @Override
-                public void onSuccess(java.lang.Object data) {
-                    sender = (User) data;
-                }
-
-                @Override
-                public void onFailed(DatabaseError databaseError) {
-                    Log.v(TAG, "Error while loading the sender user");
-                }
-            }, senderID);
-        }
-        if (!this.receiverID.isEmpty()){
-            new User(new FirebaseCallback() {
-                @Override
-                public void onStart() { }
-
-                @Override
-                public void onSuccess(java.lang.Object data) {
-                    receiver = (User) data;
-                }
-
-                @Override
-                public void onFailed(DatabaseError databaseError) {
-                    Log.v(TAG, "Error while loading the receiver user");
-                }
-            }, this.receiverID);
-        }
+    public void mapIdToObject(FirebaseCallback callback){
+        Request thisRequest = this;
         if (!this.eventID.isEmpty()){
             new Event(new FirebaseCallback() {
                 @Override
@@ -141,14 +96,57 @@ public class Request {
                 @Override
                 public void onSuccess(java.lang.Object data) {
                     event = (Event) data;
+
+                    if(!senderID.isEmpty()){
+                        User user = new User(new FirebaseCallback() {
+                            @Override
+                            public void onStart() {
+
+                            }
+
+                            @Override
+                            public void onSuccess(java.lang.Object data) {
+                                sender = (User) data;
+
+                                if (!receiverID.isEmpty()){
+                                    new User(new FirebaseCallback() {
+                                        @Override
+                                        public void onStart() { }
+
+                                        @Override
+                                        public void onSuccess(java.lang.Object data) {
+                                            receiver = (User) data;
+                                            object = Object.Event;
+
+                                            objectsMapped = true;
+                                            callback.onSuccess(thisRequest);
+                                        }
+
+                                        @Override
+                                        public void onFailed(DatabaseError databaseError) {
+                                            Log.v(TAG, "Error while loading the receiver user");
+                                            callback.onFailed(databaseError);
+                                        }
+                                    }, receiverID);
+                                }
+                            }
+
+                            @Override
+                            public void onFailed(DatabaseError databaseError) {
+                                Log.v(TAG, "Error while loading the sender user");
+                                callback.onFailed(databaseError);
+                            }
+                        }, senderID);
+                    }
                 }
 
                 @Override
                 public void onFailed(DatabaseError databaseError) {
                     Log.v(TAG, "Error while loading the event");
+                    callback.onFailed(databaseError);
                 }
             }, this.eventID);
-            this.object = Object.Event;
+
         } else if (! this.groupID.isEmpty()){
             new Group(new FirebaseCallback() {
                 @Override
@@ -157,66 +155,211 @@ public class Request {
                 @Override
                 public void onSuccess(java.lang.Object data) {
                     group = (Group) data;
+
+                    if(!senderID.isEmpty()){
+                        User user = new User(new FirebaseCallback() {
+                            @Override
+                            public void onStart() {
+
+                            }
+
+                            @Override
+                            public void onSuccess(java.lang.Object data) {
+                                sender = (User) data;
+
+                                if (!receiverID.isEmpty()){
+                                    new User(new FirebaseCallback() {
+                                        @Override
+                                        public void onStart() { }
+
+                                        @Override
+                                        public void onSuccess(java.lang.Object data) {
+                                            receiver = (User) data;
+                                            object = Object.Group;
+
+                                            objectsMapped = true;
+                                            callback.onSuccess(thisRequest);
+                                        }
+
+                                        @Override
+                                        public void onFailed(DatabaseError databaseError) {
+                                            Log.v(TAG, "Error while loading the receiver user");
+                                            callback.onFailed(databaseError);
+                                        }
+                                    }, receiverID);
+                                }
+                            }
+
+                            @Override
+                            public void onFailed(DatabaseError databaseError) {
+                                Log.v(TAG, "Error while loading the sender user");
+                                callback.onFailed(databaseError);
+                            }
+                        }, senderID);
+                    }
                 }
 
                 @Override
                 public void onFailed(DatabaseError databaseError) {
                     Log.v(TAG, "Error while loading the group");
+                    callback.onFailed(databaseError);
                 }
             }, this.groupID);
-            this.object = Object.Group;
         } else {
-            this.object = Object.Follow;
+            if(!senderID.isEmpty()){
+                User user = new User(new FirebaseCallback() {
+                    @Override
+                    public void onStart() {
+
+                    }
+
+                    @Override
+                    public void onSuccess(java.lang.Object data) {
+                        sender = (User) data;
+
+                        if (!receiverID.isEmpty()){
+                            new User(new FirebaseCallback() {
+                                @Override
+                                public void onStart() { }
+
+                                @Override
+                                public void onSuccess(java.lang.Object data) {
+                                    receiver = (User) data;
+                                    object = Object.Follow;
+
+                                    objectsMapped = true;
+                                    callback.onSuccess(thisRequest);
+                                }
+
+                                @Override
+                                public void onFailed(DatabaseError databaseError) {
+                                    Log.v(TAG, "Error while loading the receiver user");
+                                    callback.onFailed(databaseError);
+                                }
+                            }, receiverID);
+                        }
+                    }
+
+                    @Override
+                    public void onFailed(DatabaseError databaseError) {
+                        Log.v(TAG, "Error while loading the sender user");
+                        callback.onFailed(databaseError);
+                    }
+                }, senderID);
+            }
         }
 
-        this.objectsMapped = true;
     }
 
     public Object getObject() {
         if(! objectsMapped){
-            mapIdToObject();
+            if(!this.groupID.isEmpty()){
+                this.object = Object.Group;
+            } else if(!this.eventID.isEmpty()){
+                this.object = Object.Event;
+            } else {
+                this.object = Object.Follow;
+            }
         }
         return this.object;
     }
 
     public User getSender(){
         if(! objectsMapped){
-            mapIdToObject();
+            mapIdToObject(new FirebaseCallback() {
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onSuccess(java.lang.Object data) {
+
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+
+                }
+            });
         }
         return this.sender;
     }
 
     public User getReceiver() {
         if(! objectsMapped){
-            mapIdToObject();
+            mapIdToObject(new FirebaseCallback() {
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onSuccess(java.lang.Object data) {
+
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+
+                }
+            });
         }
         return receiver;
     }
 
     public String getMessage(){
-        return this.getMessage();
+        return this.message;
     }
 
     public Event getEvent() {
         if(!objectsMapped){
-            mapIdToObject();
+            mapIdToObject(new FirebaseCallback() {
+                @Override
+                public void onStart() {}
+
+                @Override
+                public void onSuccess(java.lang.Object data) {
+
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+
+                }
+            });
         }
         return event;
     }
 
     public Group getGroup() {
         if(!objectsMapped){
-            mapIdToObject();
+            mapIdToObject(new FirebaseCallback() {
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onSuccess(java.lang.Object data) {
+
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+
+                }
+            });
         }
         return group;
     }
 
     public boolean isFeedback() {
-        return isFeedback;
+        return feedback;
     }
 
     public boolean isAccepted() {
-        return isAccepted;
+        return accepted;
     }
 
 
@@ -257,11 +400,11 @@ public class Request {
     }
 
     public void setIsAccepted(boolean isAccepted) {
-        this.isAccepted = isAccepted;
+        this.accepted = isAccepted;
     }
 
     public void setIsFeedback(boolean isFeedback) {
-        this.isFeedback = isFeedback;
+        this.feedback = isFeedback;
     }
 
     public String getRequestID() {
@@ -366,8 +509,8 @@ public class Request {
         request.put("senderID", this.senderID);
         request.put("receiverID", this.receiverID);
 
-        request.put("isFeedback", this.isFeedback);
-        request.put("isAccepted", this.isAccepted);
+        request.put("feedback", this.feedback);
+        request.put("accepted", this.accepted);
 
         mFirestore.collection("requests")
                 .add(request)

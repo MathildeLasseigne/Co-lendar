@@ -114,7 +114,8 @@ public class MainLoginActivity extends AppCompatActivity implements View.OnClick
                         }
                     });
                 } else {
-                    Toast.makeText(this, getResources().getString(R.string.loginFailed), Toast.LENGTH_LONG);
+                    Toast.makeText(this, getResources().getString(R.string.loginFailed), Toast.LENGTH_LONG).show();
+                    passwordInput.setText("");
                 }
             });
         }

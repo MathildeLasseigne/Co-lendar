@@ -92,7 +92,7 @@ public class GroupRequestCreation extends Fragment {
 
         setGroupNameAndPicture(this.groupID, this.groupName, this.groupPicture);
 
-        /*setGroupName(new FirebaseCallback() {
+        setGroupName(new FirebaseCallback() {
             @Override
             public void onStart() { }
 
@@ -106,7 +106,7 @@ public class GroupRequestCreation extends Fragment {
                 Log.v(TAG, "Error while loading the event");
             }
         }, this.groupID);
-         */
+
 
         setReceiverName(new FirebaseCallback() {
             @Override

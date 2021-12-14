@@ -17,13 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -32,7 +28,6 @@ import fr.ups.co_lendar.helpers.User;
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth mAuth;
-    private FirebaseFirestore mFirestore;
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
@@ -57,7 +52,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         initializeUI();
         mAuth = FirebaseAuth.getInstance();
-        mFirestore = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
     }

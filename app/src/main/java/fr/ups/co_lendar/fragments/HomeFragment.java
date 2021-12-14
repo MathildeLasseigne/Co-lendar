@@ -14,28 +14,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import java.io.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Objects;
 
 import fr.ups.co_lendar.FirebaseCallback;
 import fr.ups.co_lendar.R;
-import fr.ups.co_lendar.helpers.Event;
 import fr.ups.co_lendar.helpers.User;
 
 public class HomeFragment extends Fragment {
@@ -44,8 +28,6 @@ public class HomeFragment extends Fragment {
     View mView;
     User loggedInUser;
     ImageView profilePicture;
-    StorageReference storageReference;
-    private FirebaseFirestore mFirestore;
     String TAG = "HomeFragment";
 
     public HomeFragment(){
@@ -54,7 +36,6 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mFirestore = FirebaseFirestore.getInstance();
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_home, container,false);
         return mView;

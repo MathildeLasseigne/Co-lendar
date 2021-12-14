@@ -37,7 +37,7 @@ public class RequestFeedback extends NotificationFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(getLayoutId(), container, false);
-        initialiseVar(view);
+        setUpNotification(view);
         return view;
     }
 
@@ -45,7 +45,7 @@ public class RequestFeedback extends NotificationFragment {
 
         this.topicPicture = (ImageView) view.findViewById(R.id.topicPictureInFeedback);
 
-        this.senderName = (TextView)view.findViewById(R.id.receiverNameEventCreation);
+        this.senderName = (TextView)view.findViewById(R.id.reiceiverNameFeedback);
         this.acceptanceMessage = (TextView)view.findViewById(R.id.acceptance);
         this.topicName = (TextView)view.findViewById(R.id.topic);
 
@@ -60,7 +60,8 @@ public class RequestFeedback extends NotificationFragment {
     }
 
     public void registerRequestIntoView(){
-             //this.topicPicture set
+        //TODO: URGENT FIX - BREAKS THE CODE
+
         if(request.getObject() == Request.Object.Event){
             request.getEvent().getEventImage(new FirebaseCallback() {
                 @Override

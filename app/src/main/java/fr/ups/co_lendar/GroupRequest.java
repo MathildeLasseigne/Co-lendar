@@ -51,7 +51,7 @@ public class GroupRequest extends NotificationFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(getLayoutId(), container, false);
-        initialiseVar(view);
+        setUpNotification(view);
         return view;
     }
 
@@ -78,7 +78,7 @@ public class GroupRequest extends NotificationFragment {
        Group group = this.request.getGroup();
         if(group != null){
             this.groupName.setText(group.getName());
-            this.message.setText(request.getMessage());
+            this.message.setText(this.request.getMessage());
             this.participantsLeftoverNumber.setText("");
             int i = 0;
             if(group.getMembers().size() > i){
@@ -122,34 +122,22 @@ public class GroupRequest extends NotificationFragment {
                 @Override
                 public void onFailed(DatabaseError databaseError) { Log.d(TAG, "Error getting profile picture"); }
             });
-            this.requestSender.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO switch to user (the sender) view
-                }
+            this.requestSender.setOnClickListener(view -> {
+                //TODO switch to user (the sender) view
             });
 
-            accept.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    request.acceptRequest();
-                    removeFromView();
-                }
+            accept.setOnClickListener(view -> {
+                request.acceptRequest();
+                removeFromView();
             });
 
-            refuse.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    request.refuseRequest();
-                    removeFromView();
-                }
+            refuse.setOnClickListener(view -> {
+                request.refuseRequest();
+                removeFromView();
             });
 
-            info.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO switch to event view
-                }
+            info.setOnClickListener(view -> {
+                //TODO switch to event view
             });
         }
     }
