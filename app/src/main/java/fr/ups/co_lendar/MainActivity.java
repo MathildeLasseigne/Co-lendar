@@ -65,10 +65,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return true;
 
             case R.id.calendar:
+                bundle.putSerializable("user", loggedInUser);
+                calendarFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, calendarFragment).commit();
                 return true;
 
             case R.id.groups:
+                bundle.putSerializable("user", loggedInUser);
+                groupsFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, groupsFragment).commit();
                 return true;
 

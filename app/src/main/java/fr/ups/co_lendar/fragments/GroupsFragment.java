@@ -37,7 +37,7 @@ public class GroupsFragment extends Fragment {
     ArrayList<groupDisplayFragment> groups = new ArrayList<groupDisplayFragment>();
     private View rootView;
     private GroupDisplayAdapter adapter;
-    private Integer count = 0;
+    private int count = 0;
 
     public GroupsFragment(){
         // require a empty public constructor
