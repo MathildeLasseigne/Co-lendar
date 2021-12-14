@@ -25,6 +25,7 @@ import fr.ups.co_lendar.FirebaseCallback;
 import fr.ups.co_lendar.MainActivity;
 import fr.ups.co_lendar.NotificationFragmentAdapter;
 import fr.ups.co_lendar.R;
+import fr.ups.co_lendar.customLayout.ExpandableHeightListView;
 import fr.ups.co_lendar.helpers.Request;
 import fr.ups.co_lendar.helpers.User;
 
@@ -36,16 +37,16 @@ public class NotificationsFragment extends Fragment {
 
     private ArrayList<Request> requests = new ArrayList<>();
 
-    private ListView eventList;
+    private ExpandableHeightListView eventList;
     private ArrayList<NotificationFragment> eventNotifications = new ArrayList<>();
     private NotificationFragmentAdapter eventAdapter;
-    private ListView groupList;
+    private ExpandableHeightListView groupList;
     private ArrayList<NotificationFragment> groupNotifications = new ArrayList<>();
     private NotificationFragmentAdapter groupAdapter;
-    private ListView followList;
+    private ExpandableHeightListView followList;
     private ArrayList<NotificationFragment> followNotifications = new ArrayList<>();
     private NotificationFragmentAdapter followAdapter;
-    private ListView feedbackList;
+    private ExpandableHeightListView feedbackList;
     private ArrayList<NotificationFragment> feedbackNotifications = new ArrayList<>();
     private NotificationFragmentAdapter feedbackAdapter;
 
@@ -124,15 +125,19 @@ public class NotificationsFragment extends Fragment {
     private void initializeUI(){
         setUser();
         this.eventList = mView.findViewById(R.id.eventList);
+        this.eventList.setExpanded(true);
         this.eventAdapter = new NotificationFragmentAdapter(getContext(), this.eventNotifications);
         this.eventList.setAdapter(eventAdapter);
         this.groupList = mView.findViewById(R.id.groupList);
+        this.groupList.setExpanded(true);
         this.groupAdapter = new NotificationFragmentAdapter(getContext(), groupNotifications);
         this.groupList.setAdapter(groupAdapter);
         this.followList = mView.findViewById(R.id.followList);
+        this.followList.setExpanded(true);
         this.followAdapter = new NotificationFragmentAdapter(getContext(), followNotifications);
         this.followList.setAdapter(followAdapter);
         this.feedbackList = mView.findViewById(R.id.feedbackList);
+        this.feedbackList.setExpanded(true);
         this.feedbackAdapter = new NotificationFragmentAdapter(getContext(), feedbackNotifications);
         this.feedbackList.setAdapter(feedbackAdapter);
         updateView();

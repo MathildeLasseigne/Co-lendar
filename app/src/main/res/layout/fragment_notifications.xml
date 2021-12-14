@@ -80,10 +80,11 @@
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
-                <ListView
+                <fr.ups.co_lendar.customLayout.ExpandableHeightListView
                     android:id="@+id/feedbackList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
@@ -91,7 +92,7 @@
                     android:padding="10dp">
 
 
-                </ListView>
+                </fr.ups.co_lendar.customLayout.ExpandableHeightListView>
 
                 <TextView
                     android:id="@+id/textView"
@@ -103,7 +104,7 @@
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
-                <ListView
+                <fr.ups.co_lendar.customLayout.ExpandableHeightListView
                     android:id="@+id/eventList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -114,7 +115,7 @@
                     android:padding="10dp">
 
 
-                </ListView>
+                </fr.ups.co_lendar.customLayout.ExpandableHeightListView>
 
                 <TextView
                     android:id="@+id/textView2"
@@ -126,7 +127,7 @@
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
-                <ListView
+                <fr.ups.co_lendar.customLayout.ExpandableHeightListView
                     android:id="@+id/groupList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -137,7 +138,7 @@
                     android:padding="10dp">
 
 
-                </ListView>
+                </fr.ups.co_lendar.customLayout.ExpandableHeightListView>
 
                 <TextView
                     android:id="@+id/textView4"
@@ -149,7 +150,7 @@
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
-                <ListView
+                <fr.ups.co_lendar.customLayout.ExpandableHeightListView
                     android:id="@+id/followList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -160,7 +161,7 @@
                     android:padding="10dp">
 
 
-                </ListView>
+                </fr.ups.co_lendar.customLayout.ExpandableHeightListView>
 
             </LinearLayout>
         </ScrollView>
