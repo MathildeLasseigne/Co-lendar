@@ -6,31 +6,31 @@
     android:layout_height="wrap_content"
     tools:context="fr.ups.co_lendar.fragments.groupDisplayFragment"
     android:background="@color/lightBlue"
-    android:id="@+id/groupContainer">
+    android:id="@+id/Member">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/lightBlue"
-        app:cardBackgroundColor="@color/lightBlue">
+        app:cardBackgroundColor="@color/colorGrey">
 
         <TextView
-            android:id="@+id/GroupText"
+            android:id="@+id/MemberName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="120dp"
+            android:layout_marginLeft="70dp"
             android:layout_marginTop="10dp"
-            android:textSize="30dp"
+            android:textSize="20dp"
             android:text="Original"
             android:textColor="@color/black">
         </TextView>
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:scaleType="fitXY"
-            android:background="@drawable/ic_group"
+            android:background="@drawable/ic_member"
             android:backgroundTint="@color/colorTeal"
             />
 
