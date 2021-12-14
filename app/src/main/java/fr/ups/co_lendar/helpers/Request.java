@@ -4,15 +4,11 @@ import fr.ups.co_lendar.EventRequest;
 import fr.ups.co_lendar.FirebaseCallback;
 import fr.ups.co_lendar.FollowRequest;
 import fr.ups.co_lendar.GroupRequest;
-import fr.ups.co_lendar.MainActivity;
 import fr.ups.co_lendar.RequestFeedback;
 import fr.ups.co_lendar.fragments.NotificationFragment;
 
-import android.content.Intent;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -24,23 +20,15 @@ public class Request {
     public enum Object{Event, Group, Follow}
 
     private Object object;
-
     private User sender;
     private User receiver;
-
     private String message = "";
-
     private Event event;
     private Group group;
-
-    private boolean isFeedback = false;
-
-    private boolean isAccepted = false;
-
-
+    private boolean feedback = false;
+    private boolean accepted = false;
     private String senderID = "";
     private String receiverID = "";
-
     private String eventID = "";
     private String groupID = "";
     private String requestID = "";
@@ -73,10 +61,10 @@ public class Request {
      * @param senderID
      * @param receiverID
      * @param message
-     * @param isFeedback if is a feedback
+     * @param feedback if is a feedback
      * @param accepted if is a feedback and is accepted
      */
-    public Request(Object object, String objectID, String senderID, String receiverID, String message, boolean isFeedback, boolean accepted){
+    public Request(Object object, String objectID, String senderID, String receiverID, String message, boolean feedback, boolean accepted){
         if(object == Object.Group){
             this.groupID = objectID;
             this.senderID = senderID;
@@ -91,8 +79,8 @@ public class Request {
             this.receiverID = receiverID;
             this.message = message;
         }
-        this.isFeedback = isFeedback;
-        this.isAccepted = accepted;
+        this.feedback = feedback;
+        this.accepted = accepted;
 
         registerInDatabase();
     }
@@ -212,11 +200,11 @@ public class Request {
     }
 
     public boolean isFeedback() {
-        return isFeedback;
+        return feedback;
     }
 
     public boolean isAccepted() {
-        return isAccepted;
+        return accepted;
     }
 
 
@@ -257,11 +245,11 @@ public class Request {
     }
 
     public void setIsAccepted(boolean isAccepted) {
-        this.isAccepted = isAccepted;
+        this.accepted = isAccepted;
     }
 
     public void setIsFeedback(boolean isFeedback) {
-        this.isFeedback = isFeedback;
+        this.feedback = isFeedback;
     }
 
     public String getRequestID() {
@@ -366,8 +354,8 @@ public class Request {
         request.put("senderID", this.senderID);
         request.put("receiverID", this.receiverID);
 
-        request.put("isFeedback", this.isFeedback);
-        request.put("isAccepted", this.isAccepted);
+        request.put("feedback", this.feedback);
+        request.put("accepted", this.accepted);
 
         mFirestore.collection("requests")
                 .add(request)

@@ -57,40 +57,6 @@ public class NotificationsFragment extends Fragment {
         // require a empty public constructor
     }
 
-
-    /**
-     * Load the request from the database
-     * @return
-     */
-    /*public ArrayList<Request> loadRequests(){
-        /*mFirestore.collection("requests")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-
-                    } else {
-                        Log.d(TAG, "Error getting requests: ", task.getException());
-                    }
-                });*/
-        /*FirebaseCallback fc = new FirebaseCallback() {
-            @Override
-            public void onStart() { }
-
-            @Override
-            public void onSuccess(Object data) {
-                tempRequests = (ArrayList<Request>) data;
-            }
-
-            @Override
-            public void onFailed(DatabaseError databaseError) {
-                Log.v(TAG, "Error while loading the requests");
-            }
-        };
-        this.loggedInUser.getUserRequests(fc);
-        Log.d(TAG, "\n\n\n"+tempRequests.size() + "requests found\n\n\n");
-        return tempRequests;
-    }*/
-
     public void updateView(){
         eventAdapter.clear();
         groupAdapter.clear();
