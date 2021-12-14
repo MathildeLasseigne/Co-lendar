@@ -309,16 +309,14 @@ public class Request {
     }
 
     public String getMessage(){
-        return this.getMessage();
+        return this.message;
     }
 
     public Event getEvent() {
         if(!objectsMapped){
             mapIdToObject(new FirebaseCallback() {
                 @Override
-                public void onStart() {
-
-                }
+                public void onStart() {}
 
                 @Override
                 public void onSuccess(java.lang.Object data) {

@@ -78,7 +78,7 @@ public class GroupRequest extends NotificationFragment {
        Group group = this.request.getGroup();
         if(group != null){
             this.groupName.setText(group.getName());
-            this.message.setText(request.getMessage());
+            this.message.setText(this.request.getMessage());
             this.participantsLeftoverNumber.setText("");
             int i = 0;
             if(group.getMembers().size() > i){

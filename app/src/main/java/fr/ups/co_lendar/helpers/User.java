@@ -1,21 +1,7 @@
 package fr.ups.co_lendar.helpers;
-
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,7 +12,6 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,9 +19,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import fr.ups.co_lendar.FirebaseCallback;
-import fr.ups.co_lendar.HomeActivity;
-import fr.ups.co_lendar.MainLoginActivity;
-import fr.ups.co_lendar.R;
 
 public class User implements Serializable {
 
@@ -170,6 +152,7 @@ public class User implements Serializable {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Request request = document.toObject(Request.class);
+                            request.setRequestID(document.getId());
                             if (request.getReceiverID().equals(this.UID)) {
                                 requests.add(request);
                             }
