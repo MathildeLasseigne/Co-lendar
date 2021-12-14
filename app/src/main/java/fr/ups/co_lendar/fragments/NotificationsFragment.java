@@ -108,12 +108,16 @@ public class NotificationsFragment extends Fragment {
         NotificationFragment nf = request.createFragment();
         if(request.isFeedback()){
             feedbackAdapter.add(nf);
+            feedbackAdapter.notifyDataSetChanged();
         } else if(request.getObject() == Request.Object.Event){
             eventAdapter.add(nf);
+            eventAdapter.notifyDataSetChanged();
         } else if(request.getObject() == Request.Object.Group){
             groupAdapter.add(nf);
+            groupAdapter.notifyDataSetChanged();
         } else if(request.getObject() == Request.Object.Follow){
             followAdapter.add(nf);
+            feedbackAdapter.notifyDataSetChanged();
         }
     }
 

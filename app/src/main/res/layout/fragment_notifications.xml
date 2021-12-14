@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorDarkBackground"
+    android:paddingBottom="20dp"
     tools:context=".MainActivity">
 
     <TextView
@@ -52,107 +53,117 @@
 
     </androidx.cardview.widget.CardView>
 
-    <ScrollView
+    <LinearLayout
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/notificationText"
-        tools:layout_editor_absoluteX="336dp">
+        tools:layout_editor_absoluteX="326dp">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_marginTop="36dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Requests feedback"
-                android:textAlignment="center"
-                android:textColor="@color/colorGrey"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
 
-            <ListView
-                android:id="@+id/feedbackList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:background="#2b535c">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Requests feedback"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
-
-            </ListView>
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Event requests"
-                android:textAlignment="center"
-                android:textColor="@color/colorGrey"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <ListView
-                android:id="@+id/eventList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:background="#2b535c">
+                <ListView
+                    android:id="@+id/feedbackList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#2b535c"
+                    android:padding="10dp">
 
 
-            </ListView>
+                </ListView>
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Group requests"
-                android:textAlignment="center"
-                android:textColor="@color/colorGrey"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Event requests"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
-            <ListView
-                android:id="@+id/groupList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:background="#2b535c">
-
-
-            </ListView>
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Follow requests"
-                android:textAlignment="center"
-                android:textColor="@color/colorGrey"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <ListView
-                android:id="@+id/followList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:background="#2b535c">
+                <ListView
+                    android:id="@+id/eventList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#2b535c"
+                    android:padding="10dp">
 
 
-            </ListView>
+                </ListView>
 
-        </LinearLayout>
-    </ScrollView>
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Group requests"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <ListView
+                    android:id="@+id/groupList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#2b535c"
+                    android:padding="10dp">
+
+
+                </ListView>
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Follow requests"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <ListView
+                    android:id="@+id/followList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#2b535c"
+                    android:padding="10dp">
+
+
+                </ListView>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
