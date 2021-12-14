@@ -2,6 +2,8 @@ package fr.ups.co_lendar.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -32,6 +34,10 @@ public class GroupsFragment extends Fragment {
     User loggedInUser;
     private FirebaseFirestore mFirestore;
     private FirebaseAuth mAuth;
+    ArrayList<groupDisplayFragment> groups = new ArrayList<groupDisplayFragment>();
+    private View rootView;
+    private GroupDisplayAdapter adapter;
+    private Integer count = 0;
 
     public GroupsFragment(){
         // require a empty public constructor
@@ -39,13 +45,20 @@ public class GroupsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if(count>0) {
+            adapter.clear();
+        }
+        setUser();
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
-        setUser();
-        View rootView = inflater.inflate(R.layout.fragment_groups, container, false);
-        addGroupDisplay(rootView, R.layout.fragment_group_display);
+        rootView = inflater.inflate(R.layout.fragment_groups, container, false);
+        setGroups();
+
+        count++;
+
         return rootView;
     }
+
 
     private void setUser() {
 
@@ -55,56 +68,19 @@ public class GroupsFragment extends Fragment {
         }
     }
 
-    public void addGroupDisplay(View rootView, int optionId) {
+    public void addGroupDisplay(View rootView) {
+
         ListView ListGroup = (ListView) rootView.findViewById(R.id.groupList);
-        ArrayList<groupDisplayFragment> groups = new ArrayList<groupDisplayFragment>();
-        /*groupDisplayFragment g1 = new groupDisplayFragment();
-        g1.setParameters("Girls in deep shit");
-        g1.setGid("g1");
-        groups.add(g1);
-        groupDisplayFragment g2 = new groupDisplayFragment();
-        g2.setParameters("La Taverne");
-        g2.setGid("g2");
-        groups.add(g2);*/
 
-        //List<Group> groupOfTheUser = new ArrayList<>();
-
-        loggedInUser.getUserGroups(new FirebaseCallback() {
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onSuccess(Object data) {
-                ArrayList<Group> a = (ArrayList<Group>) data;
-                for(Group g : a) {
-                    String name = g.getName();
-                    groupDisplayFragment g3 = new groupDisplayFragment();
-                    g3.setParameters(name);
-                    groups.add(g3);
-                }
-            }
-
-            @Override
-            public void onFailed(DatabaseError databaseError) {
-
-            }
-        });
-
-
-        /*for(Group g : groupOfTheUser) {
-            String name = g.getName();
-            groupDisplayFragment g3 = new groupDisplayFragment();
-            g1.setParameters(name);
-            groups.add(g3);
-        }*/
 
         // Create the adapter to convert the array to views
-        GroupDisplayAdapter adapter = new GroupDisplayAdapter (getContext(), groups);
+        adapter = new GroupDisplayAdapter (getContext(), groups);
+        adapter.notifyDataSetChanged();
 
         // DataBind ListView with items from ArrayAdapter
         ListGroup.setAdapter(adapter);
+
+        //adapter.clear();
 
         ListGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -114,8 +90,7 @@ public class GroupsFragment extends Fragment {
                     if(position == i) {
                         Fragment fragment = null;
                         GroupViewFragment gv = new GroupViewFragment();
-                        gv.setGid(groups.get(i).getGid());
-                        gv.setGroupName(groups.get(i).getGroupName());
+                        gv.setGroup(groups.get(i).getGroup());
                         fragment = gv;
                         replaceFragment(fragment);
                     }
@@ -131,6 +106,31 @@ public class GroupsFragment extends Fragment {
         transaction.replace(R.id.flFragment, someFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    public void setGroups() {
+        loggedInUser.getUserGroups(new FirebaseCallback() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(Object data) {
+                ArrayList<Group> a = (ArrayList<Group>) data;
+                for(Group g : a) {
+                    groupDisplayFragment g3 = new groupDisplayFragment();
+                    g3.setGroup(g);
+                    groups.add(g3);
+                    addGroupDisplay(rootView);
+                }
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

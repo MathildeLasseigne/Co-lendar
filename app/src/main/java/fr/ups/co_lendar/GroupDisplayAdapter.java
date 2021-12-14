@@ -18,14 +18,12 @@ public class GroupDisplayAdapter extends ArrayAdapter<groupDisplayFragment> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         groupDisplayFragment gd = getItem(position);
-        String groupName = gd.getGroupName();
+        String groupName = gd.getGroup().getName();
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_group_display, parent, false);
         }
         TextView gName = (TextView) convertView.findViewById(R.id.GroupText);
         gName.setText(groupName);
-        //FrameLayout f = (FrameLayout) convertView.findViewById(R.id.groupContainer);
-        //f.setId(gd.getGroupId());
         return convertView;
     }
 }

@@ -14,30 +14,22 @@ import java.util.ArrayList;
 
 import fr.ups.co_lendar.GroupDisplayAdapter;
 import fr.ups.co_lendar.R;
+import fr.ups.co_lendar.helpers.Group;
 import fr.ups.co_lendar.memberDisplayAdapter;
 
 public class GroupViewFragment extends Fragment {
-    private String gid;
-    private String groupName;
+    private Group group;
 
     public GroupViewFragment() {
         // Required empty public constructor
     }
 
-    public String getGid() {
-        return gid;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setGid(String gid) {
-        this.gid = gid;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     @Override
@@ -55,7 +47,7 @@ public class GroupViewFragment extends Fragment {
 
     private void addMembersDisplay(View rootView) {
         TextView t = (TextView) rootView.findViewById(R.id.ViewGroupName);
-        t.setText(groupName);
+        t.setText(group.getName());
         ListView ListMembers = (ListView) rootView.findViewById(R.id.groupsMembers);
         ArrayList<membersFragment> members = new ArrayList<membersFragment>();
         membersFragment m1 = new membersFragment();

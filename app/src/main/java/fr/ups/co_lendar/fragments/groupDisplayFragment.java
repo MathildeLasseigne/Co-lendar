@@ -16,11 +16,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import fr.ups.co_lendar.R;
+import fr.ups.co_lendar.helpers.Group;
 
 public class groupDisplayFragment extends Fragment {
-    ArrayList<String> listItems=new ArrayList<String>();
-    String groupName = "GroupName";
-    String gid = "";
+    private Group group;
 
     private View mView;
 
@@ -28,20 +27,12 @@ public class groupDisplayFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public void setGid(String gid) {
-        this.gid = gid;
+    public Group getGroup() {
+        return group;
     }
 
-    public String getGid() {
-        return gid;
-    }
-
-    public void setParameters(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public String getGroupName() {
-        return groupName;
+    public void setGroup(Group g) {
+        this.group = g;
     }
 
     @Override

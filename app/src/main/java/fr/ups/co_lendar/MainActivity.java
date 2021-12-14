@@ -57,16 +57,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("user", loggedInUser);
-
         switch (item.getItemId()) {
             case R.id.home:
+                bundle.putSerializable("user", loggedInUser);
                 homeFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, homeFragment).commit();
                 return true;
 
             case R.id.calendar:
-                calendarFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, calendarFragment).commit();
                 return true;
 
@@ -75,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return true;
 
             case R.id.notifications:
+                bundle.putSerializable("user", loggedInUser);
                 notificationsFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, notificationsFragment).commit();
                 return true;
