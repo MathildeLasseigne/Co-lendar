@@ -71,5 +71,8 @@
     <string name="addressPlaceholder">here goes address. It might be long</string>
     <string name="timePlaceholder">12PM to 1:30PM</string>
     <string name="extraGuestsNumber">+2</string>
+    <string name="no_upcoming_events">No upcoming events</string>
+    <string name="some_upcoming_events">Upcoming events</string>
+    <string name="date_placeholder">No events today</string>
 
 </resources>

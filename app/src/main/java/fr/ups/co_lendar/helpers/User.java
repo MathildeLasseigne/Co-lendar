@@ -121,6 +121,27 @@ public class User implements Serializable {
         this.usersEvents = usersEvents;
     }
 
+    public void getUserEvents(FirebaseCallback callback) {
+
+        ArrayList<Event> events = new ArrayList<>();
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+        mFirestore.collection("events")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Event event = document.toObject(Event.class);
+                            if (event.getParticipants().contains(this.UID)) {
+                                events.add(event);
+                            }
+                        }
+                        callback.onSuccess(events);
+                    } else {
+                        Log.d(TAG, "Error getting events: ", task.getException());
+                    }
+                });
+    }
+
     public void getUserGroups(FirebaseCallback callback) {
 
         ArrayList<Group> groups = new ArrayList<>();
