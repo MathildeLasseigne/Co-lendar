@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ public class CalendarFragment extends Fragment {
     View mView;
     String TAG = "CalendarFragment";
     List<Event> allEvents;
+    List<Event> daysEvents = new ArrayList<>();
     String suffix = " today";
     EventCreationViewFragment eventCreationFragment = new EventCreationViewFragment();
 
@@ -133,6 +135,7 @@ public class CalendarFragment extends Fragment {
         for (Event event : allEvents) {
             if (event.getDate().getDate() == selectedDate.getDate()) {
                 eventFragments.add(new EventFragment(event));
+                daysEvents.add(event);
             }
         }
         if (eventFragments.size() == 0) {
@@ -149,7 +152,7 @@ public class CalendarFragment extends Fragment {
             selectedDateEventsLV.setLayoutParams(params);
             selectedDateTextView.setText(eventFragments.size() + " event(s)" + suffix);
             selectedDateEventsLV.setVisibility(View.VISIBLE);
-            registerFragmentsToAdapter(eventFragments, selectedDateEventsLV);
+            registerFragmentsToAdapter(eventFragments, selectedDateEventsLV, daysEvents);
         }
     }
 
@@ -165,17 +168,35 @@ public class CalendarFragment extends Fragment {
         } else {
             upcomingEventsTextView.setText(R.string.some_upcoming_events);
             upcomingEventsLV.setVisibility(View.VISIBLE);
-            registerFragmentsToAdapter(eventFragments, upcomingEventsLV);
+            registerFragmentsToAdapter(eventFragments, upcomingEventsLV, allEvents);
         }
     }
 
-    private void registerFragmentsToAdapter(ArrayList<EventFragment> fragments, ListView lv) {
+    private void registerFragmentsToAdapter(ArrayList<EventFragment> fragments, ListView lv,
+                                            List<Event> events) {
 
         EventAdapter adapter = new EventAdapter(getContext(), fragments);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener((AdapterView.OnItemClickListener) (parent, view, position, id) -> {
-            Log.d("event", "position is " + position);
+            for(int i=0; i< events.size(); i++) {
+                if(position == i) {
+                    EventViewFragment ev = new EventViewFragment();
+                    ev.setEvent(events.get(i));
+                    replaceFragment(ev);
+                }
+            }
         });
+    }
+
+    public void replaceFragment(Fragment someFragment) {
+        Bundle bundle = this.getArguments();
+        bundle.putSerializable("user", loggedInUser);
+        someFragment.setArguments(bundle);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.flFragment, someFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     class sortCompare implements Comparator<Event>

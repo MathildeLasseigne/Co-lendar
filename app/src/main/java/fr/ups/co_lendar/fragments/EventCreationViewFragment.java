@@ -392,13 +392,12 @@ public class EventCreationViewFragment extends Fragment {
 
                 @Override
                 public void onSuccess(Object data) {
+                    sendNotificationToUser("New event", "Floriana invited you to an event");
                     List<String> members = ((Group) data).getMembers();
                     for (String member : members) {
                         new Request(Request.Object.Event, (String)event.get("eventID"),
                                 loggedInUser.getUID(), member, "", false, false);
                     }
-                    //not to be modified - faking the notification feature
-                    sendNotificationToUser("New event", "Floriana invited you to an event");
                 }
 
                 @Override
@@ -424,12 +423,13 @@ public class EventCreationViewFragment extends Fragment {
     }
 
     public void sendNotificationToUser(String title, String message) {
-        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(FirebaseMessagingService.getToken(mView.getContext()),
-                title, message, mView.getContext(), getActivity());
+        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(FirebaseMessagingService.getToken(getView().getContext()),
+                title, message, getView().getContext(), getActivity());
         notificationsSender.sendNotifications();
     }
 
     private void goBack() {
+        //sendNotificationToUser("fdf", "fdf");
         CalendarFragment fragment = new CalendarFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("user", loggedInUser);

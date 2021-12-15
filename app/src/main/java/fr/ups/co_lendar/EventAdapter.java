@@ -47,7 +47,6 @@ public class EventAdapter extends ArrayAdapter<EventFragment> {
         address = view.findViewById(R.id.textView_location);
         time = view.findViewById(R.id.textView_time);
         extraInvitees = view.findViewById(R.id.textView_hiddenMembersNb);
-
         imageView1 = view.findViewById(R.id.imageView1);
         imageView2 = view.findViewById(R.id.imageView2);
         imageView3 = view.findViewById(R.id.imageView3);

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -340,7 +341,13 @@ public class WeekCalendarFragment extends Fragment implements View.OnClickListen
         ListView eventList = (ListView) mView.findViewById(R.id.eventListView);
         eventList.setAdapter(adapter);
         eventList.setOnItemClickListener((AdapterView.OnItemClickListener) (parent, view, position, id) -> {
-            Log.d("event", "position is " + position);
+            for(int i=0; i< events.size(); i++) {
+                if(position == i) {
+                    //EventViewFragment ev = new EventViewFragment();
+                    //ev.setEvent(events.get(i));
+                    //replaceFragment(ev);
+                }
+            }
         });
     }
 }
