@@ -2,6 +2,8 @@ package fr.ups.co_lendar.helpers;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,6 +30,7 @@ public class User implements Serializable {
     String email;
     String UID;
     List<String> usersEvents;
+    List<Group> usersGroups;
     String TAG = "USER";
 
     public User(String firstName, String lastName, String email, String password, String UID) {
@@ -121,25 +124,46 @@ public class User implements Serializable {
         this.usersEvents = usersEvents;
     }
 
+    public List<Group> getUsersGroups() {
+        return usersGroups;
+    }
+
+    public void setUsersGroups(List<Group> usersGroups) {
+        this.usersGroups = usersGroups;
+    }
+
     public void getUserEvents(FirebaseCallback callback) {
 
-        ArrayList<Event> events = new ArrayList<>();
-        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
-        mFirestore.collection("events")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Event event = document.toObject(Event.class);
-                            if (event.getParticipants().contains(this.UID)) {
-                                events.add(event);
-                            }
+        if (this.usersGroups == null) {
+            getUserGroups(new FirebaseCallback() {
+                @Override
+                public void onStart() {}
+
+                @Override
+                public void onSuccess(Object data) {
+                    setUsersGroups((List<Group>) data);
+                    downloadEvents(new FirebaseCallback() {
+                        @Override
+                        public void onStart() {}
+
+                        @Override
+                        public void onSuccess(Object data) {
+                            callback.onSuccess(data);
                         }
-                        callback.onSuccess(events);
-                    } else {
-                        Log.d(TAG, "Error getting events: ", task.getException());
-                    }
-                });
+
+                        @Override
+                        public void onFailed(DatabaseError databaseError) { }
+                    });
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+                    Log.d(TAG, "Could not load user's groups");
+                }
+            });
+        } else {
+            downloadEvents(callback);
+        }
     }
 
     public void getUserGroups(FirebaseCallback callback) {
@@ -221,5 +245,32 @@ public class User implements Serializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void downloadEvents(FirebaseCallback callback) {
+        ArrayList<Event> events = new ArrayList<>();
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+        mFirestore.collection("events")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Event event = document.toObject(Event.class);
+                            if (event.getParticipants() != null
+                                    && event.getParticipants().contains(this.UID)) {
+                                events.add(event);
+                            } else if (event.getGroupID() != null) {
+                                for (Group group : usersGroups) {
+                                    if (group.getGroupID().equals(event.getGroupID())) {
+                                        events.add(event);
+                                    }
+                                }
+                            }
+                        }
+                        callback.onSuccess(events);
+                    } else {
+                        Log.d(TAG, "Error getting events: ", task.getException());
+                    }
+                });
     }
 }

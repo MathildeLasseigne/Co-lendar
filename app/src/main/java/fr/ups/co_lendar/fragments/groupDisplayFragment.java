@@ -1,9 +1,11 @@
 package fr.ups.co_lendar.fragments;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -22,6 +24,7 @@ public class groupDisplayFragment extends Fragment {
     private Group group;
 
     private View mView;
+    private CardView cardView;
 
     public groupDisplayFragment() {
         // Required empty public constructor
@@ -45,7 +48,6 @@ public class groupDisplayFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_group_display, container, false);
-
         return mView;
     }
 

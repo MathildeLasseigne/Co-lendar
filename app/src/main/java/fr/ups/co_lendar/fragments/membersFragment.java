@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import fr.ups.co_lendar.R;
 
@@ -15,6 +16,8 @@ public class membersFragment extends Fragment {
     private String uid = "";
     private String FirstName = "";
     private String LastName = "";
+    FrameLayout layout;
+    View mView;
 
 
     public membersFragment() {
@@ -54,6 +57,12 @@ public class membersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_members, container, false);
+        mView = inflater.inflate(R.layout.fragment_members, container, false);
+        return mView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        layout = mView.findViewById(R.id.frameLayout_member);
     }
 }

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="300dp"
+    android:layout_centerInParent="true"
+    android:layout_height="wrap_content"
+    android:id="@+id/layout_userSearch"
+    android:background="@drawable/light_blue_bg">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/abeezee"
+        android:textSize="20sp"
+        android:text="@string/search_for_users"
+        android:layout_marginTop="20dp"
+        android:gravity="center"/>
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:id="@+id/editText_search_email"
+        android:fontFamily="@font/abeezee"
+        android:textSize="15sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="@drawable/events_bg"
+        android:id="@+id/button_searchUser"
+        android:text="Search"
+        android:fontFamily="@font/abeezee"
+        android:textSize="12sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+
+    <ListView
+        android:layout_width="250dp"
+        android:layout_height="80dp"
+        android:id="@+id/listView_searchUsers"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <ImageButton
+            android:background="@drawable/events_bg"
+            android:id="@+id/sv_imageButton_cancel"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitXY"
+            android:backgroundTint="@color/colorTeal"
+            app:srcCompat="@drawable/ic_cancel"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            />
+
+        <ImageButton
+            android:background="@drawable/events_bg"
+            android:id="@+id/sv_imageButton_confirm"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitXY"
+            android:backgroundTint="@color/colorTeal"
+            app:srcCompat="@drawable/ic_check"
+            android:layout_margin="10dp"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>

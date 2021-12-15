@@ -9,12 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class CalendarFragment extends Fragment {
     ListView selectedDateEventsLV;
     ListView upcomingEventsLV;
     CalendarView calendarView;
+    FloatingActionButton addEventButton;
 
     Date selectedDate;
     User loggedInUser;
@@ -44,6 +46,7 @@ public class CalendarFragment extends Fragment {
     String TAG = "CalendarFragment";
     List<Event> allEvents;
     String suffix = " today";
+    EventCreationViewFragment eventCreationFragment = new EventCreationViewFragment();
 
     public CalendarFragment(){
         // require a empty public constructor
@@ -75,6 +78,7 @@ public class CalendarFragment extends Fragment {
         selectedDateEventsLV = mView.findViewById(R.id.listView_selectedDateEvents);
         upcomingEventsLV = mView.findViewById(R.id.listView_allEvents);
         calendarView = mView.findViewById(R.id.calendarView);
+        addEventButton = mView.findViewById(R.id.button_addEvent);
 
         selectedDate = new Date(calendarView.getDate());
 
@@ -115,6 +119,10 @@ public class CalendarFragment extends Fragment {
                 suffix = " on the " + dayOfMonth + "th of " + getMonthName(month);
             }
             showTodaysEvents();
+        });
+
+        addEventButton.setOnClickListener(view -> {
+            openEventCreationView();
         });
     }
 
@@ -187,5 +195,15 @@ public class CalendarFragment extends Fragment {
     public int dpToPx(int dp) {
         float density = mView.getContext().getResources().getDisplayMetrics().density;
         return Math.round((float) dp * density);
+    }
+
+    private void openEventCreationView() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", loggedInUser);
+        eventCreationFragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager()
+                .beginTransaction().replace(R.id.flFragment, eventCreationFragment)
+                .commit();
+
     }
 }

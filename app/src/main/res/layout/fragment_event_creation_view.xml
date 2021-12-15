@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:nestedScrollingEnabled="true"
     tools:context="fr.ups.co_lendar.fragments.EventCreationViewFragment">
 
 <FrameLayout
@@ -34,7 +35,7 @@
             android:backgroundTint="@color/colorGrey"
             android:ems="15"
             android:inputType="textPersonName"
-            android:text="Blabla"
+            android:text="@string/event_name"
             android:textColor="@color/colorGrey" />
 
         <LinearLayout
@@ -71,14 +72,14 @@
                     <RadioButton android:id="@+id/yesGroupRB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="yes"
+                        android:text="@string/yes"
                         android:checked="true"
                         android:layout_marginRight="20dp"/>
 
                     <RadioButton android:id="@+id/noGroupRB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="no"/>
+                        android:text="@string/no"/>
                 </RadioGroup>
 
             </LinearLayout>
@@ -107,7 +108,7 @@
                             android:layout_marginTop="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
+                            android:text="@string/participants"
                             android:textSize="20sp"/>
 
                         <ImageButton
@@ -156,14 +157,15 @@
                             android:layout_marginTop="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="blou"
+                            android:text="@string/your_groups"
                             android:textSize="20sp"/>
 
 
                     <ListView
+                        android:nestedScrollingEnabled="true"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:id="@+id/caca">
+                        android:layout_height="200dp"
+                        android:id="@+id/listView_userGroups">
 
                     </ListView>
 
@@ -187,7 +189,7 @@
                         android:paddingStart="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
+                        android:text="@string/event_infos"
                         android:textSize="20sp"/>
 
                     <LinearLayout
@@ -199,7 +201,7 @@
                         <TextView
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
-
+                            android:text="@string/address"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="10dp"
                             android:textSize="15sp"
@@ -224,7 +226,7 @@
                         <TextView
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
-
+                            android:text="@string/date"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="10dp"
                             android:textSize="15sp"
@@ -236,7 +238,7 @@
                             android:layout_height="20dp"
                             android:ems="10"
                             android:textSize="15sp"
-                            android:inputType="date"
+                            android:inputType="time"
                             android:layout_marginTop="10dp"
                             android:background="@color/colorGrey"/>
 
@@ -250,7 +252,7 @@
                         <TextView
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
-
+                            android:text="@string/time"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="10dp"
                             android:textSize="15sp"
@@ -275,7 +277,7 @@
                         <TextView
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
-
+                            android:text="@string/comments"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="10dp"
                             android:textSize="15sp"
@@ -304,7 +306,7 @@
                         <TextView
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
-
+                            android:text="@string/url"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="10dp"
                             android:textSize="15sp"
