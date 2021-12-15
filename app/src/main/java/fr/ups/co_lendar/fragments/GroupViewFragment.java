@@ -1,5 +1,7 @@
 package fr.ups.co_lendar.fragments;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,13 +11,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import fr.ups.co_lendar.EventAdapter;
 import fr.ups.co_lendar.FirebaseCallback;
@@ -32,8 +41,13 @@ public class GroupViewFragment extends Fragment {
     User loggedInUser;
     private memberDisplayAdapter adapter;
     private EventAdapter eventAdapter;
-    ArrayList<membersFragment> members = new ArrayList<membersFragment>();
+    ImageButton addMembersIB;
+    String selectedUID = "";
+    ListView participantsLV;
+    ArrayList<String> selectedParticipants = new ArrayList<>();
+    ArrayList<membersFragment> selectedParticipantFragments = new ArrayList<>();
     ArrayList<EventFragment> events = new ArrayList<EventFragment>();
+    String TAG = "GroupViewFragment";
 
     public GroupViewFragment() {
         // Required empty public constructor
@@ -58,13 +72,14 @@ public class GroupViewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        adapter = new memberDisplayAdapter(getContext(), members);
+        adapter = new memberDisplayAdapter(getContext(), selectedParticipantFragments);
         adapter.clear();
         eventAdapter = new EventAdapter(getContext(), events);
         eventAdapter.clear();
         setUser();
-        // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_group_view, container, false);
+        addMembersIB = rootView.findViewById(R.id.AddMember);
+        initializeListeners();
         setMembers();
         setEvents();
         return rootView;
@@ -84,7 +99,7 @@ public class GroupViewFragment extends Fragment {
                     membersFragment m = new membersFragment();
                     m.setFirstName(user.getFirstName());
                     m.setLastName(user.getLastName());
-                    members.add(m);
+                    selectedParticipantFragments.add(m);
                     addMembersDisplay(rootView);
                 }
             }
@@ -96,18 +111,26 @@ public class GroupViewFragment extends Fragment {
         });
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private void initializeListeners() {
+
+        addMembersIB.setOnClickListener(view -> {
+            showSearchDialog();
+        });
+    }
+
     private void addMembersDisplay(View rootView) {
         TextView t = (TextView) rootView.findViewById(R.id.ViewGroupName);
         t.setText(group.getName());
-        ListView ListMembers = (ListView) rootView.findViewById(R.id.groupsMembers);
+        participantsLV = (ListView) rootView.findViewById(R.id.groupsMembers);
 
 
         // Create the adapter to convert the array to views
-        adapter = new memberDisplayAdapter(getContext(), members);
+        adapter = new memberDisplayAdapter(getContext(), selectedParticipantFragments);
         adapter.notifyDataSetChanged();
 
         // DataBind ListView with items from ArrayAdapter
-        ListMembers.setAdapter(adapter);
+        participantsLV.setAdapter(adapter);
     }
 
     public void setEvents() {
@@ -146,15 +169,98 @@ public class GroupViewFragment extends Fragment {
         ListEvents.setAdapter(eventAdapter);
     }
 
-    public void replaceFragment(Fragment someFragment) {
-        Bundle bundle = this.getArguments();
-        bundle.putSerializable("user", loggedInUser);
-        someFragment.setArguments(bundle);
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+    private void showSearchDialog() {
+        Dialog searchDialog = new Dialog(getContext());
+        searchDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        searchDialog.setCancelable(true);
+        searchDialog.setContentView(R.layout.dialog_user_search);
 
-        transaction.replace(R.id.flFragment, someFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        EditText emailET = searchDialog.findViewById(R.id.editText_search_email);
+        ListView usersLV = searchDialog.findViewById(R.id.listView_searchUsers);
+        Button searchButton = searchDialog.findViewById(R.id.button_searchUser);
+        ImageButton cancelIB = searchDialog.findViewById(R.id.sv_imageButton_cancel);
+        ImageButton confirmIB = searchDialog.findViewById(R.id.sv_imageButton_confirm);
+
+        searchButton.setOnClickListener(view -> {
+            if (emailET.getText().toString().equals("")) {
+                emailET.setError("Please enter an email address");
+            } else {
+                findUserByEmail(emailET.getText().toString(), new FirebaseCallback() {
+                    @Override
+                    public void onStart() {}
+
+                    @Override
+                    public void onSuccess(Object data) {
+                        User foundUser = (User) data;
+                        ArrayList<membersFragment> fragments = new ArrayList<>();
+                        membersFragment fragment = new membersFragment();
+                        fragment.setFirstName(foundUser.getFirstName());
+                        fragment.setLastName(foundUser.getLastName());
+                        fragment.setUid(foundUser.getUID());
+                        fragments.add(fragment);
+                        memberDisplayAdapter adapter =
+                                new memberDisplayAdapter(getContext(), fragments);
+                        usersLV.setAdapter(adapter);
+                        usersLV.setOnItemClickListener((parent, view, position, id) -> {
+                            if (selectedUID.equals(fragments.get(position).getUid())) {
+                                selectedUID = "";
+                                selectedParticipantFragments.remove(fragments.get(position));
+                                adapter.unselectFragment();
+                            } else {
+                                adapter.selectFragment();
+                                selectedUID = fragments.get(position).getUid();
+                                selectedParticipantFragments.add(fragments.get(position));
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailed(DatabaseError databaseError) {
+                        Log.d(TAG, "User not found");
+                        emailET.setError("User not found");
+                    }
+                });
+            }
+        });
+
+        cancelIB.setOnClickListener(view -> {
+            searchDialog.dismiss();
+            selectedUID = "";
+        });
+
+        confirmIB.setOnClickListener(view -> {
+            if (!selectedUID.equals("")) {
+                selectedParticipants.add(selectedUID);
+                registerParticipantsToAdapter();
+            }
+            searchDialog.dismiss();
+        });
+
+        searchDialog.show();
+    }
+
+    private void registerParticipantsToAdapter() {
+        memberDisplayAdapter adapter = new memberDisplayAdapter(getContext()
+                , selectedParticipantFragments);
+        participantsLV.setAdapter(adapter);
+    }
+
+    private void findUserByEmail(String email, FirebaseCallback callback) {
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+        mFirestore.collection("users")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            User user = document.toObject(User.class);
+                            if (user.getEmail().equals(email)) {
+                                callback.onSuccess(user);
+                            }
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting users: ", task.getException());
+                    }
+                });
     }
 
 }

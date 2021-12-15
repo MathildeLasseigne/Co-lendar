@@ -128,8 +128,10 @@ public class Group {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            User user= document.toObject(User.class);
+                            User user = document.toObject(User.class);
                             for(String uidMember : membersOfGroup) {
+                                Log.d("USER UID", user.getUID());
+                                Log.d("MEMBER UID", uidMember);
                                 if (user.getUID().equals(uidMember)) {
                                     users.add(user);
                                 }
