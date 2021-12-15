@@ -103,6 +103,7 @@ public class MainLoginActivity extends AppCompatActivity implements View.OnClick
 
                         @Override
                         public void onSuccess(Object data) {
+                            ((User) data).updateLoginTimestamp(loggedinUser.getUID());
                             Intent i = new Intent(getApplicationContext(), MainActivity.class);
                             i.putExtra("user", loggedinUser);
                             startActivity(i);

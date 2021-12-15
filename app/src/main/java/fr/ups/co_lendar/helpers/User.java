@@ -285,4 +285,12 @@ public class User implements Serializable {
                     }
                 });
     }
+
+    public void updateLoginTimestamp(String UID) {
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+        mFirestore.collection("users")
+                .document(UID)
+                .update("lastLoginTimestamp", Calendar.getInstance().getTime());
+
+    }
 }
