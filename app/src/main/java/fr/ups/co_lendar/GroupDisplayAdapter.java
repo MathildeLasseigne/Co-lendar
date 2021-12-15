@@ -30,6 +30,10 @@ public class GroupDisplayAdapter extends ArrayAdapter<groupDisplayFragment> {
         }
         TextView gName = (TextView) convertView.findViewById(R.id.GroupText);
         gName.setText(groupName);
+        TextView numOfPeople = (TextView) convertView.findViewById(R.id.numberOfPeople);
+        Integer number = gd.getGroup().getMembers().size();
+        String numberToString = number.toString();
+        numOfPeople.setText(numberToString + " people");
         return convertView;
     }
 

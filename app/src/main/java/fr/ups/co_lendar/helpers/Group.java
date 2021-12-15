@@ -3,6 +3,8 @@ package fr.ups.co_lendar.helpers;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -104,6 +106,7 @@ public class Group {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Event event = document.toObject(Event.class);
+                            event.setEventID(document.getId());
                             if (event.getGroupID().equals(this.groupID)) {
                                 events.add(event);
                             }
@@ -114,6 +117,34 @@ public class Group {
                     }
                 });
     }
+
+    public void getGroupUsers(FirebaseCallback callback) {
+
+        ArrayList<User> users = new ArrayList<>();
+        List<String> membersOfGroup = getMembers();
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+        mFirestore.collection("users")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            User user = document.toObject(User.class);
+                            for(String uidMember : membersOfGroup) {
+                                Log.d("USER UID", user.getUID());
+                                Log.d("MEMBER UID", uidMember);
+                                if (user.getUID().equals(uidMember)) {
+                                    users.add(user);
+                                }
+                            }
+                        }
+                        callback.onSuccess(users);
+                    } else {
+                        Log.d(TAG, "Error getting groups: ", task.getException());
+                    }
+                });
+    }
+
+
 
     public void insertIntoDatabase(FirebaseCallback callback) {
 
@@ -181,4 +212,5 @@ public class Group {
             e.printStackTrace();
         }
     }
+
 }

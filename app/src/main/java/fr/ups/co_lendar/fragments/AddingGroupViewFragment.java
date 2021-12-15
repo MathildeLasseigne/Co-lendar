@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -12,53 +13,57 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-import fr.ups.co_lendar.EventAdapter;
 import fr.ups.co_lendar.FirebaseCallback;
-import fr.ups.co_lendar.GroupDisplayAdapter;
 import fr.ups.co_lendar.R;
 import fr.ups.co_lendar.helpers.Event;
 import fr.ups.co_lendar.helpers.Group;
+import fr.ups.co_lendar.helpers.Request;
 import fr.ups.co_lendar.helpers.User;
 import fr.ups.co_lendar.memberDisplayAdapter;
 
-public class GroupViewFragment extends Fragment {
-    private Group group;
-    private View rootView;
-    User loggedInUser;
-    private memberDisplayAdapter adapter;
-    private EventAdapter eventAdapter;
+public class AddingGroupViewFragment extends Fragment {
+    private View mView;
+    private User loggedInUser;
+    String TAG = "AddingGroupViewFragment";
+    String groupID;
+
     ImageButton addMembersIB;
-    String selectedUID = "";
+    EditText groupName;
+    ImageButton confirmButton;
+    ImageButton cancelButton;
     ListView participantsLV;
+    String selectedUID = "";
     ArrayList<String> selectedParticipants = new ArrayList<>();
     ArrayList<membersFragment> selectedParticipantFragments = new ArrayList<>();
-    ArrayList<EventFragment> events = new ArrayList<EventFragment>();
-    String TAG = "GroupViewFragment";
 
-    public GroupViewFragment() {
+    public AddingGroupViewFragment() {
         // Required empty public constructor
     }
 
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        mView = inflater.inflate(R.layout.fragment_adding_group_view, container, false);
+        initializeUI();
+        return mView;
     }
 
     private void setUser() {
@@ -69,104 +74,72 @@ public class GroupViewFragment extends Fragment {
         }
     }
 
+    private void setMembers() {
+        selectedParticipants.add(loggedInUser.getUID());
+        registerParticipantsToAdapter();
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        adapter = new memberDisplayAdapter(getContext(), selectedParticipantFragments);
-        adapter.clear();
-        eventAdapter = new EventAdapter(getContext(), events);
-        eventAdapter.clear();
+    }
+
+    private void initializeUI() {
         setUser();
-        rootView = inflater.inflate(R.layout.fragment_group_view, container, false);
-        addMembersIB = rootView.findViewById(R.id.AddMember);
-        initializeListeners();
+        addMembersIB = mView.findViewById(R.id.AddMember);
+        groupName = mView.findViewById(R.id.GroupAddedName);
+        confirmButton = mView.findViewById(R.id.confirm);
+        cancelButton = mView.findViewById(R.id.cancel);
+        participantsLV = mView.findViewById(R.id.listView_AddUserGroup);
         setMembers();
-        setEvents();
-        return rootView;
+        initializeListeners();
     }
 
-    public void setMembers() {
-        group.getGroupUsers(new FirebaseCallback() {
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onSuccess(Object data) {
-                ArrayList<User> users = (ArrayList<User>) data;
-                for(User user : users) {
-                    membersFragment m = new membersFragment();
-                    m.setFirstName(user.getFirstName());
-                    m.setLastName(user.getLastName());
-                    selectedParticipantFragments.add(m);
-                    addMembersDisplay(rootView);
-                }
-            }
-
-            @Override
-            public void onFailed(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     private void initializeListeners() {
 
+        cancelButton.setOnClickListener(view -> {
+            Fragment fragment = null;
+            GroupsFragment gf = new GroupsFragment();
+            fragment = gf;
+            replaceFragment(fragment);
+        });
+
+        confirmButton.setOnClickListener(view -> {
+            Group g = new Group();
+            g.setName(groupName.getText().toString());
+            g.setMembers(selectedParticipants);
+            groupID = UUID.randomUUID().toString();
+            g.setGroupID(groupID);
+            g.setAdminUID(loggedInUser.getUID());
+            g.insertIntoDatabase(new FirebaseCallback() {
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onSuccess(Object data) {
+                    Map<String, Object> group = new HashMap<>();
+                    group.put("groupID", groupID);
+                    group.put("name", groupName);
+                    group.put("members", selectedParticipants);
+                    group.put("adminUID", loggedInUser);
+                    sendRequest(group);
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+                    Log.d("ERROR", "Problem adding the Group.");
+                }
+            });
+
+            Fragment fragment = null;
+            GroupsFragment gf = new GroupsFragment();
+            fragment = gf;
+            replaceFragment(fragment);
+        });
+
         addMembersIB.setOnClickListener(view -> {
             showSearchDialog();
         });
-    }
-
-    private void addMembersDisplay(View rootView) {
-        TextView t = (TextView) rootView.findViewById(R.id.ViewGroupName);
-        t.setText(group.getName());
-        participantsLV = (ListView) rootView.findViewById(R.id.groupsMembers);
-
-
-        // Create the adapter to convert the array to views
-        adapter = new memberDisplayAdapter(getContext(), selectedParticipantFragments);
-        adapter.notifyDataSetChanged();
-
-        // DataBind ListView with items from ArrayAdapter
-        participantsLV.setAdapter(adapter);
-    }
-
-    public void setEvents() {
-        group.getGroupEvents(new FirebaseCallback() {
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onSuccess(Object data) {
-                ArrayList<Event> eventsOfGroup = (ArrayList<Event>) data;
-                for(Event event : eventsOfGroup) {
-
-                    EventFragment e = new EventFragment(event);
-                    events.add(e);
-                    addEventsDisplay(rootView);
-                }
-            }
-
-            @Override
-            public void onFailed(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void addEventsDisplay(View rootView) {
-        ListView ListEvents = (ListView) rootView.findViewById(R.id.groupsEvents);
-
-        // Create the adapter to convert the array to views
-        eventAdapter = new EventAdapter(getContext(), events);
-        eventAdapter.notifyDataSetChanged();
-
-        // DataBind ListView with items from ArrayAdapter
-        ListEvents.setAdapter(eventAdapter);
     }
 
     private void showSearchDialog() {
@@ -239,6 +212,16 @@ public class GroupViewFragment extends Fragment {
         searchDialog.show();
     }
 
+    private void sendRequest(Map<String, Object> group) {
+
+        for (String participant : selectedParticipants) {
+            if (!loggedInUser.getUID().equals(participant)) {
+                new Request(Request.Object.Group, (String) group.get("groupID"), loggedInUser.getUID(), participant, "", false, false);
+            }
+        }
+
+    }
+
     private void registerParticipantsToAdapter() {
         memberDisplayAdapter adapter = new memberDisplayAdapter(getContext()
                 , selectedParticipantFragments);
@@ -263,4 +246,14 @@ public class GroupViewFragment extends Fragment {
                 });
     }
 
+    public void replaceFragment(Fragment someFragment) {
+        Bundle bundle = this.getArguments();
+        bundle.putSerializable("user", loggedInUser);
+        someFragment.setArguments(bundle);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.flFragment, someFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 }
