@@ -9,6 +9,7 @@
     tools:context=".MainActivity"
     android:id="@+id/calendarFragment">
     <ScrollView
+        android:nestedScrollingEnabled="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -43,6 +44,7 @@
                 android:id="@+id/textView_dateSelected"/>
 
             <ListView
+                android:nestedScrollingEnabled="true"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:id="@+id/listView_selectedDateEvents"
@@ -62,6 +64,7 @@
                 android:id="@+id/textView_allEvents"/>
 
             <ListView
+                android:nestedScrollingEnabled="true"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:id="@+id/listView_allEvents"
@@ -69,4 +72,14 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_addEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/plus_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

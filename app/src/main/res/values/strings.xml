@@ -74,5 +74,17 @@
     <string name="no_upcoming_events">No upcoming events</string>
     <string name="some_upcoming_events">Upcoming events</string>
     <string name="date_placeholder">No events today</string>
+    <string name="event_name">Event name</string>
+    <string name="participants">Participants</string>
+    <string name="event_infos">Event Infos</string>
+    <string name="time">Time:</string>
+    <string name="url">URL:</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="your_groups">Your groups:</string>
+    <string name="address">Address:</string>
+    <string name="date">Date:</string>
+    <string name="comments">Comments:</string>
+    <string name="search_for_users">Search for users</string>
 
 </resources>

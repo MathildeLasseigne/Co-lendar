@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -21,30 +22,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import fr.ups.co_lendar.EventAdapter;
+import fr.ups.co_lendar.FirebaseCallback;
 import fr.ups.co_lendar.GroupDisplayAdapter;
 import fr.ups.co_lendar.R;
 import fr.ups.co_lendar.helpers.Event;
+import fr.ups.co_lendar.helpers.User;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link WeekCalendarFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class WeekCalendarFragment extends Fragment implements View.OnClickListener {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private View mView;
+    User loggedInUser;
 
     ArrayList<Event> events;
     private TextView sun;
@@ -77,31 +68,9 @@ public class WeekCalendarFragment extends Fragment implements View.OnClickListen
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment WeekCalendarFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static WeekCalendarFragment newInstance(String param1, String param2) {
-        WeekCalendarFragment fragment = new WeekCalendarFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -116,7 +85,26 @@ public class WeekCalendarFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        getUser();
         initializeUI();
+    }
+
+    private void getUser() {
+        User user = new User(new FirebaseCallback() {
+            @Override
+            public void onStart() {}
+
+            @Override
+            public void onSuccess(Object data) {
+                loggedInUser = (User) data;
+                setEvents();
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+
+            }
+        }, mAuth.getCurrentUser().getUid());
     }
 
     private void initializeUI() {
@@ -166,7 +154,6 @@ public class WeekCalendarFragment extends Fragment implements View.OnClickListen
         daysNumbers.add(day7);
 
         setDates();
-        setEvents();
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -316,27 +303,26 @@ public class WeekCalendarFragment extends Fragment implements View.OnClickListen
     private void setEvents() {
 
         events = new ArrayList<>();
-        mFirestore.collection("events")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Event event = document.toObject(Event.class);
-                            int day = event.getDate().getDate();
-                            if (event.getParticipants() != null
-                                    && event.getParticipants().size() > 0
-                                    && event.getParticipants().contains(mAuth.getCurrentUser().getUid())
-                                    && day >= firstDay
-                                    && day <= firstDay + 6) {
-                                    events.add(event);
-                            }
+        if (loggedInUser != null) {
+            loggedInUser.getUserEvents(new FirebaseCallback() {
+                @Override
+                public void onStart() {}
 
+                @Override
+                public void onSuccess(Object data) {
+                    for (Event event : (List<Event>) data) {
+                        if (event.getDate().getDate() >= firstDay
+                                && event.getDate().getDate() <= firstDay + 6) {
+                            events.add(event);
                         }
-                        showEvents();
-                    } else {
-                        Log.d(TAG, "Error getting events: ", task.getException());
                     }
-                });
+                    showEvents();
+                }
+
+                @Override
+                public void onFailed(DatabaseError databaseError) {Log.d(TAG, "Error getting events: ");}
+            });
+        }
     }
 
     private void showEvents() {

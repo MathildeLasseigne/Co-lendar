@@ -52,4 +52,5 @@ public class EventAdapter extends ArrayAdapter<EventFragment> {
         imageView2 = view.findViewById(R.id.imageView2);
         imageView3 = view.findViewById(R.id.imageView3);
     }
+
 }

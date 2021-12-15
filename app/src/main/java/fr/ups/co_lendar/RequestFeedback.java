@@ -23,11 +23,8 @@ public class RequestFeedback extends NotificationFragment {
     private TextView senderName;
     private TextView acceptanceMessage;
     private TextView topicName;
-
     private ImageView topicPicture;
-
     private Button okButton;
-
     private String TAG = "FeedbackRequest";
 
     public RequestFeedback() {}
@@ -44,12 +41,9 @@ public class RequestFeedback extends NotificationFragment {
     public void initialiseVar(View view){
 
         this.topicPicture = (ImageView) view.findViewById(R.id.topicPictureInFeedback);
-
         this.senderName = (TextView)view.findViewById(R.id.reiceiverNameFeedback);
         this.acceptanceMessage = (TextView)view.findViewById(R.id.acceptance);
         this.topicName = (TextView)view.findViewById(R.id.topic);
-
-
         this.okButton = (Button) view.findViewById(R.id.okButton);
     }
 

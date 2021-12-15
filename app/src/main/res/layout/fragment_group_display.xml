@@ -9,6 +9,7 @@
     android:id="@+id/groupContainer">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_group"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/lightBlue"
