@@ -1,212 +1,363 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fr.ups.co_lendar.fragments.EventCreationViewFragment"
+    tools:context="fr.ups.co_lendar.fragments.EventCreationViewFragment">
+
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/colorDarkBackground"
     android:id="@+id/GroupView">
 
-
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center_horizontal"
-        android:scaleType="fitXY"
-        android:background="@drawable/ic_event"
-        android:backgroundTint="#FFFFFF"
-        />
-
-    <EditText
-        android:id="@+id/editTextEventName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="15"
-        android:layout_gravity="center_horizontal"
-        android:inputType="textPersonName"
-        android:text="Group Name"
-        android:layout_marginTop="140dp"
-        android:textColor="@color/colorGrey"
-        android:backgroundTint="@color/colorGrey"/>
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:id="@+id/imageView_eventImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="fitXY"
+            android:background="@drawable/ic_event"
+            android:backgroundTint="#FFFFFF"
+            />
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="200dp"
-        android:orientation="vertical">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/memberGroup"
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/editText_eventName"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/lightBlue"
-            >
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="120dp"
+            android:backgroundTint="@color/colorGrey"
+            android:ems="15"
+            android:inputType="textPersonName"
+            android:text="Blabla"
+            android:textColor="@color/colorGrey" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="180dp"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/lightBlue"
+                android:layout_marginBottom="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
+                    android:paddingStart="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Members"
-                    android:textSize="30dp"/>
+                    android:text="Group event?"
+                    android:textSize="20sp" />
 
-                <ListView
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/groupsMembers">
+                    android:orientation="horizontal"
+                    android:id="@+id/participantGroupRG">
 
-                </ListView>
+                    <RadioButton android:id="@+id/yesGroupRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="yes"
+                        android:checked="true"
+                        android:layout_marginRight="20dp"/>
+
+                    <RadioButton android:id="@+id/noGroupRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="no"/>
+                </RadioGroup>
+
+            </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView_participants"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/lightBlue"
+                android:visibility="gone"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:textSize="20sp"/>
+
+                        <ImageButton
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/events_bg"
+                            android:id="@+id/imageButton_addParticipants"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:scaleType="fitXY"
+                            android:backgroundTint="@color/colorTeal"
+                            app:srcCompat="@drawable/ic_add"
+                            android:layout_marginStart="260dp"
+                            />
+
+
+
+                    </LinearLayout>
+
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:id="@+id/listView_participants">
+
+                    </ListView>
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView_groups"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/lightBlue"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                        <TextView
+                            android:paddingStart="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="blou"
+                            android:textSize="20sp"/>
+
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:id="@+id/caca">
+
+                    </ListView>
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/lightBlue"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:paddingStart="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:textSize="20sp"/>
+
+                    <LinearLayout
+                        android:layout_width="400dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="15sp"
+                            />
+
+                        <EditText
+                            android:id="@+id/editText_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:ems="10"
+                            android:textSize="15sp"
+                            android:inputType="textPersonName"
+                            android:background="@color/colorGrey"
+                            android:layout_marginRight="10dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="400dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="15sp"
+                            />
+
+                        <EditText
+                            android:id="@+id/editText_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:ems="10"
+                            android:textSize="15sp"
+                            android:inputType="date"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/colorGrey"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="400dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="15sp"
+                            />
+
+                        <EditText
+                            android:id="@+id/editText_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:ems="10"
+                            android:textSize="15sp"
+                            android:inputType="time"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/colorGrey"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="400dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="15sp"
+                            />
+
+                        <EditText
+                            android:id="@+id/editText_comments"
+                            android:layout_width="wrap_content"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/colorGrey"
+                            android:ems="10"
+                            android:gravity="top|start"
+                            android:inputType="text"
+                            android:lines="6"
+                            android:maxLines="6"
+                            android:minLines="6"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="400dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="15sp"
+                            />
+
+                        <EditText
+                            android:id="@+id/editText_url"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:ems="10"
+                            android:textSize="15sp"
+                            android:inputType="textUri"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/colorGrey"
+                            android:layout_marginBottom="10dp"/>
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
 
                 <ImageButton
-                    android:id="@+id/AddMember"
-                    android:layout_width="60dp"
-                    android:layout_height="50dp"
+                    android:background="@drawable/events_bg"
+                    android:id="@+id/imageButton_cancel"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:scaleType="fitXY"
                     android:backgroundTint="@color/colorTeal"
-                    app:srcCompat="@drawable/ic_add"
+                    app:srcCompat="@drawable/ic_cancel"
                     android:layout_gravity="center"
+                    android:layout_margin="20dp"
+                    />
+
+                <ImageButton
+                    android:background="@drawable/events_bg"
+                    android:id="@+id/imageButton_confirm"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="fitXY"
+                    android:backgroundTint="@color/colorTeal"
+                    app:srcCompat="@drawable/ic_check"
+                    android:layout_margin="20dp"
                     />
 
             </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/lightBlue"
-            android:layout_marginTop="20dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Event Infos"
-                    android:textSize="30dp" />
-
-                <LinearLayout
-                    android:layout_width="400dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Address: "
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="20dp"
-                        />
-
-                    <EditText
-                        android:id="@+id/editTextTextPersonName2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:ems="10"
-                        android:inputType="textPersonName"
-                        android:background="@color/colorGrey"
-                        android:layout_marginRight="10dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="400dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Date: "
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="20dp"
-                        />
-
-                    <EditText
-                        android:id="@+id/editTextDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:ems="10"
-                        android:inputType="date"
-                        android:layout_marginTop="10dp"
-                        android:background="@color/colorGrey"
-                        android:layout_marginLeft="32dp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="400dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Time: "
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="20dp"
-                        />
-
-                    <EditText
-                        android:id="@+id/editTextTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:ems="10"
-                        android:inputType="time"
-                        android:layout_marginTop="10dp"
-                        android:background="@color/colorGrey"
-                        android:layout_marginLeft="28dp"
-                        android:layout_marginBottom="10dp"/>
-                </LinearLayout>
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center_horizontal">
-
-            <ImageButton
-                android:id="@+id/NoCreation"
-                android:layout_width="100dp"
-                android:layout_height="90dp"
-                android:scaleType="fitXY"
-                android:backgroundTint="@color/colorTeal"
-                app:srcCompat="@drawable/ic_cancel"
-                android:layout_gravity="center"
-                android:layout_margin="20dp"
-                />
-
-            <ImageButton
-                android:id="@+id/YesCreation"
-                android:layout_width="100dp"
-                android:layout_height="90dp"
-                android:scaleType="fitXY"
-                android:backgroundTint="@color/colorTeal"
-                app:srcCompat="@drawable/ic_check"
-                android:layout_margin="20dp"
-                />
-
         </LinearLayout>
-
-    </LinearLayout>
-
-
-
-</FrameLayout>
+    </FrameLayout>
+</ScrollView>

@@ -2,26 +2,19 @@ package fr.ups.co_lendar.fragments;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import fr.ups.co_lendar.FirebaseCallback;
 import fr.ups.co_lendar.GroupDisplayAdapter;
@@ -32,8 +25,6 @@ import fr.ups.co_lendar.helpers.User;
 public class GroupsFragment extends Fragment {
 
     User loggedInUser;
-    private FirebaseFirestore mFirestore;
-    private FirebaseAuth mAuth;
     ArrayList<groupDisplayFragment> groups = new ArrayList<groupDisplayFragment>();
     private View rootView;
     private GroupDisplayAdapter adapter;
@@ -47,12 +38,23 @@ public class GroupsFragment extends Fragment {
         adapter = new GroupDisplayAdapter (getContext(), groups);
         adapter.clear();
         setUser();
-        mAuth = FirebaseAuth.getInstance();
-        mFirestore = FirebaseFirestore.getInstance();
         rootView = inflater.inflate(R.layout.fragment_groups, container, false);
+        setAddGroupButton();
         setGroups();
 
         return rootView;
+    }
+
+    private void setAddGroupButton() {
+        ImageButton addGroup = (ImageButton) rootView.findViewById(R.id.AddGroupButton);
+        addGroup.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Fragment fragment = null;
+                AddingGroupViewFragment ag = new AddingGroupViewFragment();
+                fragment = ag;
+                replaceFragment(fragment);
+            }
+        });
     }
 
 
@@ -97,6 +99,20 @@ public class GroupsFragment extends Fragment {
     }
 
     public void replaceFragment(Fragment someFragment) {
+        Bundle bundle = this.getArguments();
+        bundle.putSerializable("user", loggedInUser);
+        someFragment.setArguments(bundle);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.flFragment, someFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    public void displayAddView(Fragment someFragment) {
+        Bundle bundle = this.getArguments();
+        bundle.putSerializable("user", loggedInUser);
+        someFragment.setArguments(bundle);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         transaction.replace(R.id.flFragment, someFragment);

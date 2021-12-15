@@ -3,6 +3,8 @@ package fr.ups.co_lendar.helpers;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -104,6 +106,7 @@ public class Group {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Event event = document.toObject(Event.class);
+                            event.setEventID(document.getId());
                             if (event.getGroupID().equals(this.groupID)) {
                                 events.add(event);
                             }
@@ -207,4 +210,5 @@ public class Group {
             e.printStackTrace();
         }
     }
+
 }
