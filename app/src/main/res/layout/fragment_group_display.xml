@@ -35,6 +35,15 @@
             android:backgroundTint="@color/colorTeal"
             />
 
+        <TextView
+            android:id="@+id/numberOfPeople"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="15dp"
+            android:layout_marginLeft="280dp"
+            android:layout_marginTop="60dp"/>
+
     </androidx.cardview.widget.CardView>
 
 </FrameLayout>
