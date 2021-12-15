@@ -64,6 +64,7 @@ public class User implements Serializable {
                     this.setEmail(document.getString("email"));
                     this.setPassword(document.getString("password"));
                     this.setUID(UUID);
+                    this.setLastLoginTimestamp(document.getDate("lastLoginTimestamp"));
                     this.setUsersEvents((List<String>) document.get("usersEvents"));
                     callback.onSuccess(this);
                 } else {

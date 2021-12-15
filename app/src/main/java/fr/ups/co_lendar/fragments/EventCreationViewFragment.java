@@ -212,8 +212,8 @@ public class EventCreationViewFragment extends Fragment {
 
         Calendar c = Calendar.getInstance();
         c.set(Integer.parseInt(dateArr[2]), Integer.parseInt(dateArr[1])-1,
-                Integer.parseInt(dateArr[0]), Integer.parseInt(hourArr[1])
-                , Integer.parseInt(hourArr[0]));
+                Integer.parseInt(dateArr[0]), Integer.parseInt(hourArr[0])
+                , Integer.parseInt(hourArr[1]), 0);
         Date date = c.getTime();
 
         event.put("name", name);
