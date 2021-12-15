@@ -36,8 +36,11 @@ import java.util.Map;
 import java.util.UUID;
 
 import fr.ups.co_lendar.EventAdapter;
+import fr.ups.co_lendar.FcmNotificationsSender;
 import fr.ups.co_lendar.FirebaseCallback;
+import fr.ups.co_lendar.FirebaseMessagingService;
 import fr.ups.co_lendar.GroupDisplayAdapter;
+import fr.ups.co_lendar.MainActivity;
 import fr.ups.co_lendar.R;
 import fr.ups.co_lendar.helpers.Event;
 import fr.ups.co_lendar.helpers.Group;
@@ -140,7 +143,7 @@ public class EventCreationViewFragment extends Fragment {
         });
 
         cancelButton.setOnClickListener(view -> {
-            getActivity().getFragmentManager().popBackStack();
+            goBack();
         });
 
         confirmButton.setOnClickListener(view -> {
@@ -236,7 +239,7 @@ public class EventCreationViewFragment extends Fragment {
         sendRequest(event);
 
         Toast.makeText(getContext(), "Event added successfully", Toast.LENGTH_LONG).show();
-        getActivity().getFragmentManager().popBackStack();
+        goBack();
     }
 
     private void showUserGroups() {
@@ -394,6 +397,8 @@ public class EventCreationViewFragment extends Fragment {
                         new Request(Request.Object.Event, (String)event.get("eventID"),
                                 loggedInUser.getUID(), member, "", false, false);
                     }
+                    //not to be modified - faking the notification feature
+                    sendNotificationToUser("New event", "Floriana invited you to an event");
                 }
 
                 @Override
@@ -416,5 +421,21 @@ public class EventCreationViewFragment extends Fragment {
         memberDisplayAdapter adapter = new memberDisplayAdapter(getContext()
                 , selectedParticipantFragments);
         participantsLV.setAdapter(adapter);
+    }
+
+    public void sendNotificationToUser(String title, String message) {
+        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(FirebaseMessagingService.getToken(mView.getContext()),
+                title, message, mView.getContext(), getActivity());
+        notificationsSender.sendNotifications();
+    }
+
+    private void goBack() {
+        CalendarFragment fragment = new CalendarFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", loggedInUser);
+        fragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager()
+                .beginTransaction().replace(R.id.flFragment, fragment)
+                .commit();
     }
 }

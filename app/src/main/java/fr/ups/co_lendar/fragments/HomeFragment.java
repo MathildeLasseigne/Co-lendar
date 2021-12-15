@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
     private void initializeUI() {
         greeting = mView.findViewById(R.id.textView_greeting);
         profilePicture = mView.findViewById(R.id.imageView_profilePic);
-        setName();
+        setFragmentParameters();
         loggedInUser.getUserImage(new FirebaseCallback() {
             @Override
             public void onStart() { }
@@ -64,7 +64,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void setName() {
+    private void setFragmentParameters() {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {

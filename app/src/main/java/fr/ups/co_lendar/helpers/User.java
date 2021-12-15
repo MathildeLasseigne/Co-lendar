@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,7 @@ public class User implements Serializable {
     List<String> usersEvents;
     List<Group> usersGroups;
     String TAG = "USER";
+    Date lastLoginTimestamp;
 
     public User(String firstName, String lastName, String email, String password, String UID) {
         this.password = password;
@@ -132,6 +135,14 @@ public class User implements Serializable {
         this.usersGroups = usersGroups;
     }
 
+    public Date getLastLoginTimestamp() {
+        return lastLoginTimestamp;
+    }
+
+    public void setLastLoginTimestamp(Date lastLoginTimestamp) {
+        this.lastLoginTimestamp = lastLoginTimestamp;
+    }
+
     public void getUserEvents(FirebaseCallback callback) {
 
         if (this.usersGroups == null) {
@@ -217,6 +228,7 @@ public class User implements Serializable {
             user.put("lastName", lastName);
             user.put("email", email);
             user.put("password", password);
+            user.put("lastLoginTimestamp", Calendar.getInstance().getTime());
 
             FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
             DocumentReference documentReference = mFirestore.collection("users")

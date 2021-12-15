@@ -12,6 +12,8 @@ import android.util.Log;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +34,7 @@ public class Request {
     private String eventID = "";
     private String groupID = "";
     private String requestID = "";
+    private Date timestampAdded;
 
     private String TAG = "Request";
 
@@ -147,7 +150,7 @@ public class Request {
                 }
             }, this.eventID);
 
-        } else if (! this.groupID.isEmpty()){
+        } else if (!this.groupID.isEmpty()){
             new Group(new FirebaseCallback() {
                 @Override
                 public void onStart() { }
@@ -415,6 +418,14 @@ public class Request {
         this.requestID = requestID;
     }
 
+    public Date getTimestampAdded() {
+        return timestampAdded;
+    }
+
+    public void setTimestampAdded(Date timestampAdded) {
+        this.timestampAdded = timestampAdded;
+    }
+
     public String getObjectId(){
         if(getObject() == Object.Event){
             return getEventID();
@@ -511,6 +522,7 @@ public class Request {
 
         request.put("feedback", this.feedback);
         request.put("accepted", this.accepted);
+        request.put("timestampAdded", Calendar.getInstance().getTime());
 
         mFirestore.collection("requests")
                 .add(request)

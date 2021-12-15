@@ -2,6 +2,9 @@ package fr.ups.co_lendar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.iid.FirebaseInstanceIdReceiver;
+import com.google.firebase.installations.FirebaseInstallations;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -36,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         getLoggedInUser();
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.home);
 

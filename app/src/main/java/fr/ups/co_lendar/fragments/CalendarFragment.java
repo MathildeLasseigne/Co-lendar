@@ -27,6 +27,7 @@ import java.util.List;
 
 import fr.ups.co_lendar.EventAdapter;
 import fr.ups.co_lendar.FirebaseCallback;
+import fr.ups.co_lendar.NotificationFragmentAdapter;
 import fr.ups.co_lendar.R;
 import fr.ups.co_lendar.helpers.Event;
 import fr.ups.co_lendar.helpers.User;

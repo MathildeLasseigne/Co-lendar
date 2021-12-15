@@ -3,47 +3,120 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorDarkBackground"
+    >
+
+    <TextView
+        android:id="@+id/Requests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/abeezee"
+        android:paddingStart="10dp"
+        android:paddingLeft="10dp"
+        android:paddingEnd="0dp"
+        android:text="@string/requests"
+        android:textColor="@color/colorGrey"
+        android:textSize="30sp"
+        android:paddingTop="10dp"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="match_parent"
+            android:background="@color/colorDarkBackground"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <ScrollView
+                android:paddingBottom="75dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorDarkBackground"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/Requests"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/abeezee"
-                    android:paddingStart="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingEnd="0dp"
-                    android:text="@string/requests"
-                    android:textColor="@color/colorGrey"
-                    android:textSize="30sp" />
+                    android:orientation="vertical">
 
-                <ListView
-                    android:id="@+id/requestsListView"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_weight="5" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_fr"
+                        android:fontFamily="@font/abeezee"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Requests feedback"
+                        android:textColor="@color/colorGrey"
+                        android:textSize="15sp"
+                        android:layout_marginTop="10dp"
+                        android:paddingStart="15dp"
+                        android:textStyle="bold" />
+
+                    <ListView
+                        android:id="@+id/home_feedbackList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="#2b535c"
+                        android:padding="10dp">
 
 
-        </ScrollView>
+                    </ListView>
+
+                    <TextView
+                        android:fontFamily="@font/abeezee"
+                        android:id="@+id/tv_er"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Event requests"
+                        android:textColor="@color/colorGrey"
+                        android:textSize="15sp"
+                        android:layout_marginTop="10dp"
+                        android:paddingStart="15dp"
+                        android:textStyle="bold" />
+
+                    <ListView
+                        android:id="@+id/home_eventList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="#2b535c"
+                        android:padding="10dp">
 
 
+                    </ListView>
+
+                    <TextView
+                        android:fontFamily="@font/abeezee"
+                        android:id="@+id/tv_gr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Group requests"
+                        android:textColor="@color/colorGrey"
+                        android:textSize="15sp"
+                        android:layout_marginTop="10dp"
+                        android:paddingStart="15dp"
+                        android:textStyle="bold" />
+
+                    <ListView
+                        android:id="@+id/home_groupList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="#2b535c"
+                        android:padding="10dp"
+                        android:layout_marginBottom="30dp">
+
+
+                    </ListView>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

@@ -80,20 +80,6 @@ public class NotificationsFragment extends Fragment {
             }
         };
         this.loggedInUser.getUserRequests(fc);
-        /*ArrayList<Request> r = loadRequests();
-        if (r != null) {
-            for(Request req : r){
-                boolean found = false;
-                for(Request req2 : requests){
-                    if(req.equals(req2)){
-                        break;
-                    }
-                }
-                if(! found){
-                    addRequest(req);
-                }
-            }
-        }*/
     }
 
     private void setUser() {
